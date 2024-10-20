@@ -108,6 +108,52 @@
               "icon": "git-pull-request",
               "title": "Source Control"
             }
+          },
+          {
+            "id": "2378b967267ad561",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Path Problems On Temporal Graphs.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Path Problems On Temporal Graphs"
+            }
+          },
+          {
+            "id": "180e86f6cc1d6aeb",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Path Problems On Temporal Graphs.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Path Problems On Temporal Graphs"
+            }
+          },
+          {
+            "id": "0fe7c76579a31352",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
           }
         ],
         "currentTab": 1
@@ -127,8 +173,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "5ed8ac9890be219b",
   "lastOpenFiles": [
-    "Path Problems On Temporal Graphs.md"
+    "img.md",
+    "Path Problems On Temporal Graphs.md",
+    "img/Temporal-Static Graph.png",
+    "img"
   ]
 }

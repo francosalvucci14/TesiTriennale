@@ -1,0 +1,4 @@
+.callout[data-callout="definition"] {
+    --callout-color: 102, 0, 102;
+    --callout-icon: lucide-pin;
+}

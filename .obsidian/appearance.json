@@ -1,3 +1,8 @@
 {
-  "baseFontSize": 16
+  "baseFontSize": 16,
+  "enabledCssSnippets": [
+    "center",
+    "callouts",
+    "caption"
+  ]
 }
