@@ -128,7 +128,8 @@
               "title": "Backlinks for Path Problems On Temporal Graphs"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -147,6 +148,7 @@
   },
   "active": "5ed8ac9890be219b",
   "lastOpenFiles": [
+    "Path Problems On Temporal Graphs.pdf",
     "img.md",
     "Path Problems On Temporal Graphs.md",
     "img/Temporal-Static Graph.png",
