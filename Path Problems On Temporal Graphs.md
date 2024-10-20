@@ -44,7 +44,7 @@ Per esempio, $\left< a,b,g,j\right>$ è un percorso in $\text{Figura}\space1(b)$
 
 L'esempio soora indica che un grafo statico condensato può presentare informazioni fuorvianti relative al grafo temporale originale, e quindi è essenziale mantenere le informazioni temporali nei grafi.
 
-Esistono 4 tipi di percorsi temporali, che collettivamente si chiamano **minimun temporal paths** (percorsi temporali minimi), dato che loro danno il valore minimo per differenti misure:
+Esistono 4 tipi di percorsi temporali, che collettivamente si chiamano **Minimum temporal paths** (percorsi temporali minimi), dato che loro danno il valore minimo per differenti misure:
 
 1. `earliest-arrival path` : percorso che fornisce l'earliest arrival time partendo da una sorgente $x$ fino a un target $y$
 2. `latest-departure path` : percorso che fornisce il latest departure time partendo da sorgente $x$ fino a un target $y$ entro un certo tempo 
@@ -55,7 +55,7 @@ Esistono 4 tipi di percorsi temporali, che collettivamente si chiamano **minimun
 >Notare che uno shortest path potrebbe non essere necessariamente un fastest path
 >Notare anche che un fastest path potrebbe non essere un earliest-arrival path
 
-Per calcolare questi percorsi non possiamo usare l'approccio Greedy che di norma viene usato nel calcolo dei percorsi per grafi statici, per esempio l'algoritmo di Dijkstra, perchè quelli sono basati sulla proprietà che un sottopercorso di uno shortest path è anch'esso uno shortest path, cosa non necessariamente vera quando calcoliamo uno dei 4 `minimun temporal paths`.
+Per calcolare questi percorsi non possiamo usare l'approccio Greedy che di norma viene usato nel calcolo dei percorsi per grafi statici, per esempio l'algoritmo di Dijkstra, perchè quelli sono basati sulla proprietà che un sottopercorso di uno shortest path è anch'esso uno shortest path, cosa non necessariamente vera quando calcoliamo uno dei 4 `Minimum temporal paths`.
 
 # 2. Notazione dei Grafi Temporali
 
@@ -107,6 +107,109 @@ $$d_{\text{out}}(u,G_s)=\left|\Gamma_{\text{out}}(u,G_s)\right|$$
 
 L'insieme dei **vicini-entranti (in-neighbors)** e il **grado-entrante (in-degree)** di un vertice $u$ in $G$ o $G_s$ sono definiti in modo completamente simmetrico
 $$\begin{align}&\Gamma_{\text{in}}(u,G)=\Gamma_{\text{in}}(u,G_s)=\{v:(v,u,t,\lambda)\in E\}=\{v:(v,u)\in E_s\}\\\\&d_{\text{in}}(u,G)=\sum\limits_{v\in\Gamma_{\text{in}}(u,G)}\pi(v,u)\\\\&d_{\text{in}}(u,G_s)=\left|\Gamma_{\text{int}}(u,G_s)\right|\end{align}$$
-# 3. Definizione dei Grafi Temporali
+# 3. Definizione dei Percorsi Temporali
 
-# 4. Algoritmi One-Pass per calcolare gli shortest path
+Un **`Percorso Temporale`** $P$ in un grafo temporale $G$ è una sequenza di vertici $$P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$$dove $(v_i,v_{i+1},t_i,\lambda_{i)\in}E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$, e $(t_i+\lambda_i)\leq t_{i+1}$ per $1\leq i\leq k$.
+Da notare che nell'ultimo arco $(v_k,v_{k+1},t_k,\lambda_k)$ di $P$, non mettiamo la condizione su $(t_k+\lambda_k)$ dato che $t_{k+1}$ non è definito per il percorso $P$.
+
+Infatti, la quantità $(t_k+\lambda_k)$ è l'**ending time** di $P$, ed è definita come $end(P)$.
+Definiamo anche lo **starting time** di $P$, definito come $start(P)=t_1$.
+Definiamo poi **durata** e **distanza** di $P$, rispettivamente $$\begin{align}&dura(P)=end(P)-start(P)\\&dist(P)=\sum\limits_{i=1}^k\lambda_i\end{align}$$
+**Esempio** 
+
+Un esempio di percorso temporale è $P=\left<(a.f,3,1),(f,i,5,1),(i,l,8,1)\right>$ nel grafo temporale $G$ in $\text{Figura}\space1(a)$. 
+Abbiamo : 
+- $start(P)=1$
+- $end(P)=8+1=9$
+- $dura(P)=9-3=6$
+- $dist(P)=1+1+1=3$
+
+## 3.1 Definizione formale dei Minimum Temporal Paths
+
+>[!definition]- Minimum Temporal Paths
+>Dato un grafo temporale $G$, una sorgente $x$ e un target $y$ entrambi in $G$, e un intervallo di tempo $[t_\alpha,t_\omega]$, sia $$\mathbb P(x,y,[t_\alpha,t_\omega])=\{P:P\text{ è un percorso temporale da }x\to y\text{ dove}\space start(P)\geq t_\alpha\land\space end(P)\leq t_\omega\}$$ Definiamo i seguenti $4$ tipi di percorsi temporali da $x\to y$ entro l'intervallo $[t_\alpha,t_\omega]$ che hanno il minimo valore per differenti misure, così collettivamente chiamati : **Minimum temporal paths** :
+>- **Earliest-arrival path** : $P\in\mathbb P(x,y,[t_\alpha,t_\omega])$ è un earliest-arrival path se $$end(P)=\text{min}\{end(P'):P'\in\mathbb P(x,y,[t_\alpha,t_\omega])\}$$
+>- **Latest-departure path** : $P\in\mathbb P(x,y,[t_\alpha,t_\omega])$ è un latest-departure path se $$start(P)=\text{max}\{start(P'):P'\in\mathbb P(x,y,[t_\alpha,t_\omega])\}$$
+>- **Fastest path** : $P\in\mathbb P(x,y,[t_\alpha,t_\omega])$ è un fastest path se $$dura(P)=\text{min}\{dura(P'):P'\in\mathbb P(x,y,[t_\alpha,t_\omega])\}$$
+>- **Shortest path** : $P\in\mathbb P(x,y,[t_\alpha,t_\omega])$ è uno shortest path se $$dist(P)=\text{min}\{dist(P'):P'\in\mathbb P(x,y,[t_\alpha,t_\omega])\}$$
+
+Notare che se l'intervallo di tempo $[t_\alpha,t_\omega]$ non è esplicitamente specificato per i minimum temporal paths, allora viene semplicemente impostasto come $[t_\alpha=0,t_\omega=\infty]$.
+Comunque, noi potremmo non essere sempre interessati all'intera storia temporale del grafo e quindi lasciare che l'utente specifichi l'intervallo $[t_\alpha,t_\omega]$, dando così più flessibilità ed applicabilità.
+
+Una definizione più completa di minimum temporal paths è stata proposta qua. ^[B.-M. B. Xuan, A. Ferreira, and A. Jarry. Computing shortest, fastest, and foremost journeys in dynamic networks. Int. J. Found. Comput. Sci., 14(2):267–285, 2003.]
+
+## 3.2 Single-Source Minimum Temporal Paths (SSMTP)
+
+>[!definition]- Definizione del problema
+>Dato un grafo temporale $G=(V,E)$, un vertice $x\in V$, e un intervallo di tempo $[t_\alpha,t_\omega]$, il problema del **SSMTP** è quello di cercare :
+>1. l'**earliest-arrival path** da $x$ ad ogni $v\in V$, oppure
+>2. il **latest-departure path** da ogni $v\in V$ ad $x$, oppure
+>3. il **fastest path** da $x$ ad ogni $v\in V$, oppure
+>4. lo **shortest path** da $x$ ad ogni $v\in V$ 
+rispettivamente entro l'intervallo di cui sopra.
+
+Sia $P$ il **percorso temporale minimo** (minimum temporal path) ad essere calcolato. Per semplificare il tutto, nella presentazione dell'algoritmo per **`SSMTP`** vengono riportati solamente : 
+1. earliest-arrival time $end(P)$
+2. latest-departure time $start(P)$
+3. durata del fastest path $dura(P)$
+4. distanza dello shortest path $dist(P)$
+
+I seguenti **lemmi** danno alcune proprietà dei percorsi temporali minimi.
+
+*Lemma 1.* $\text{Un sottopercorso-prefisso di un earliest-arrival path potrebbe non essere un earliest-arrival path}$
+
+*Lemma 2.* $\text{Un sottopercorso-postfisso di un latest-departure path potrebbe non essere un latest-departure path}$
+
+*Lemma 3.* 
+$\text{Un sottopercorso di un fastest path potrebbe non essere un fastest path}$
+
+*Lemma 4.*
+$\text{Un sottopercorso di uno shortest path potrebbe non essere uno shortest path}$
+
+# 4. Algoritmi One-Pass per calcolare i Percorsi Temporali Minimi
+
+## 4.1 Rappresentazione di un Grafo Temporale come Stream
+
+La rappresentazione **edge stream** di un grafo temporale $G$ è semplicemente una sequenza di tutti gli archi di $G$ che arrivano nell'ordine in cui ciascun arco viene creato/collezionato (es. gli archi sono ordinati secondo il loro starting time).
+
+**Se due archi temporali sono creati/collezionati allo stesso momento, il loro ordine sarà arbitrario.**
+
+**Esempio**
+
+Se $G$ ha i seguenti archi, $\{(v_1,v_2,2,5),(v_2,v_4,4,1),(v_3,v_2,1,1)\}$, allora lo stream edge di $G$ apparirà come : $\{(v_3,v_2,1,1),(v_1,v_2,2,5),(v_2,v_4,4,1)\}$
+
+Lo stream edge è un formato naturale con cui viene generato e collezionato un grafo temporale.
+
+Il seguente lemma mostra una proprietà di un percorso temporale in connessione con la rappresentazione **edge stream**.
+
+*Lemma 5.*
+Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dove $(v_i,v_{i+1},t_i,\lambda_{i)\in}E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$, e $(t_i+\lambda_i)\leq t_{i+1}$ per $1\leq i\leq k$.
+## 4.2 Earliest-Arrival Paths
+
+## 4.3 Latest-Departure Paths
+
+## 4.4 Fastest Paths
+
+### 4.4.2 Algoritmo One-Pass con Time Bound Migliore
+### 4.4.2 Algoritmo Linear-Time per Casi Specifici
+
+## 4.5 Shortest Paths
+
+# 5. Un approccio alla trasformazione di un grafo
+
+## 5.1 Earliest-Arrival Paths
+
+## 5.2 Latest-Departure Paths
+
+## 5.3 Fastest Paths
+
+## 5.4 Shortest Paths
+
+## 5.5 Analisi della Complessità
+
+# 6. Applicazioni dei percorsi temporali
+
+## 6.1 Temporal Closeness Centrality
+
+## 6.2 Top-k Nearest Neighbors
+

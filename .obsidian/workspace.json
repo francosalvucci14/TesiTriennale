@@ -127,36 +127,8 @@
               "icon": "links-coming-in",
               "title": "Backlinks for Path Problems On Temporal Graphs"
             }
-          },
-          {
-            "id": "180e86f6cc1d6aeb",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "Path Problems On Temporal Graphs.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "Outgoing links from Path Problems On Temporal Graphs"
-            }
-          },
-          {
-            "id": "0fe7c76579a31352",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
