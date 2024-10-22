@@ -110,25 +110,6 @@
             }
           },
           {
-            "id": "2378b967267ad561",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "Path Problems On Temporal Graphs.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Path Problems On Temporal Graphs"
-            }
-          },
-          {
             "id": "2225c7e0aa2c2e1f",
             "type": "leaf",
             "state": {
@@ -140,19 +121,6 @@
               },
               "icon": "links-going-out",
               "title": "Outgoing links from Path Problems On Temporal Graphs"
-            }
-          },
-          {
-            "id": "127fdb653babd814",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
             }
           }
         ],
@@ -173,8 +141,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "ff8dee591960f3f0",
   "lastOpenFiles": [
+    "img/algoritmo1.png",
     "TemporalGraph.py",
     "Path Problems On Temporal Graphs.pdf",
     "img.md",

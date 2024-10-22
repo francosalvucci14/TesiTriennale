@@ -156,7 +156,7 @@ Sia $P$ il **percorso temporale minimo** (minimum temporal path) ad essere calco
 
 I seguenti **lemmi** danno alcune proprietà dei percorsi temporali minimi.
 
-*Lemma 1.* $\text{Un sottopercorso-prefisso di un earliest-arrival path potrebbe non essere un earliest-arrival path}$
+*Lemma 1.* $\text{Un sottopercorso-prefisso di un earliest-arrival path potrebbe non essere un earliest-arrival path}$ ^bbe32d
 
 *Lemma 2.* $\text{Un sottopercorso-postfisso di un latest-departure path potrebbe non essere un latest-departure path}$
 
@@ -183,8 +183,28 @@ Lo stream edge è un formato naturale con cui viene generato e collezionato un g
 Il seguente lemma mostra una proprietà di un percorso temporale in connessione con la rappresentazione **edge stream**.
 
 *Lemma 5.*
-Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dove $(v_i,v_{i+1},t_i,\lambda_{i)\in}E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$, e $(t_i+\lambda_i)\leq t_{i+1}$ per $1\leq i\leq k$.
+Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dove $(v_i,v_{i+1},t_i,\lambda_i)\in E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$. Per ogni $e_i$ e $e_j$ in $P$, se $i\lt j$ allora $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$.
+
+**Dimostrazione Lemma 5**
+
+Per definizione di percorso temporale, abbiamo che $t_i+\lambda_i\leq t_{i+1}$ per $1\leq i\leq k$, e quindi $t_{i+1}\gt t_i$ come $\lambda_i\gt0$. Quindi, gli starting times degli archi $e_1,e_2,\dots,e_k$ sono strettamente in ordine ascendente,e quindi $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$. $\square$  
 ## 4.2 Earliest-Arrival Paths
+
+![[algoritmo1.png|Algoritmo 1]]
+
+Il classico algoritmo di Dijkstra per calcolare il single-source shortest-path è basato sul fatto che un sottopercorso-prefisso di uno shortest path è anch'esso uno shortest path.
+
+Comunque, accordandoci con il [Lemma 1](#^bbe32d), il sottopercorso-prefisso di un' earliest-arrival path è anch'esso un earliest-arrival path. 
+
+Questo sembra implicare che la strategia greedy per far crescere lo shortest-paths che è applicata nell'algoritmo di Dijkstra non può essere applicata per calcolare gli earliest-arrival paths, sebbene la seguente osservazione dimostri il contrario.
+
+*Lemma 6*
+Sia $\mathbb P$ il set degli earliest-arrival paths da $x$ a un vertice $v_k$ nell'intervallo $[t_\alpha,t_\omega]$. Se $\mathbb P\neq\emptyset$, allora esiste $P=\left<X,v_1,\dots,v_k\right>\in\mathbb P$ tale che ogni sottopercorso-prefisso $P_i=\left<x,v_1,\dots,v_i\right>$ è un earliest-arrival path da $x$ a $v_i$ nell'intervallo $[t_\alpha,t_\omega],1\leq i\leq k$.
+
+**Dimostrazione lemma 6**
+
+Dato un qualunque earliest-arrival paths $P\in\mathbb P$, se nessuno dei suoi sottopercorsi-prefisso sono earliest-arrival path, noi possiamo sempre costruire un percorso $\tilde P$ in questo modo.
+
 
 ## 4.3 Latest-Departure Paths
 
