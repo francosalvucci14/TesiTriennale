@@ -183,10 +183,9 @@ Lo stream edge è un formato naturale con cui viene generato e collezionato un g
 Il seguente lemma mostra una proprietà di un percorso temporale in connessione con la rappresentazione **edge stream**.
 
 *Lemma 5.*
-Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dove $(v_i,v_{i+1},t_i,\lambda_i)\in E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$. Per ogni $e_i$ e $e_j$ in $P$, se $i\lt j$ allora $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$.
+Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dove $(v_i,v_{i+1},t_i,\lambda_i)\in E$ è l'$i$-esimo arco temproale di $P$ per $1\leq i\leq k$. Per ogni $e_i$ e $e_j$ in $P$, se $i\lt j$ allora $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$. ^ddebf1
 
 **Dimostrazione Lemma 5**
-
 Per definizione di percorso temporale, abbiamo che $t_i+\lambda_i\leq t_{i+1}$ per $1\leq i\leq k$, e quindi $t_{i+1}\gt t_i$ come $\lambda_i\gt0$. Quindi, gli starting times degli archi $e_1,e_2,\dots,e_k$ sono strettamente in ordine ascendente,e quindi $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$. $\square$  
 ## 4.2 Earliest-Arrival Paths
 
@@ -199,12 +198,28 @@ Comunque, accordandoci con il [Lemma 1](#^bbe32d), il sottopercorso-prefisso di 
 Questo sembra implicare che la strategia greedy per far crescere lo shortest-paths che è applicata nell'algoritmo di Dijkstra non può essere applicata per calcolare gli earliest-arrival paths, sebbene la seguente osservazione dimostri il contrario.
 
 *Lemma 6*
-Sia $\mathbb P$ il set degli earliest-arrival paths da $x$ a un vertice $v_k$ nell'intervallo $[t_\alpha,t_\omega]$. Se $\mathbb P\neq\emptyset$, allora esiste $P=\left<X,v_1,\dots,v_k\right>\in\mathbb P$ tale che ogni sottopercorso-prefisso $P_i=\left<x,v_1,\dots,v_i\right>$ è un earliest-arrival path da $x$ a $v_i$ nell'intervallo $[t_\alpha,t_\omega],1\leq i\leq k$.
+Sia $\mathbb P$ il set degli earliest-arrival paths da $x$ a un vertice $v_k$ nell'intervallo $[t_\alpha,t_\omega]$. Se $\mathbb P\neq\emptyset$, allora esiste $P=\left<X,v_1,\dots,v_k\right>\in\mathbb P$ tale che ogni sottopercorso-prefisso $P_i=\left<x,v_1,\dots,v_i\right>$ è un earliest-arrival path da $x$ a $v_i$ nell'intervallo $[t_\alpha,t_\omega],1\leq i\leq k$. ^53676f
 
 **Dimostrazione lemma 6**
-
 Dato un qualunque earliest-arrival paths $P\in\mathbb P$, se nessuno dei suoi sottopercorsi-prefisso sono earliest-arrival path, noi possiamo sempre costruire un percorso $\tilde P$ in questo modo.
+Attraversiamo $P$ in ordine inverso e troviamo il primo vertice $v_i$ tale che il sottopercorso-prefisso corrisspondente $P_i$ non è un earliest-arrival path da $x\to v_i$. Allora, deve esistere un'altro percorso $\tilde P_i$ che è un earliest-arrival path da $x\to v_i$. Sostituiamo $P_i$ con $\tilde P_i$ in $P$. 
+Il nuovo percorso $\tilde P$ è comunque un percorso temporale valido perchè $end(\tilde P_i)\lt end(P_i)$. 
+Inoltre, $\tilde P$ è un earliest-arrival path da $x\to v_k$ perchè $end(\tilde P)=end(P)$. 
+Questo processo continua fino a quando ogni sottopercorso-prefisso è un earliest-arrival path e il risultante $\tilde P\in\mathbb P$, il che prova il lemma. $\square$
 
+Basandoci sul [Lemma 6](#^53676f), possiamo applicare la strategia greedy per far crescere gli earliest-arrival paths in un modo silime all'algoritmo di Dijkstra.
+Comunque, questo approccio necessità di una coda con priorità minima, risultando in un algoritmo che impiega tempo $O(m\log(\pi)+m\log(n))$ e spazio $O(M+n)$.
+
+Comunque, per i grafi temporali, il [Lemma 5](#^ddebf1) implica che il grafo in input può essere nella sua rappresentazione edge stream,ed è possibile calcolare gli earliest-arrival paths con una sola scansione del grafo.
+
+Usiamo un array $t[v]$ per tenere traccia degli earliest-arrival time da $x$ verso ogni vertice $v\in V$ che è stato visto nello stream.
+Come dice il [Lemma 5](#^ddebf1), se esiste un percorso temporale $P$ da $x\to v$ tale che tutti gli archi in $P$ sono stati visti nello stream, allora $t[v]=end(P)=t+\lambda$ come visto nel [Lemma 5](#^ddebf1).
+
+La condizione $t+\lambda\lt t[v]$ in linea 4, si assicura che $t[v]$ sarà aggiornato con il più piccolo $end(P)$ per ogni $P$ da $x\to v$ nell'intervallo $[t_\alpha,t_\omega]$.
+
+Noi scannerizziamo il grafo $G$ in tempo lineare e per ogni arco entrante $e=(u,v,t,\lambda)$ nello stream, controlliamo se $e$ soddisfa il vincolo temporale di un percorso temporale all'interno dell'intervallo $[t_\alpha,t_\omega]$, per esempio, se $t+\lambda\leq t_\omega$ e $t\geq t[u]$.
+
+Se si, facciamo crescere il percorso temporale estendendolo a $v$ usando l'arco $e$. Durante il processo, aggiorniamo $t[v]$ quando necessario come discusso prima. Il processo termina quando incontriamo il primo arco nello stream che ha starting time $\geq t_\omega$ (Linee 6-7).
 
 ## 4.3 Latest-Departure Paths
 
