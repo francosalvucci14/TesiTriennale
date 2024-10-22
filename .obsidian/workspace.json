@@ -127,6 +127,33 @@
               "icon": "links-coming-in",
               "title": "Backlinks for Path Problems On Temporal Graphs"
             }
+          },
+          {
+            "id": "2225c7e0aa2c2e1f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Path Problems On Temporal Graphs.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Path Problems On Temporal Graphs"
+            }
+          },
+          {
+            "id": "127fdb653babd814",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
           }
         ],
         "currentTab": 1
@@ -146,8 +173,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "5ed8ac9890be219b",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
+    "TemporalGraph.py",
     "Path Problems On Temporal Graphs.pdf",
     "img.md",
     "Path Problems On Temporal Graphs.md",
