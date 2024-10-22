@@ -213,7 +213,7 @@ Comunque, questo approccio necessità di una coda con priorità minima, risultan
 Comunque, per i grafi temporali, il [Lemma 5](#^ddebf1) implica che il grafo in input può essere nella sua rappresentazione edge stream,ed è possibile calcolare gli earliest-arrival paths con una sola scansione del grafo.
 
 Usiamo un array $t[v]$ per tenere traccia degli earliest-arrival time da $x$ verso ogni vertice $v\in V$ che è stato visto nello stream.
-Come dice il [Lemma 5](#^ddebf1), se esiste un percorso temporale $P$ da $x\to v$ tale che tutti gli archi in $P$ sono stati visti nello stream, allora $t[v]=end(P)=t+\lambda$ come visto nel [Lemma 5](#^ddebf1).
+Come dice il [Lemma 5](#^ddebf1), se esiste un percorso temporale $P$ da $x\to v$ tale che tutti gli archi in $P$ sono stati visti nello stream, allora $t[v]=end(P)=t+\lambda$ come aggiornato in Linea 5.
 
 La condizione $t+\lambda\lt t[v]$ in linea 4, si assicura che $t[v]$ sarà aggiornato con il più piccolo $end(P)$ per ogni $P$ da $x\to v$ nell'intervallo $[t_\alpha,t_\omega]$.
 
