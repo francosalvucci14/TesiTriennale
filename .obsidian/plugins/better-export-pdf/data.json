@@ -4,7 +4,7 @@
   "displayHeader": true,
   "displayFooter": true,
   "headerTemplate": "<div style=\"width: 100vw;font-size:10px;text-align:center;\"><span class=\"title\"></span></div>",
-  "footerTemplate": "<div style=\"width: 100vw;font-size:10px;text-align:center;\"><span class=\"pageNumber\"></span> / <span class=\"totalPages\"></span></div>",
+  "footerTemplate": "<div style=\"width: 100vw;font-size:8px;text-align:right;padding:30px 5px 0px 0px\"> <span class=\"pageNumber\"></span> / <span class=\"totalPages\"></span></div>",
   "printBackground": false,
   "generateTaggedPDF": false,
   "displayMetadata": false,
@@ -22,7 +22,7 @@
     "marginBottom": "10",
     "marginLeft": "10",
     "marginRight": "10",
-    "displayHeader": true,
+    "displayHeader": false,
     "displayFooter": true,
     "cssSnippet": "0"
   }

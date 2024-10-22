@@ -189,8 +189,7 @@ Sia $P=\left<v_1,v_2,\dots,v_k,v_{k+1}\right>$ un percorso temporale in $G$, dov
 Per definizione di percorso temporale, abbiamo che $t_i+\lambda_i\leq t_{i+1}$ per $1\leq i\leq k$, e quindi $t_{i+1}\gt t_i$ come $\lambda_i\gt0$. Quindi, gli starting times degli archi $e_1,e_2,\dots,e_k$ sono strettamente in ordine ascendente,e quindi $e_i$ viene prima di $e_j$ nella rappresentazione edge stream di $G$. $\square$  
 ## 4.2 Earliest-Arrival Paths
 
-![[algoritmo1.png|Algoritmo 1]]
-
+![[algoritmo1.png|Algoritmo 1|500]]
 Il classico algoritmo di Dijkstra per calcolare il single-source shortest-path è basato sul fatto che un sottopercorso-prefisso di uno shortest path è anch'esso uno shortest path.
 
 Comunque, accordandoci con il [Lemma 1](#^bbe32d), il sottopercorso-prefisso di un' earliest-arrival path è anch'esso un earliest-arrival path. 
@@ -219,7 +218,19 @@ La condizione $t+\lambda\lt t[v]$ in linea 4, si assicura che $t[v]$ sarà aggio
 
 Noi scannerizziamo il grafo $G$ in tempo lineare e per ogni arco entrante $e=(u,v,t,\lambda)$ nello stream, controlliamo se $e$ soddisfa il vincolo temporale di un percorso temporale all'interno dell'intervallo $[t_\alpha,t_\omega]$, per esempio, se $t+\lambda\leq t_\omega$ e $t\geq t[u]$.
 
-Se si, facciamo crescere il percorso temporale estendendolo a $v$ usando l'arco $e$. Durante il processo, aggiorniamo $t[v]$ quando necessario come discusso prima. Il processo termina quando incontriamo il primo arco nello stream che ha starting time $\geq t_\omega$ (Linee 6-7).
+Se si, facciamo crescere il percorso temporale estendendolo a $v$ usando l'arco $e$. Durante il processo, aggiorniamo $t[v]$ quando necessario come discusso prima. Il processo termina quando incontriamo il primo arco nello stream che ha starting time maggiore/uguale a $t_\omega$ (Linee 6-7).
+
+Il seguente lemma mostra che quando l'Algoritmo 1 termina, $t[v]$ riporta in modo corretto l'earliest-arrival time da $x\to v$
+
+*Lemma 7*
+Per ogni vertice $v\in V$, se l'earliest-arrival path da $x\to v$ entro l'intervallo $[t_\alpha,t_\omega]$ esiste, allora $t[v]$ ritornato dall'Algoritmo 1 è il corrispondente earliest-arrival time; altrimento $t[v]=\infty$.
+
+**Dimostrazione Lemma 7**
+Supponiamo che l'earliest-arrival path da $x\to v$ entro l'intervallo $[t_\alpha,t_\omega]$ esiste.
+Allora, grazie al [Lemma 6](#^53676f), esiste un earliest-arrival path da $x\to v$, detto $P_i=\left<x=v_1,v_2,\dots,v_k,v_{k+1}=v\right>$, tale che ogni sottopercorso-prefisso di $P$ è un earliest-arrival path da $x$ a qualche vertice $v_i$ di $P$.
+Sia $t_e[v_i]$ l'earliest-arrival time da $x\to v_i$, per $1\leq i\leq k+1$.
+Siano $e_1,e_2,\dots,e_k$ gli archi in $P$, con $e_i=(u_i,v_{i+1},t_i,\lambda_i)$ per $1\leq i\leq k$. Allora abbiamo che $t_i\geq t_e[v_i]$ e $t_i+\lambda_i=t_e[v_i]$ per $1\leq i\leq k$.
+
 
 ## 4.3 Latest-Departure Paths
 
