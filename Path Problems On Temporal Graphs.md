@@ -223,17 +223,48 @@ Se si, facciamo crescere il percorso temporale estendendolo a $v$ usando l'arco 
 Il seguente lemma mostra che quando l'Algoritmo 1 termina, $t[v]$ riporta in modo corretto l'earliest-arrival time da $x\to v$
 
 *Lemma 7*
-Per ogni vertice $v\in V$, se l'earliest-arrival path da $x\to v$ entro l'intervallo $[t_\alpha,t_\omega]$ esiste, allora $t[v]$ ritornato dall'Algoritmo 1 è il corrispondente earliest-arrival time; altrimento $t[v]=\infty$.
+Per ogni vertice $v\in V$, se l'earliest-arrival path da $x\to v$ entro l'intervallo $[t_\alpha,t_\omega]$ esiste, allora $t[v]$ ritornato dall'Algoritmo 1 è il corrispondente earliest-arrival time; altrimento $t[v]=\infty$. ^44e8cb
 
 **Dimostrazione Lemma 7**
 Supponiamo che l'earliest-arrival path da $x\to v$ entro l'intervallo $[t_\alpha,t_\omega]$ esiste.
 Allora, grazie al [Lemma 6](#^53676f), esiste un earliest-arrival path da $x\to v$, detto $P_i=\left<x=v_1,v_2,\dots,v_k,v_{k+1}=v\right>$, tale che ogni sottopercorso-prefisso di $P$ è un earliest-arrival path da $x$ a qualche vertice $v_i$ di $P$.
 Sia $t_e[v_i]$ l'earliest-arrival time da $x\to v_i$, per $1\leq i\leq k+1$.
 Siano $e_1,e_2,\dots,e_k$ gli archi in $P$, con $e_i=(u_i,v_{i+1},t_i,\lambda_i)$ per $1\leq i\leq k$. Allora abbiamo che $t_i\geq t_e[v_i]$ e $t_i+\lambda_i=t_e[v_i]$ per $1\leq i\leq k$.
+Dimostriamo che l'Algoritmo 1 calcola $t[v_i]=t_e[v_i]$ , per $1\leq i\leq k+1$ per induzione su $i$
+Quando $i=1,x=v_i,t[x]=t_e[x]=t_{\alpha}$ è inizializato in linea 1 dell'algoritmo, e $t[x]$ non sarà più aggiornato.
+Ora assumiamo che per $i=j$, con $j\lt k+1,t[v_j]=t_e[v_j]=t_{j-1}+\lambda_{j-1}$ quando processiamo $e_{j-1}$. Consideriamo $i=j+1$ e vogliamo dimostrare che $t[v_{j+1}]=t_e[v_{j+1}]$. 
+Grazie al [Lemma 5](#^ddebf1) sappiamo che $e_j$ viene dopo di $e_{j-1}$ nello stream.
+Quindi, quando l'algoritmo legge $e_j$, abbiamo le due casistiche seguenti riguardanti il valore di $t[v_{j+1}]$.
 
+1. $t[v_{j+1}]=t_e[v_{j+1}]$. In queso caso, la linea 5 non verrà processata a causa della condizione in linea 4 e $t[v_{j+1}]$ darà il corretto earliest-arrival time da $x$ a $v_{j+1}$
+2. $t[v_{j+1}]\gt t_e[v_{j+1}]$. In questo caso, $t[v_{j+1}]$ è aggiornato a $t_e[v_{j+1}]=t_j+\lambda_j$ in linea 5, e non sarà più aggiornato sempre per la condizione in linea 4
 
+In entrambi i casi abbiamo che $t[v_{j+1}]=t_e[v_{j+1}]$ , e per induzione $t[v_j]=t_e[v_j]$ per $1\leq i\leq k+1$
+Quindi, sde l'earliest-arrival path da $x\to v$ non esisite, allora non essite nessun percorso temporale da $x\to v$  e $t[v]$ rimarrà $\infty,\square$ 
+
+Il seguente teorema dimostra il risultato principale
+
+***Teorema 1***
+L'algoritmo 1 calcola correttamente l'earliest-arrival time da un vertice sorgente $x$ a ogni vertice $v\in V$ nell'intervallo $[t_{\alpha},t_{\omega}]$ usando tempo $O(n+M)$ e spazio $O(n)$
+
+**Dimostrazione**
+La correttezza è dimostrata dal [Lemma 7](#^44e8cb)
 ## 4.3 Latest-Departure Paths
 
+**Aggiungere foto algoritmo 2**
+
+L'algoritmo per calcolare il latest-departure time da ogni vertice a un vertice target $x\in G$ è sostanzialmente identico all'algoritmo 1, in quanto leggiamo lo stream in ordine inverso
+Infatti l'algoritmo 2 è simmetrico all'algoritmo 1
+
+Il seguente lemma mostra che l'algoritmo calcola correttamente il latest-departure time
+
+*Lemma 8*
+Per ogni vertice $v\in V$, se il latest-departure path da $v\to x$ nell'intervallo $[t_{\alpha},t_{\omega}]$ esiste, allora $t[v]$ ritornato dall'algoritmo 2 è il corrispondente latest-departure time; altrimenti $t[v]=-\infty$ 
+
+Il seguente teorema dimostra il risultato principale
+
+***Teorema 2***
+L'algoritmo 2 calcola correttamente il latest-departure time da ogni vertice $v$ a un vertice target $x$ nell'intervallo $[t_{\alpha},t_{\omega}]$ usando tempo $O(n+M)$ e spazio $O(n)$
 ## 4.4 Fastest Paths
 
 ### 4.4.2 Algoritmo One-Pass con Time Bound Migliore
