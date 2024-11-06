@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Path Problems On Temporal Graphs.md",
+                "file": "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Path Problems On Temporal Graphs"
+              "title": "Prove di Algoritmi Funzionanti"
             }
           }
         ]
@@ -173,13 +173,15 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ff8dee591960f3f0",
+  "active": "5ed8ac9890be219b",
   "lastOpenFiles": [
+    "Temporal_Chain_Tree_Probability/temp_chain_v2.py",
+    "Path Problems On Temporal Graphs.md",
+    "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
     "img/algoritmo1.png",
     "TemporalGraph.py",
     "Path Problems On Temporal Graphs.pdf",
     "img.md",
-    "Path Problems On Temporal Graphs.md",
     "img/Temporal-Static Graph.png",
     "img"
   ]

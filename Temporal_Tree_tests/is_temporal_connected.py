@@ -148,8 +148,16 @@ tree_temporally_connected = {
     "E": {},
     "F": {},
 }
+albero1 = {
+    'A': {'B': [2, 3], 'C': [4]},
+    'B': {'D': [5], 'E': [6]},
+    'C': {'F': [7]},
+    'D': {},
+    'E': {},
+    'F': {}
+}
 
 #print(is_temporally_connected(tree_temporally_connected, "B"))
-print(is_temporally_connected_v2(tree_temporally_connected))
-print(is_temporally_connected_v2_timelimit(tree_temporally_connected))
-print(is_temporally_connected_v3_timelimit(tree_temporally_connected))
+print(is_temporally_connected_v2(albero1))
+print(is_temporally_connected_v2_timelimit(albero1))
+print(is_temporally_connected_v3_timelimit(albero1))
