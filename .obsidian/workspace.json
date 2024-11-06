@@ -173,8 +173,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "5ed8ac9890be219b",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/is_temporaly_connected.py",
     "Temporal_Chain_Tree_Probability/temp_chain_v2.py",
     "Path Problems On Temporal Graphs.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
