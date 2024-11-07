@@ -94,3 +94,18 @@ L'algoritmo parte da un nodo qualunque dell'albero, e fa partire l'algoritmo bge
 - Proabile approccio DP??
 - Il costo deve essere $O(M)$ con M= numero di archi, Oppure M= numero di percorsi temporali totali?
     - Con la seconda, prob. problema NP-Hard 
+
+# Osservazioni
+
+1. Cammino unidirezionale, perchè con grafo con etichette di attivazione i cammini sono non-strict
+2. Temporalmente connesso, **bidirezionale**
+3. Non basta fare BFS temporale, ma bisogna entrambe le direzioni
+4. Non baste vedere se un nodo raggiunge tutti e tutti raggiungio lui per confermare l'algoritmo
+5. Per ogni nodo EA arrivando da sopra o da uno dei rami, probabile
+6. Verificare questo se approccio Prog. Din.
+	1. il sott-alb sx è temporamente connesso
+	2. il sotto-alb dx tempr connesso
+	3. verificare che ogni nodo da sx raggiunga ogni ndo da dx e viceversa
+7. Array ordinato di etichette per arco, poi binsearch
+8. Se prendiamo $n$ = numero di nodi e $M$ = numero di archi, sappiamo che $M\gt n$, riusciamo a fare un'algoritmo in tempo $O(M\log(n))$ 
+	1. Se faccio come (7), ottengo un tempo pari a $O(n^2\log(M))$ 

@@ -190,6 +190,7 @@
   },
   "active": "a658d5332a17c63e",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/test3.py",
     "Temporal Connectivity on Graph.pdf",
     "considerazioni.md~",
     "Temporal_Tree_tests/test_tree-to-graph.py",
@@ -204,7 +205,6 @@
     "TemporalGraph.py",
     "Path Problems On Temporal Graphs.pdf",
     "img.md",
-    "img/Temporal-Static Graph.png",
-    "img"
+    "img/Temporal-Static Graph.png"
   ]
 }
