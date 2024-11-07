@@ -91,18 +91,26 @@ def is_temporally_connected_bidirectional(graph):
     Verifica se il grafo è temporalmente connesso bidirezionalmente per ogni coppia (u, v).
     """
     all_nodes = list(graph.keys())
-    
-    for start_node in all_nodes:
+    start_node = random.choice(all_nodes)
+    if start_node == all_nodes[0]:
         # BFS in avanti per percorsi temporali crescenti da start_node a ogni altro nodo
         visited_forward, times_forward = bfs_check(graph, start_node, "forward")
-
+        print(f"Nodi visitati a partire dal nodo {start_node}, {visited_forward}")
+        if len(visited_forward) != len(graph):
+            return False
+    elif graph.get(start_node) == {}:
         # BFS inversa per percorsi temporali decrescenti da ogni altro nodo a start_node
         visited_reverse, times_reverse = bfs_check(graph, start_node, "reverse")
-
-        # Controllo se tutti i nodi sono raggiunti da start_node in entrambe le direzioni
+        print(f"Nodi visitati a partire dal nodo {start_node}, {visited_reverse}")
+        if len(visited_reverse) != len(graph):
+            return False
+    else:
+        visited_forward, times_forward = bfs_check(graph, start_node, "forward")
+        visited_reverse, times_reverse = bfs_check(graph, start_node, "reverse")
+        print(f"Nodi visitati a partire dal nodo {start_node}, {visited_reverse} e {visited_forward}")
         if len(visited_forward) != len(graph) or len(visited_reverse) != len(graph):
             return False  # Se non tutti i nodi sono raggiunti in entrambi i sensi, non è temporalmente connesso
-
+    
     return True
 
 # Test
@@ -110,8 +118,8 @@ albero1 = {
     'A': {'B': [1, 2], 'C': [3, 4]},
     'B': {'D': [1, 3]},
     'C': {'E': [2, 4]},
-    'D': {},
-    'E': {}
+    'D': set(),
+    'E': set()
 }
 
 albero2 = {
@@ -132,8 +140,8 @@ albero3 = {
 }
 
 albero = {
-    'A' : {'B': [2,4], 'C': [2]},
-    'B' : {'D': [1]},
+    'A' : {'B': [2,4], 'C': [1]},
+    'B' : {'D': [5]},
     'C' : {'E': [2,3]},
     'D' : {},
     'E' : {}
@@ -141,5 +149,6 @@ albero = {
 grafo = transform_tree_to_graph(albero)
 
 # Verifica se il grafo è temporalmente connesso
-result = is_temporally_connected_bidirectional(grafo)
+result = is_temporally_connected_bidirectional(albero)
 print(result)  # Dovrebbe restituire True
+

@@ -2,15 +2,16 @@ import random
 from collections import defaultdict, deque
 
 # Algoritmo 1, parte da nodo root e visita tutti i nodi con tempo maggiore o uguale a quello corrente
-def is_temporally_connected_1(tree, root):
+def is_temporally_connected_1(tree):
     # tree: dizionario in cui ogni nodo ha come valore un dizionario di archi
     # root: nodo radice dell'albero
     # Esempio di `tree`: {u: {v: [t1, t2, ...], ...}, ...}
 
     # Inizializzazione della coda e del set di visitati
-    queue = [(root, 0)]  # (nodo, tempo corrente)
+    start_node = next(iter(tree))
+    queue = [(start_node, 0)]  # (nodo, tempo corrente)
     visited = set()
-    visited.add(root)
+    visited.add(start_node)
 
     # BFS temporale
     while queue:
@@ -196,3 +197,27 @@ def is_temporally_connected_dp(graph, K):
     # Verifica se esiste un percorso dalla radice a una foglia
     root_index = node_to_index[list(graph.keys())[0]]
     return any(dp[root_index])
+
+albero = {
+    'A' : {'B': [2,4], 'C': [1]},
+    'B' : {'D': [5]},
+    'C' : {'E': [2,3]},
+    'D' : {},
+    'E' : {}
+}
+albero = {
+    'A' : {'B': [1,2], 'C': [4], 'D' : {5,6}},
+    'D' : {'E' : [7], 'F' : [6,7]},
+    'F' : {'G' : [8]},
+    'G' : {'H' : [8,9,10]},
+    'B' : {},
+    'C' : {},
+    'E' : {},
+    'H' : {}
+}
+print(is_temporally_connected_1(albero))
+print(is_temporally_connected_2(albero))
+print(is_temporally_connected_3(albero))
+print(is_temporally_connected_4(albero))
+print(is_temporally_connected_5(albero))
+print(is_temporally_connected_dp(albero,4))

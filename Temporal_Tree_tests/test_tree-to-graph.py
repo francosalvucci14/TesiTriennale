@@ -1,4 +1,4 @@
-import random
+import pprint as pp
 
 def transform_tree_to_graph(tree):
     """
@@ -56,8 +56,10 @@ albero3 = {
 
 # Trasformazione dell'albero in un grafo non diretto
 grafo = transform_tree_to_graph(albero3)
-print(grafo)
-print(albero3)
+print("GRAFO")
+pp.pprint(grafo)
+print("ALBERO")
+pp.pprint(albero3)
 
 # Scegli un nodo casuale e esegui la BFS
 #start_node = random.choice(list(grafo.keys()))

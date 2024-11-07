@@ -38,6 +38,33 @@ def is_temporally_connected(tree):
     # Verifica se tutti i nodi sono stati visitati
     return all(time_visited[node] != float('inf') for node in tree)
 
+def is_temporally_connected_1(tree):
+    # tree: dizionario in cui ogni nodo ha come valore un dizionario di archi
+    # root: nodo radice dell'albero
+    # Esempio di `tree`: {u: {v: [t1, t2, ...], ...}, ...}
+
+    # Inizializzazione della coda e del set di visitati
+    start_node = next(iter(tree))
+    queue = [(start_node, 0)]  # (nodo, tempo corrente)
+    visited = set()
+    visited.add(start_node)
+
+    # BFS temporale
+    while queue:
+        node, t_curr = queue.pop(0)
+
+        # Esplora tutti i nodi successori di `node`
+        for neighbor, times in tree[node].items():
+            # Filtra i tempi di attivazione validi (>= t_curr)
+            valid_times = [t for t in times if t >= t_curr]
+            if valid_times:
+                min_valid_time = min(valid_times)  # Ottieni il primo tempo valido
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, min_valid_time))
+
+    # Se tutti i nodi sono stati visitati, l'albero è temporalmente connesso
+    return len(visited) == len(tree)
 
 def is_temporally_connected_2(tree):
     """
@@ -197,9 +224,15 @@ albero5 = {
     'E': {}
 }
 
+albero = {
+    'A' : {'B': [1,2], 'C': [4], 'D' : {5,6}},
+    'D' : {'E' : [7], 'F' : [6,7]},
+    'F' : {'G' : [8]},
+    'G' : {'H' : [8,9,10]},
+    'B' : {},
+    'C' : {},
+    'E' : {},
+    'H' : {}
+}
 # Esegui i test
-print(is_temporally_connected_r(albero1))  # Dovrebbe restituire True
-print(is_temporally_connected_r(albero2))  # Dovrebbe restituire True
-print(is_temporally_connected_r(albero3))  # Dovrebbe restituire True
-print(is_temporally_connected_r(albero4))  # Dovrebbe restituire True
-print(is_temporally_connected_r(albero5))  # Dovrebbe restituire True
+print(is_temporally_connected_1(albero))  # Dovrebbe restituire True

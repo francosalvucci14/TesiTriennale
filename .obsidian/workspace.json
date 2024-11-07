@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "Prove di Algoritmi Funzionanti"
             }
+          },
+          {
+            "id": "a658d5332a17c63e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Prove di Algoritmi Funzionanti"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -173,7 +188,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "a658d5332a17c63e",
   "lastOpenFiles": [
     "Temporal Connectivity on Graph.pdf",
     "considerazioni.md~",
