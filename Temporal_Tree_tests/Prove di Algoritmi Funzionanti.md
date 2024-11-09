@@ -109,3 +109,17 @@ L'algoritmo parte da un nodo qualunque dell'albero, e fa partire l'algoritmo bge
 7. Array ordinato di etichette per arco, poi binsearch
 8. Se prendiamo $n$ = numero di nodi e $M$ = numero di archi, sappiamo che $M\gt n$, riusciamo a fare un'algoritmo in tempo $O(M\log(n))$ 
 	1. Se faccio come (7), ottengo un tempo pari a $O(n^2\log(M))$ 
+
+Altra domanda, La condizione di crescita incrementale si resetta alla radice??
+Mi spiego, guardiamo questa foto
+
+![[ProvaAlberoTemporale.png]]
+immaginiamo l'arco tra A e B con $[1,2]$
+
+Se la condizione incrementale si resetta alla radice, allora per dire che l'albero è temporalmente connesso basta vedere se le etichette rispettano le condizioni incrementali sia dall'alto che dal basso, passando per la radice quando vediamo i percorsi da sx a dx e viceversa.
+
+- L'osservazione è che se un nodo parte al tempo es. $t=3$, non può arrivare su un'altro nodo al tempo $t=2$, il tempo deve essere sempre incrementale, quindi molto probabilmente la condizione non si va a resettare sulla radice
+
+Se invece non si resetta, allora per essere temporalmente connesso bisogna che tutte le etichette abbiano valore massimo uguale al max tra tutte le etichette
+- Prima trovi il max tra tutte le etichette con scan lineare tempo $O(M)$, dopo aver ordinato le etichette in senso crescente
+- Poi BinSearch

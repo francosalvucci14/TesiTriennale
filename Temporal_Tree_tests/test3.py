@@ -1,53 +1,32 @@
-from collections import defaultdict
-import heapq
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.edges = {}  # Adiacenza temporale: {nodo_destinazione: [tempi]}
 
-class TemporalGraph:
-    def __init__(self, edges):
-        # `edges` è una lista di tuple (u, v, times) dove `times` è una lista di etichette temporali
-        self.graph = defaultdict(lambda: defaultdict(list))
-        for u, v, times in edges:
-            self.graph[u][v].extend(times)
-            self.graph[v][u].extend(times)  # Poiché l'albero è non orientato
-        # Ordiniamo le etichette temporali per ogni arco
-        for u in self.graph:
-            for v in self.graph[u]:
-                self.graph[u][v].sort()
+def is_temporally_connected(node, parent_time=None):
+    # Se il nodo ha già una condizione temporale di "risalita", la dobbiamo verificare.
+    for neighbor, times in node.edges.items():
+        for time in times:
+            # Controllo della discesa: tempo sul arco deve essere maggiore del tempo del nodo corrente (ordinamento crescente)
+            if parent_time is not None and time >= parent_time:
+                return False  # Se non c'è ordinamento crescente, ritorniamo False
+            # Chiamata ricorsiva per esplorare i figli (risalita)
+            if not is_temporally_connected(neighbor, max(times)):
+                return False  # Se uno dei sottoalberi non è connesso temporalmente, ritorniamo False
+    return True  # Se tutte le condizioni sono rispettate
 
-    def is_temporally_connected(self):
-        nodes = list(self.graph.keys())
-        for start in nodes:
-            if not self.check_temporal_reachability(start):
-                return False
-        return True
+# Creiamo un esempio di albero e vediamo se è temporalmente connesso
+nodeA = Node('A')
+nodeB = Node('B')
+nodeC = Node('C')
+nodeD = Node('D')
+nodeE = Node('E')
 
-    def check_temporal_reachability(self, start):
-        # Dijkstra modificato per earliest-arrival time con etichette temporali
-        earliest_arrival = {node: float('inf') for node in self.graph}
-        earliest_arrival[start] = 0
-        queue = [(0, start)]  # (tempo di arrivo, nodo)
+nodeA.edges = {nodeB: [1, 2], nodeC: [1,3]}
+nodeB.edges = {nodeD: [2]}
+nodeC.edges = {nodeE: [3]}
+nodeD.edges = {}
+nodeE.edges = {}
 
-        while queue:
-            time, u = heapq.heappop(queue)
-            if time > earliest_arrival[u]:
-                continue
-
-            for v in self.graph[u]:
-                for t in self.graph[u][v]:
-                    if t >= time and t < earliest_arrival[v]:
-                        earliest_arrival[v] = t
-                        heapq.heappush(queue, (t, v))
-
-        # Verifica se tutti i nodi sono raggiungibili temporalmente dal nodo start
-        return all(earliest_arrival[node] < float('inf') for node in self.graph)
-
-
-# Esempio di utilizzo con l'albero dell'immagine
-edges = [
-    ('A', 'B', [1, 2]),
-    ('A', 'C', [1, 3]),
-    ('B', 'E', [2]),
-    ('C', 'D', [3])
-]
-
-graph = TemporalGraph(edges)
-print("Connettività temporalmente ordinata:", graph.is_temporally_connected())
+# Verifica se l'albero è temporalmente connesso
+print(is_temporally_connected(nodeA))  # Questo restituirà True o False in base alla struttura dell'albero
