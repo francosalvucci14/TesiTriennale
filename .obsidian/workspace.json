@@ -122,10 +122,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Path Problems On Temporal Graphs.md"
+                "file": "Algoritmo Funzionante.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of Path Problems On Temporal Graphs"
+              "title": "Outline of Algoritmo Funzionante"
             }
           },
           {
@@ -184,8 +184,7 @@
               "title": "Tags"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -202,7 +201,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b7d0fd90eba297c4",
+  "active": "8975b449b7d163c2",
   "lastOpenFiles": [
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
     "Algoritmo Funzionante.md",

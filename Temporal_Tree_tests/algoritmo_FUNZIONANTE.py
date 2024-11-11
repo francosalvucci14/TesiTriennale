@@ -1,5 +1,20 @@
 from collections import defaultdict
 
+def print_tree_structure(tree):
+
+    # Creazione della lista di adiacenza con archi e tempi
+    adj_list = defaultdict(list)
+    for u, v, times in tree:
+        adj_list[u].append((v, times))
+        adj_list[v].append((u, times))
+    print("ALBERO")
+    # Stampa della struttura dell'albero
+    for node in sorted(adj_list.keys()):
+        print(f"Nodo {node} ->", end=" ")
+        for neighbor, times in adj_list[node]:
+            print(f"Vicino {neighbor} con tempi {times}", end="; ")
+        print()  # Nuova riga per il prossimo nodo
+
 def is_temporally_connected(n, edges):
     # Creazione della lista di adiacenza con archi e tempi
     adj_list = defaultdict(list)
@@ -39,6 +54,14 @@ def is_temporally_connected(n, edges):
     return True
 
 def is_temporally_connected_opt(n, edges):
+    # Verifica se tutte le etichette temporali sono uguali
+    all_times = []
+    for _, _, times in edges:
+        all_times.extend(times)
+    
+    if len(set(all_times)) == 1:
+        return True  # Se tutte le etichette sono uguali, l'albero è temporalmente connesso
+    
     # Creazione della lista di adiacenza con archi e tempi
     adj_list = defaultdict(list)
     
@@ -122,9 +145,16 @@ tree2 = [
     (1,4,[3]),
     (2,5,[7])
 ]
-print(tree3)
-print(f"L'albero è temporalmente connesso? : {is_temporally_connected(n2, tree2)}") 
-print(f"L'albero è temporalmente connesso? : {is_temporally_connected_opt(n2, tree2)}")  
+
+tree4 = [
+    (0,1,[1,3]),
+    (0,2,[2,4]),
+    (1,3,[3]),
+    (2,4,[4])
+]
+print_tree_structure(tree4)
+print(f"L'albero è temporalmente connesso? : {is_temporally_connected(5, tree4)}") 
+print(f"L'albero è temporalmente connesso? : {is_temporally_connected_opt(5, tree4)}")  
 
 # Funziona per alberi normali, poi bisogna aggiustarlo per alberi a catena
 

@@ -1,5 +1,5 @@
 
-Rivediamo l'analisi del costo totale tenendo conto di M e K grandi:
+# Analisi
 
 - **Ordinamento degli archi globalmente**:
 	- Abbiamo $M$ etichette temporali totali da ordinare, quindi l'ordinamento di tutti gli archi basato su queste etichette ha un costo di $O(M\log M)$, dove $M$ è il numero totale di etichette temporali (ossia la somma delle etichette di tutti gli archi).
@@ -21,7 +21,7 @@ Conclusione:
 
 Quando $M\gt\gt N$(ossia, il numero di etichette temporali è molto grande rispetto al numero di nodi), la complessità dell'algoritmo sarà principalmente dominata dal termine $O(M\log M).$
 
-**Algoritmo**
+# Algoritmo
 
 ```python
 from collections import defaultdict
@@ -113,3 +113,39 @@ tree2 = [
 print(f"L'albero è temporalmente connesso? : {is_temporally_connected_opt(n2, tree2)}")
 ```
 
+# Dimostrazione
+
+Per dimostrare formalmente la correttezza dell'algoritmo, dobbiamo mostrare che l'algoritmo verifica correttamente se il grafo è **temporalmente connesso**. Un grafo è temporalmente connesso se per ogni coppia di nodi \( u \) e \( v \), esiste un cammino diretto da \( u \) a \( v \) che rispetta l'ordine temporale delle etichette sui bordi.
+
+### Strategia di dimostrazione:
+1. **Definizione di albero temporalmente connesso**:
+   Un albero è temporalmente connesso se, dato un insieme di etichette temporali sugli archi, esiste un cammino che rispetta l'ordine delle etichette per ogni coppia di nodi \( u \) e \( v \), ossia un cammino con etichette $t_1, t_2, \ldots, t_k$ tali che $t_1 \leq t_2 \leq \ldots \leq t_k$ .
+
+2. **Struttura dell'algoritmo**:
+   - L'algoritmo costruisce una lista di adiacenza in cui ogni arco ha associata una o più etichette temporali.
+   - Ordina gli archi per ciascun nodo in base alle etichette temporali.
+   - Esegue una DFS modificata che tiene traccia dei tempi minimi e massimi di accesso per ogni nodo.
+   - Verifica se i cammini tra coppie di nodi rispettano le condizioni di connessione temporale.
+
+### Dimostrazione della correttezza:
+
+**Lemma 1 (Connettività temporale tramite DFS)**:
+La DFS, eseguita a partire da un nodo radice e ordinando i vicini per tempo crescente, esplora ogni cammino possibile in ordine temporale. Questo assicura che ogni nodo raggiunto durante la DFS è connesso alla radice con un cammino che rispetta l'ordine temporale.
+
+*Dimostrazione*:
+La DFS visita ogni nodo adiacente in ordine crescente di etichette temporali. Supponiamo di partire dal nodo \( 0 \) (radice). Quando si esplora un nodo \( u \) e si visita il nodo \( v \) con etichetta temporale \( t \), \( v \) viene raggiunto solo se \( t \) è maggiore o uguale al tempo corrente della DFS. Pertanto, l'ordine di esplorazione rispetta l'ordine temporale.
+
+**Lemma 2 (Tracciamento dei tempi minimi e massimi)**:
+La DFS calcola correttamente i tempi minimi e massimi di accesso per ogni nodo.
+
+*Dimostrazione*:
+Durante la DFS, quando si visita un nodo \( v \) a partire da \( u \) tramite un'etichetta temporale \( t \), si aggiorna il tempo minimo di \( v \) come il tempo minimo tra \( t \) e i tempi minimi dei nodi figli esplorati. In questo modo, alla fine della DFS, i tempi minimi e massimi registrati per ogni nodo indicano l'intervallo temporale in cui il nodo può essere raggiunto.
+
+**Teorema (Correttezza dell'algoritmo)**:
+L'algoritmo determina se il grafo è temporalmente connesso.
+
+*Dimostrazione*:
+Per ogni coppia di nodi $u$ e $v$, l'algoritmo controlla se i loro intervalli di tempo di accesso si sovrappongono. Se gli intervalli \([min\_time[u], max\_time[u]]\) e \([min\_time[v], max\_time[v]]\) si sovrappongono, esiste un cammino temporale diretto che connette \( u \) e \( v \). Se per qualche coppia \( (u, v) \), gli intervalli non si sovrappongono, significa che non esiste un cammino che rispetta l'ordine temporale tra quei nodi, quindi il grafo non è temporalmente connesso.
+
+**Conclusione**:
+L'algoritmo ordina correttamente gli archi per tempo, esplora la'lbero rispettando l'ordine temporale tramite DFS, e verifica le condizioni di connettività temporale controllando gli intervalli di accesso dei nodi. Pertanto, se l'algoritmo restituisce `True`, l'albero è temporalmente connesso; altrimenti, non lo è.
