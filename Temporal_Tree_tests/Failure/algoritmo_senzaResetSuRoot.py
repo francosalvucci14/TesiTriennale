@@ -51,9 +51,16 @@ nodeD = Node('D')
 nodeE = Node('E')
 
 # Creazione delle etichette temporali sugli archi
-nodeA.edges = {nodeB: [1, 2], nodeC: [1, 3]}  # Arco da A a B con etichette temporali [1, 2] e A a C [1, 3]
-nodeB.edges = {nodeD: [2]}  # Arco da B a D con etichetta temporale [2]
-nodeC.edges = {nodeE: [2]}  # Arco da C a E con etichetta temporale [2]
+# nodeA.edges = {nodeB: [1, 2], nodeC: [1, 3]}  # Arco da A a B con etichette temporali [1, 2] e A a C [1, 3]
+# nodeB.edges = {nodeD: [2]}  # Arco da B a D con etichetta temporale [2]
+# nodeC.edges = {nodeE: [2]}  # Arco da C a E con etichetta temporale [2]
+# nodeD.edges = {}  # Nodo D senza archi
+# nodeE.edges = {}  # Nodo E senza archi
+
+# Creazione delle etichette temporali sugli archi
+nodeA.edges = {nodeB: [2,6], nodeC: [6]}  # Arco da A a B con etichette temporali [1, 2] e A a C [1, 3]
+nodeB.edges = {nodeD: [6]}  # Arco da B a D con etichetta temporale [2]
+nodeC.edges = {nodeE: [3]}  # Arco da C a E con etichetta temporale [2]
 nodeD.edges = {}  # Nodo D senza archi
 nodeE.edges = {}  # Nodo E senza archi
 

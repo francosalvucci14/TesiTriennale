@@ -2,6 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def generate_temporal_tree_chain(n, K, time_interval):
     """
     Genera un albero a catena con `n` nodi e assegna a ciascun arco `K` etichette temporali casuali
