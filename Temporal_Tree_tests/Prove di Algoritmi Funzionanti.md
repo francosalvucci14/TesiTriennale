@@ -123,3 +123,19 @@ Se la condizione incrementale si resetta alla radice, allora per dire che l'albe
 Se invece non si resetta, allora per essere temporalmente connesso bisogna che tutte le etichette abbiano valore massimo uguale al max tra tutte le etichette
 - Prima trovi il max tra tutte le etichette con scan lineare tempo $O(M)$, dopo aver ordinato le etichette in senso crescente
 - Poi BinSearch
+
+**Se cerco di ridurre la complessità ordinando gli archi, potrei perdere informazioni?**
+
+Esatto, cercando di ridurre la complessità temporale a \(O(M \log M)\) o \(O(M \log N)\), può succedere di perdere informazioni importanti sulla sequenza temporale che caratterizza i percorsi validi, compromettendo la correttezza dell'algoritmo. Infatti, nell'algoritmo che mi hai fornito, ogni arco ha un tempo associato che deve rispettare l'ordine temporale crescente lungo il percorso. Se si raggruppano o si comprimono le informazioni per ridurre la complessità, si rischia di non preservare adeguatamente questa proprietà temporale.
+
+### Perché capita?
+
+Quando si prova a semplificare il problema usando salti o aggregazioni (come nel Binary Lifting o nella memoization senza un controllo preciso dei tempi), si perde la capacità di verificare rigorosamente ogni singolo arco al tempo esatto in cui è disponibile. Ogni percorso tra \(u\) e \(v\) deve essere valutato nella sequenza temporale esatta, altrimenti si rischia di ottenere una soluzione che si basa su percorsi "saltati" o che aggrega informazioni in modo scorretto.
+
+### Come risolverlo?
+
+1. **Rafforzamento dell’ordinamento temporale**: A livello pratico, si può mantenere la complessità originale, ma cercando di ridurre il numero di calcoli inutili attraverso una struttura dati efficiente che verifica solo i percorsi temporali "promettenti".
+
+2. **Approccio alternativo di filtraggio progressivo dei percorsi**: Per ridurre il lavoro senza perdere la correttezza, possiamo pensare a una struttura "time-respecting reachability" (raggiungibilità rispettando il tempo), dove anziché eseguire la DFS per ogni coppia, si tiene traccia di intervalli temporali in cui ogni nodo è accessibile dagli altri.
+
+In sostanza, si tratta di evitare soluzioni drastiche come il Binary Lifting e trovare un compromesso: ottimizzare mantenendo la logica temporale, ma senza saltare troppo sui percorsi. Vuoi provare a costruire un approccio simile?

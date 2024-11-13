@@ -1,3 +1,5 @@
+# Algoritmo 1
+
 Rivediamo l'analisi del costo totale tenendo conto di M e K grandi:
 
     - Ordinamento degli archi globalmente:
@@ -34,3 +36,73 @@ Conclusione:
     Se KK è molto grande, ciò comporterà un aumento proporzionale di MM (dato che M=K×EM=K×E), ma la complessità totale rimarrà comunque O(Mlog⁡M)O(MlogM), dove MM è il numero totale di etichette temporali.
 
 In sintesi, se MM cresce molto rispetto a NN, il costo dominante sarà O(Mlog⁡M)O(MlogM).
+
+# Algoritmo 2
+
+Se \( K \) rappresenta il numero di **etichette totali** (ovvero il numero di timestamp distinti che compaiono tra tutti gli archi), la complessità cambia di nuovo in modo significativo. Ecco come possiamo analizzare la situazione in base a questa definizione di \( K \).
+
+### 1. **Compressione dei Timestamp** con \( K \) come numero totale di etichette
+
+Se \( K \) è il numero totale di etichette distinte (o timestamp) tra tutti gli archi, questo significa che dovremo ordinare e associare un indice a ciascun timestamp. In questo caso, la complessità della **compressione dei timestamp** diventa:
+
+\[
+O(K \log K)
+\]
+
+Dove \( K \) è il numero totale di etichette. Questo passaggio è relativamente costoso, ma viene eseguito solo una volta.
+
+### 2. **BFS Temporale per ciascuna coppia di nodi**
+
+La BFS temporale esplora gli archi, e per ciascun arco dovremo considerare i timestamp associati. In questo caso, la BFS esplora gli archi e i loro timestamp, e nel peggiore dei casi può essere necessario verificare tutti i timestamp associati a ciascun arco. Se ogni arco ha al massimo \( K \) timestamp, allora:
+
+- La **BFS** esplorerà ogni arco e considererà al massimo \( K \) timestamp, il che comporta un costo di \( O(M \cdot K) \) per ogni chiamata alla BFS, dove \( M \) è il numero di archi.
+
+### Complessità Totale
+
+1. **Compressione dei timestamp**:
+   - Ordinamento dei timestamp distinti: \( O(K \log K) \).
+
+2. **BFS per tutte le coppie di nodi**:
+   - Per ogni coppia di nodi, eseguiamo una BFS che ha un costo di \( O(M \cdot K) \) (poiché esploriamo gli archi e, per ciascun arco, possiamo esaminare fino a \( K \) timestamp).
+
+Poiché dobbiamo eseguire la BFS per ogni coppia di nodi, il costo totale dell'algoritmo diventa:
+
+\[
+O(K \log K + N^2 \cdot M \cdot K)
+\]
+
+Dove:
+- \( N \) è il numero di nodi,
+- \( M \) è il numero di archi,
+- \( K \) è il numero totale di etichette (timestamp distinti).
+
+### 3. **Caso particolare: \( K = N-1 \) (una sola etichetta per arco)**
+
+Se hai solo una singola etichetta per arco, ovvero ogni arco ha un solo timestamp, allora:
+
+- \( K = N - 1 \), e la **compressione dei timestamp** diventa \( O((N - 1) \log (N - 1)) = O(N \log N) \).
+- La **BFS** per ogni coppia di nodi ha un costo di \( O(M) \), perché ogni arco ha solo un timestamp da esaminare.
+
+In questo caso, la complessità totale dell'algoritmo diventa:
+
+\[
+O(N \log N + N^2 \cdot M)
+\]
+
+### 4. **Caso particolare: \( K \gg N \) (molti timestamp per arco)**
+
+Se \( K \) è molto grande, ad esempio \( K \gg N \), allora la complessità diventa:
+
+\[
+O(K \log K + N^2 \cdot M \cdot K)
+\]
+
+### Sintesi della Complessità
+
+- Se \( K \) è piccolo (ad esempio \( K = 1 \) o costante), la complessità è sostanzialmente \( O(N^2 \cdot M) \), che è molto più gestibile.
+- Se \( K \) è grande (ad esempio \( K \gg N \)), la complessità può crescere rapidamente, in particolare a causa del termine \( O(N^2 \cdot M \cdot K) \).
+
+### Considerazioni finali
+
+- **Se \( K \) è piccolo o moderato**, la complessità totale può essere accettabile, ma se \( K \) cresce significativamente, l'algoritmo può diventare costoso, soprattutto se hai molti archi e un numero elevato di timestamp.
+- In questo caso, ottimizzare la parte di esplorazione dei timestamp, per esempio limitando il numero di timestamp considerati durante la BFS, o implementando tecniche più efficienti di ricerca dei timestamp validi, potrebbe essere utile per ridurre la complessità.
