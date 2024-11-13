@@ -130,12 +130,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Path Problems On Temporal Graphs.md",
+                "file": "Algoritmo Funzionante.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Path Problems On Temporal Graphs"
+              "title": "Outgoing links from Algoritmo Funzionante"
             }
           },
           {
@@ -156,22 +156,8 @@
               "icon": "links-coming-in",
               "title": "Backlinks for Path Problems On Temporal Graphs"
             }
-          },
-          {
-            "id": "e080c3742c3a73f2",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -188,7 +174,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "8975b449b7d163c2",
   "lastOpenFiles": [
     "Temporal_Tree_tests/complessità_algoritmo_funz.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
