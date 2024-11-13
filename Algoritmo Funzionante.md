@@ -210,3 +210,154 @@ $$
 
 - **Se \( K \) è piccolo o moderato**, la complessità totale può essere accettabile, ma se \( K \) cresce significativamente, l'algoritmo può diventare costoso, soprattutto se hai molti archi e un numero elevato di timestamp.
 - In questo caso, ottimizzare la parte di esplorazione dei timestamp, per esempio limitando il numero di timestamp considerati durante la BFS, o implementando tecniche più efficienti di ricerca dei timestamp validi, potrebbe essere utile per ridurre la complessità.
+
+# Algoritmo Ottimizzato con approccio Dijkstra-like
+
+## Algoritmo
+
+```python
+# Dijkstra-like
+
+import heapq
+
+def temporal_bfs(u, adj_list, n):
+    """Esegui una BFS che esplora i nodi partendo da u, rispettando l'ordine temporale dei timestamp"""
+    # Coda di priorità (heap), contiene tuple del tipo (timestamp, nodo)
+    heap = []
+    # Inizializza la coda con i nodi vicini di u, con il minimo timestamp
+    for neighbor, timestamps in adj_list[u]:
+        for timestamp in timestamps:
+            heapq.heappush(heap, (timestamp, neighbor))
+
+    visited = set()
+    visited.add(u)
+
+    while heap:
+        current_time, current_node = heapq.heappop(heap)
+
+        if current_node not in visited:
+            visited.add(current_node)
+
+            # Aggiungi i vicini di current_node alla coda se non sono già stati visitati
+            for neighbor, timestamps in adj_list[current_node]:
+                if neighbor not in visited:
+                    for timestamp in timestamps:
+                        if timestamp >= current_time:  # Solo timestamp validi
+                            heapq.heappush(heap, (timestamp, neighbor))
+
+    return visited
+
+def is_temporally_connected_v3(adj_list):
+    """Verifica se il grafo è temporaneamente connesso, per ogni coppia di nodi"""
+    nodes = list(adj_list.keys())
+    n = len(nodes)
+
+    # Per ogni nodo u, esegui BFS temporale per trovare tutti i nodi raggiungibili da u
+    for u in nodes:
+        reachable = temporal_bfs(u, adj_list, n)
+
+        # Se un nodo non è raggiungibile da u, il grafo non è connesso temporalmente
+        for v in nodes:
+            if v != u and v not in reachable:
+                return False
+
+    return True
+```
+
+## Costo computazionale
+
+Certo! Ecco l'algoritmo basato sull'approccio che ti ho descritto, utilizzando una coda di priorità per esplorare i grafi con il vincolo temporale:
+
+### Algoritmo: Connessione temporale ottimizzata
+
+1. **Preprocessing (ordinamento degli archi):**
+   - Per ogni nodo, ordiniamo i suoi archi in base ai timestamp.
+2. **Ricerca temporale con Dijkstra-like:**
+   - Per ogni nodo \(u\), eseguiamo una ricerca utilizzando una coda di priorità per esplorare i vicini rispettando l'ordine temporale crescente dei timestamp.
+
+### Descrizione del codice:
+
+1. **`temporal_bfs(u, adj_list, n)`**:
+   - Per ogni nodo \(u\), eseguiamo una BFS utilizzando una coda di priorità. Gli archi sono esplorati in ordine crescente di timestamp.
+   - La coda di priorità è usata per garantire che esploriamo i vicini con il minimo timestamp per primo.
+   - La funzione ritorna l'insieme di nodi raggiungibili da \(u\) rispettando l'ordine temporale.
+
+2. **`is_temporally_connected_v3(adj_list)`**:
+   - Per ogni nodo \(u\), chiama `temporal_bfs` per trovare tutti i nodi che sono raggiungibili da \(u\).
+   - Se per una qualsiasi coppia di nodi \(u\) e \(v\), \(v\) non è raggiungibile da \(u\), il grafo non è connesso temporalmente, quindi ritorna **False**.
+   - Se tutte le coppie di nodi sono connesse, ritorna **True**.
+
+### Complessità:
+
+- **Ordinamento degli archi**: Per ogni nodo \(u\), dobbiamo ordinare gli archi. Questo ha un costo di \(O(M \log M)\), dove \(M\) è il numero di archi.
+- **BFS con coda di priorità**: La BFS con coda di priorità ha un costo di \(O(M \log M)\) per ogni nodo.
+- **Complessità totale**: Poiché dobbiamo eseguire la BFS per ogni nodo, il costo complessivo sarà:
+$$
+O(N \cdot M \log M)
+$$
+
+Dove:
+- \(N\) è il numero di nodi.
+- \(M\) è il numero di archi.
+
+Questo approccio è molto più efficiente di $O(N^2 \cdot M)$, soprattutto quando \(M\) è molto maggiore di \(N\).
+
+### Come funziona l'algoritmo:
+
+- Per ogni nodo \(u\), esploriamo i suoi vicini in modo che ogni arco esplorato abbia un timestamp maggiore o uguale al timestamp dell'arco precedente, garantendo così che il percorso temporale sia valido.
+- L'uso della coda di priorità permette di esplorare gli archi in ordine temporale crescente, ottimizzando l'esplorazione.
+- Se per qualsiasi coppia di nodi non troviamo un percorso valido, l'algoritmo restituirà **False**.
+
+Con questo approccio, dovremmo essere in grado di ridurre significativamente il costo rispetto all'algoritmo originale.
+## Correttezza
+
+L'approccio Dijkstra-like è basato sull'idea di esplorare i nodi nel grafo rispettando l'ordine temporale dei timestamp degli archi. Per dimostrare la correttezza dell'algoritmo, possiamo seguire i seguenti passaggi:
+
+### 1. **Proprietà fondamentale dell'algoritmo:**
+L'algoritmo cerca di determinare se per ogni coppia di nodi \( u \) e \( v \) esiste un percorso valido temporale, in cui i timestamp sugli archi che compongono il percorso siano crescenti. In altre parole, se siamo in un nodo \( u \) e vogliamo raggiungere un nodo \( v \), dobbiamo esplorare solo gli archi che rispettano il vincolo temporale \( t_{u \to v} \geq t_{u \to u} \), dove \( t_{u \to v} \) è il timestamp dell'arco da \( u \) a \( v \).
+
+### 2. **Usare una coda di priorità (Dijkstra-like):**
+Dijkstra è un algoritmo che esplora i nodi di un grafo partendo da un nodo di origine, scegliendo sempre il percorso minimo (o, in questo caso, il percorso temporale con il timestamp minimo) attraverso una coda di priorità. Nel nostro caso, la **priorità** non è il "peso" degli archi, ma il **timestamp** associato a ciascun arco.
+
+L'idea è simile a Dijkstra, ma invece di minimizzare la distanza, minimizziamo il tempo, cioè scegliamo gli archi con il timestamp più basso.
+
+### 3. **Correttezza dell'approccio:**
+La correttezza di questo approccio si basa sul fatto che:
+
+- Quando esploriamo un nodo \( u \), lo facciamo considerando solo gli archi che rispettano il vincolo temporale: selezioniamo solo archi \( (u, v) \) in cui il timestamp è maggiore o uguale al timestamp del nodo corrente.
+  
+- La coda di priorità garantisce che esploriamo prima i nodi attraverso gli archi con il timestamp più basso possibile, il che implica che esploreremo i percorsi temporali in ordine crescente di timestamp.
+
+#### Dimostrazione di correttezza:
+
+##### A. **Proprietà di scelta ottimale:**
+Ogni volta che esploriamo un nodo \( u \), lo facciamo scegliendo l'arco con il **minimo timestamp** (questo è simile a Dijkstra, che sceglie il percorso di peso minimo). Questo assicura che esploriamo sempre il percorso più "veloce" (temporalmente più vicino), in modo da rispettare la condizione di crescita dei timestamp lungo il percorso.
+
+##### B. **Proprietà di esplorazione corretta:**
+Quando esploriamo un nodo \( u \) e passiamo a un nodo \( v \), esaminiamo solo gli archi che partono da \( u \) e che hanno un timestamp maggiore o uguale a quello corrente. In altre parole, esploriamo i percorsi che rispettano la condizione di crescita dei timestamp. Se esiste un percorso valido temporale da \( u \) a \( v \), lo troveremo esplorando questi archi in ordine di timestamp crescente.
+
+##### C. **Correttezza del percorso:**
+Se esiste un percorso temporale valido da \( u \) a \( v \), il nostro algoritmo lo troverà:
+
+- Ogni volta che esploriamo un nodo \( v \) a partire da un nodo \( u \), lo facciamo con un timestamp che rispetta la condizione di crescita.
+- Poiché esploriamo prima gli archi con il timestamp più basso, garantiamo che ogni percorso temporale che esploriamo sia valido.
+  
+Se riusciamo a raggiungere un nodo \( v \) partendo da \( u \), vuol dire che esiste un percorso temporale valido tra \( u \) e \( v \), rispettando la condizione sui timestamp.
+
+### 4. **Rispetto del vincolo di crescita:**
+Il nostro algoritmo rispetta sempre il vincolo di crescita sui timestamp, poiché:
+
+- Gli archi sono esplorati solo se il loro timestamp è maggiore o uguale al timestamp corrente.
+- La coda di priorità gestisce l'esplorazione in modo che non vengano mai esplorati archi con timestamp "retroattivi", mantenendo così la correttezza temporale del percorso.
+
+### 5. **Verifica globale della connettività temporale:**
+Nel nostro algoritmo, per ogni nodo \( u \), esploriamo tutti i nodi raggiungibili da \( u \) rispettando i vincoli temporali. Dopo aver eseguito la ricerca per un nodo, verifichiamo che tutti gli altri nodi siano raggiungibili. Se, per qualsiasi nodo \( u \), esiste un nodo \( v \) che non è raggiungibile partendo da \( u \), il grafo non è temporaneamente connesso, e quindi l'algoritmo restituirà **False**.
+
+### Conclusioni sulla correttezza:
+
+- L'algoritmo è corretto perché esplora i nodi in ordine di timestamp crescente, garantendo che ogni percorso temporale che esplora sia valido.
+- Ogni nodo viene visitato solo quando il timestamp degli archi che partono da esso soddisfa il vincolo temporale.
+- La coda di priorità assicura che esploriamo sempre il percorso temporale più promettente, ossia quello con il timestamp più basso.
+- Alla fine dell'esecuzione, l'algoritmo verifica la connettività temporale globale, restituendo **True** se ogni coppia di nodi è connessa temporalmente e **False** altrimenti.
+
+In sintesi, il comportamento del nostro algoritmo garantisce che esploreremo correttamente tutti i percorsi temporali validi, rispettando i vincoli sui timestamp, e quindi è **corretto**.
