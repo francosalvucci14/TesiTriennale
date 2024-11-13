@@ -2,6 +2,17 @@
 
 import heapq
 
+def print_tree(tree):
+    # Definisci la mappatura dei nodi in caratteri
+    node_to_char = {i: chr(ord('A') + i) for i in range(len(tree))}
+    
+    for node, edges in tree.items():
+        node_char = node_to_char[node]  # Ottieni il carattere associato al nodo
+        for neighbor, timestamps in edges:
+            neighbor_char = node_to_char[neighbor]  # Ottieni il carattere del vicino
+            print(f"Nodo {node_char} -> Vicino {neighbor_char} con tempi {timestamps}")
+        
+
 def temporal_bfs(u, adj_list, n):
     """Esegui una BFS che esplora i nodi partendo da u, rispettando l'ordine temporale dei timestamp"""
     # Coda di priorità (heap), contiene tuple del tipo (timestamp, nodo)
@@ -61,5 +72,27 @@ tree4 = {
     4:[(1,[6])],
     5:[(2,[7])]
 }
+adj_list = { 
+    0: [(1, [1, 2]), (2, [1, 2])], 
+    1: [(0, [1, 2]), (3, [2])], 
+    2: [(0, [1, 2]), (4, [2])], 
+    3: [(1, [2])], 
+    4: [(2, [2])] 
+} 
+adj_list2 = { 
+    0: [(1, [1]), (2, [1])], 
+    1: [(0, [1]), (3, [1])], 
+    2: [(0, [1]), (4, [1])], 
+    3: [(1, [1])], 
+    4: [(2, [1])] 
+} 
+tree5 = {
+    0 : [(1,[1,2])],
+    1 : [(0,[1,2]),(2,[1,2])],
+    2 : [(1,[1,2]),(3,[1,3])],
+    3 : [(2,[1,3]),(4,[3])],
+    4 : [(3,[3])]
+}
 #print(is_temporally_connected_v3(adj_list))
-print(is_temporally_connected_v3(tree3))
+print_tree(tree5)
+print(f"Albero temporalmente connesso? : {is_temporally_connected_v3(tree5)}")

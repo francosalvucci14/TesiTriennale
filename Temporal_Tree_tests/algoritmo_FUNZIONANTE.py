@@ -1,5 +1,20 @@
 from collections import defaultdict, deque
 
+def print_tree_structure(tree):
+
+    # Creazione della lista di adiacenza con archi e tempi
+    adj_list = defaultdict(list)
+    for u, v, times in tree:
+        adj_list[u].append((v, times))
+        adj_list[v].append((u, times))
+    print("ALBERO")
+    # Stampa della struttura dell'albero
+    for node in sorted(adj_list.keys()):
+        print(f"Nodo {node} ->", end=" ")
+        for neighbor, times in adj_list[node]:
+            print(f"Vicino {neighbor} con tempi {times}", end="; ")
+        print()  # Nuova riga per il prossimo nodo
+
 def compress_timestamps(adj_list):
     # Estrai tutti i timestamp
     all_timestamps = set()

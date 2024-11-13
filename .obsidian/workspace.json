@@ -157,7 +157,8 @@
               "title": "Backlinks for Path Problems On Temporal Graphs"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -174,8 +175,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8975b449b7d163c2",
+  "active": "b7d0fd90eba297c4",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike.py",
+    "Algoritmo Funzionante.pdf",
     "Temporal_Tree_tests/algoritmo_FUNZIONANTE_2.py",
     "Temporal_Tree_tests/complessità_algoritmo_funz.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
@@ -189,8 +192,6 @@
     "considerazioni.md~",
     "Temporal_Tree_tests/test_tree-to-graph.py",
     "Temporal_Tree_tests/test2.py",
-    "Temporal_Tree_tests/test.py",
-    "2409.18750v1.pdf",
     "Path Problems On Temporal Graphs.md",
     "img/algoritmo1.png",
     "img.md",

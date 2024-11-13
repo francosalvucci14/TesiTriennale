@@ -31,6 +31,8 @@ def is_temporally_connected_v2(adj_list):
                     return False  # Se esiste una coppia non connessa temporalmente, ritorna False
     return True
 ```
+
+Poco da dire, l'algoritmo ha complessità $O(N^2\cdot M)$
 # Algoritmo Ottimizzato
 
 L'algoritmo è il seguente
@@ -88,7 +90,6 @@ def is_temporally_connected_v5(adj_list):
     return True
 ```
 
-Poco da dire, l'algoritmo ha complessitò $O(N^2\cdot M)$
 ## Dimostrazione
 
 La **dimostrazione di correttezza** dell'algoritmo si basa sul fatto che l'algoritmo verifica correttamente se esiste un percorso temporale valido tra ogni coppia di nodi nel grafo, seguendo la logica definita nella descrizione dell'algoritmo. La correttezza si fonda su due aspetti principali:
@@ -148,11 +149,8 @@ Se \( K \) rappresenta il numero di **etichette totali** (ovvero il numero di ti
 ### 1. **Compressione dei Timestamp** con \( K \) come numero totale di etichette
 
 Se \( K \) è il numero totale di etichette distinte (o timestamp) tra tutti gli archi, questo significa che dovremo ordinare e associare un indice a ciascun timestamp. In questo caso, la complessità della **compressione dei timestamp** diventa:
-
-\[
-O(K \log K)
-\]
-
+$$
+O(K \log K)$$
 Dove \( K \) è il numero totale di etichette. Questo passaggio è relativamente costoso, ma viene eseguito solo una volta.
 
 ### 2. **BFS Temporale per ciascuna coppia di nodi**
@@ -164,17 +162,15 @@ La BFS temporale esplora gli archi, e per ciascun arco dovremo considerare i tim
 ### Complessità Totale
 
 1. **Compressione dei timestamp**:
-   - Ordinamento dei timestamp distinti: \( O(K \log K) \).
+   - Ordinamento dei timestamp distinti: $O(K \log K)$.
 
 2. **BFS per tutte le coppie di nodi**:
-   - Per ogni coppia di nodi, eseguiamo una BFS che ha un costo di \( O(M \cdot K) \) (poiché esploriamo gli archi e, per ciascun arco, possiamo esaminare fino a \( K \) timestamp).
+   - Per ogni coppia di nodi, eseguiamo una BFS che ha un costo di $O(M \cdot K)$ (poiché esploriamo gli archi e, per ciascun arco, possiamo esaminare fino a \( K \) timestamp).
 
 Poiché dobbiamo eseguire la BFS per ogni coppia di nodi, il costo totale dell'algoritmo diventa:
-
 $$
 O(K \log K + N^2 \cdot M \cdot K)
 $$
-
 Dove:
 - \( N \) è il numero di nodi,
 - \( M \) è il numero di archi,
@@ -193,7 +189,7 @@ $$
 O(N \log N + N^2 \cdot M)
 $$
 
-### 4. **Caso particolare: \( K \gg N \) (molti timestamp per arco)**
+### 4. **Caso particolare:  $K \gg N$  (molti timestamp per arco)**
 
 Se \( K \) è molto grande, ad esempio $K \gg N$, allora la complessità diventa:
 
