@@ -11,7 +11,21 @@ def print_tree(tree):
         for neighbor, timestamps in edges:
             neighbor_char = node_to_char[neighbor]  # Ottieni il carattere del vicino
             print(f"Nodo {node_char} -> Vicino {neighbor_char} con tempi {timestamps}")
-        
+
+# def all_labels_equal(adj_list):
+#     """Controlla se tutte le etichette temporali degli archi sono uguali"""
+#     first_label = None
+    
+#     for node, edges in adj_list.items():
+#         for _, timestamps in edges:
+#             if not timestamps:
+#                 continue
+#             if first_label is None:
+#                 first_label = timestamps[0]
+#             # Verifica se tutte le etichette sono uguali al primo timestamp trovato
+#             if any(label != first_label for label in timestamps):
+#                 return False
+#     return True
 
 def temporal_bfs(u, adj_list, n):
     """Esegui una BFS che esplora i nodi partendo da u, rispettando l'ordine temporale dei timestamp"""
@@ -41,6 +55,9 @@ def temporal_bfs(u, adj_list, n):
     return visited
 
 def is_temporally_connected_v3(adj_list):
+    # Se tutte le etichette sono uguali, ritorna True
+    # if all_labels_equal(adj_list):
+    #     return True
     """Verifica se il grafo è temporaneamente connesso, per ogni coppia di nodi"""
     nodes = list(adj_list.keys())
     n = len(nodes)
@@ -89,10 +106,10 @@ adj_list2 = {
 tree5 = {
     0 : [(1,[1,2])],
     1 : [(0,[1,2]),(2,[1,2])],
-    2 : [(1,[1,2]),(3,[1,3])],
-    3 : [(2,[1,3]),(4,[3])],
-    4 : [(3,[3])]
+    2 : [(1,[1,2]),(3,[1,2])],
+    3 : [(2,[1,2]),(4,[2])],
+    4 : [(3,[2])]
 }
 #print(is_temporally_connected_v3(adj_list))
-print_tree(tree5)
-print(f"Albero temporalmente connesso? : {is_temporally_connected_v3(tree5)}")
+print_tree(adj_list2)
+print(f"Albero temporalmente connesso? : {is_temporally_connected_v3(adj_list2)}")
