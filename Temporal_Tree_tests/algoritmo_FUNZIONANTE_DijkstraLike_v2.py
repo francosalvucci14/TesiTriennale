@@ -1,5 +1,7 @@
 import heapq
 from collections import defaultdict
+from timeit import default_timer as timer
+from datetime import timedelta
 
 def bisect_left(arr, target):
     """Ritorna l'indice del primo elemento >= target in un array ordinato arr."""
@@ -108,16 +110,22 @@ tree5 = {
     0 : [(1,[1,2])],
     1 : [(0,[1,2]),(2,[1,2])],
     2 : [(1,[1,2]),(3,[1,2])],
-    3 : [(2,[1,2]),(4,[3])],
-    4 : [(3,[3])]
+    3 : [(2,[1,2]),(4,[2])],
+    4 : [(3,[2])]
 }
 tree3 = {
     0:[(1,[2,6]),(2,[6])],
-    1:[(0,[2,6]),(3,[1,2,3,4,5])],
+    1:[(0,[2,6]),(3,[1,2,3,4,5,6])],
     2:[(0,[6]),(4,[6])],
-    3:[(1,[1,2,3,4,5])],
+    3:[(1,[1,2,3,4,5,6])],
     4:[(2,[6])]
 }
 
+start = timer()
 print(f"Albero temporalmente connesso? : {is_temporally_connected_v4(tree3)}")
+end = timer()
+print(f"Tempo di esecuzione per v4: {timedelta(seconds=end-start)}")
+start = timer()
 print(f"Albero temporalmente connesso? : {is_temporally_connected_v5(tree3)}")
+end = timer()
+print(f"Tempo di esecuzione per v5: {timedelta(seconds=end-start)}")

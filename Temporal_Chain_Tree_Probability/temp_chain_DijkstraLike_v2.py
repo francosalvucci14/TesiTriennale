@@ -1,6 +1,8 @@
 import random
 import heapq
 import matplotlib.pyplot as plt
+from collections import defaultdict
+from bisect import bisect_left
 from timeit import default_timer as timer
 from datetime import timedelta
 
@@ -35,43 +37,44 @@ def add_labels_to_tree(tree, time_range, k):
     return labeled_tree
 
 
-def temporal_bfs(u, adj_list, n):
-    """Esegui una BFS che esplora i nodi partendo da u, rispettando l'ordine temporale dei timestamp"""
+def temporal_bfs_memo(u, adj_list, memo):
+    """Esegue una BFS temporale con memorizzazione (memoization)"""
+    # Coda di priorità (heap), contiene tuple (timestamp, nodo)
     heap = []
-    for neighbor, timestamps in adj_list[u]:
-        for timestamp in timestamps:
-            heapq.heappush(heap, (timestamp, neighbor))
+    heapq.heappush(heap, (0, u))  # Partiamo da u con il timestamp minimo
 
-    visited = set()
-    visited.add(u)
+    # Inizializza il dizionario memo per u
+    if u not in memo:
+        memo[u] = {u: 0}
+    visited = memo[u]
 
     while heap:
         current_time, current_node = heapq.heappop(heap)
 
-        if current_node not in visited:
-            visited.add(current_node)
+        # Esplora i vicini di current_node
+        for neighbor, timestamps in adj_list[current_node]:
+            # Trova il primo timestamp >= current_time
+            idx = bisect_left(timestamps, current_time)
+            if idx < len(timestamps):
+                next_time = timestamps[idx]
+                # Se il vicino non è stato visitato o se troviamo un percorso temporale migliore
+                if neighbor not in visited or next_time < visited.get(neighbor, float('inf')):
+                    visited[neighbor] = next_time
+                    heapq.heappush(heap, (next_time, neighbor))
 
-            for neighbor, timestamps in adj_list[current_node]:
-                if neighbor not in visited:
-                    for timestamp in timestamps:
-                        if timestamp >= current_time:
-                            heapq.heappush(heap, (timestamp, neighbor))
-    
-    return visited
+    # Restituisce i nodi raggiungibili
+    return set(visited.keys())
 
-def is_temporally_connected_v3(adj_list):
-    """Verifica se il grafo è temporaneamente connesso, per ogni coppia di nodi"""
-    
+def is_temporally_connected_v5(adj_list):
+    """Verifica se il grafo è temporaneamente connesso usando la memorizzazione dei percorsi."""
     nodes = list(adj_list.keys())
-    n = len(nodes)
-    
-    for u in nodes:
-        reachable = temporal_bfs(u, adj_list, n)
+    memo = defaultdict(dict)  # Dato che vogliamo lanciare BFS per ogni nodo
 
-        for v in nodes:
-            if v != u and v not in reachable:
-                return False
-    
+    for u in nodes:
+        reachable = temporal_bfs_memo(u, adj_list, memo)
+        # Se un nodo non è raggiungibile da u, il grafo non è connesso temporalmente
+        if len(reachable) != len(nodes):
+            return False
     return True
 
 def run_trial(tree, k, time_range):
@@ -85,7 +88,7 @@ def run_trial(tree, k, time_range):
     labeled_tree = add_labels_to_tree(tree, time_range, k)
 
     # Verifica se il grafo è temporaneamente connesso
-    return is_temporally_connected_v3(labeled_tree)
+    return is_temporally_connected_v5(labeled_tree)
 
 def calculate_probability_per_interval(tree, trials, max_k, time_ranges):
     """Calcola la probabilità di connessione temporale per ciascun intervallo temporale e valore di K."""
@@ -130,8 +133,8 @@ def generate_connectivity_graph(tree, trials, max_k, time_ranges):
     plt.ylabel("Probabilità di Connessione Temporale")
     plt.legend(title="Intervallo Temporale")
     plt.grid(True)
-    #plt.show() Mostra il plot
-    plt.savefig('temp_chain_DijkstraLike.png')  # Salva il plot
+    #plt.show()
+    plt.savefig('temp_chain_DijkstraLike_v2.png')  # Salva il plot
 
 # Esempio di utilizzo
 tree5 = {

@@ -138,7 +138,8 @@
               "title": "Outgoing links from Algoritmo Funzionante"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -155,23 +156,24 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b7d0fd90eba297c4",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
+    "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.png",
+    "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike.png",
+    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v4_withPlot.py",
+    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v3_withPlot.py",
+    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v3.py",
+    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v2.py",
+    "Temporal_Chain_Tree_Probability/Failure/temp_chain.py",
+    "Temporal_Chain_Tree_Probability/Failure",
+    "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.py",
     "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike_v2.py",
     "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike.py",
     "Algoritmo Funzionante.pdf",
-    "Temporal_Tree_tests/algoritmo_FUNZIONANTE_2.py",
     "Temporal_Tree_tests/complessità_algoritmo_funz.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
     "Algoritmo Funzionante.md",
-    "Temporal_Tree_tests/algoritmo_conResetSuRoot.py",
-    "Temporal_Chain_Tree_Probability/temp_chain_v4_withPlot.py",
-    "Temporal_Tree_tests/algoritmo_senzaResetSuRoot.py",
     "ProvaAlberoTemporale.png",
-    "Temporal_Tree_tests/test3.py",
-    "Temporal Connectivity on Graph.pdf",
-    "considerazioni.md~",
-    "Temporal_Tree_tests/test_tree-to-graph.py",
     "Path Problems On Temporal Graphs.md",
     "img/algoritmo1.png",
     "img.md",

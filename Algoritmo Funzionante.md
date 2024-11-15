@@ -288,14 +288,12 @@ Invece di eseguire una BFS per ogni coppia di nodi, possiamo fare una **Dijkstra
 
 ### Combinazione dei passi
 
-- Per ogni nodo  u , dobbiamo eseguire una ricerca, quindi il costo per ogni nodo diventa O(M \log M).
+- Per ogni nodo  u , dobbiamo eseguire una ricerca, quindi il costo per ogni nodo diventa $O(M \log M)$.
 - L'algoritmo complessivo sarà quindi:
 
-\[
+$$
 O(N \cdot M \log M)
-\]
-
-Questo è significativamente più efficiente di  O(N^2 \cdot M) , soprattutto se  M  è molto più grande di  N .
+$$
 
 ### Considerazioni finali
 
