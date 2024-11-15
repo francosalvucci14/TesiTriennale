@@ -2,60 +2,49 @@ import heapq
 from collections import defaultdict
 from timeit import default_timer as timer
 from datetime import timedelta
+from bisect import bisect_left
 
-def bisect_left(arr, target):
-    """Ritorna l'indice del primo elemento >= target in un array ordinato arr."""
-    low, high = 0, len(arr)
-    while low < high:
-        mid = (low + high) // 2
-        if arr[mid] < target:
-            low = mid + 1
-        else:
-            high = mid
-    return low
-
-
-def temporal_bfs_optimized(u, adj_list):
-    """Esegue una BFS temporale partendo da u rispettando l'ordine temporale, con complessità O(M log M)"""
-    heap = []
-    visited = {u: 0}  # Dizionario con il nodo e il minimo timestamp raggiunto
+# def temporal_bfs_optimized(u, adj_list):
+#     """Esegue una BFS temporale partendo da u rispettando l'ordine temporale, con complessità O(M log M)"""
+#     heap = []
+#     visited = {u: 0}  # Dizionario con il nodo e il minimo timestamp raggiunto
     
-    # Inizializza la coda con il minimo timestamp per ogni vicino
-    for neighbor, timestamps in adj_list[u]:
-        min_timestamp = min(timestamps)
-        heapq.heappush(heap, (min_timestamp, neighbor))
+#     # Inizializza la coda con il minimo timestamp per ogni vicino
+#     for neighbor, timestamps in adj_list[u]:
+#         min_timestamp = min(timestamps)
+#         heapq.heappush(heap, (min_timestamp, neighbor))
 
-    while heap:
-        current_time, current_node = heapq.heappop(heap)
+#     while heap:
+#         current_time, current_node = heapq.heappop(heap)
 
-        # Se il nodo non è mai stato visitato o se troviamo un timestamp minore
-        if current_node not in visited or current_time < visited[current_node]:
-            visited[current_node] = current_time
+#         # Se il nodo non è mai stato visitato o se troviamo un timestamp minore
+#         if current_node not in visited or current_time < visited[current_node]:
+#             visited[current_node] = current_time
 
-            # Aggiungi i vicini di current_node con il prossimo timestamp valido
-            for neighbor, timestamps in adj_list[current_node]:
-                if neighbor not in visited or current_time < visited[neighbor]:
-                    # Trova il primo timestamp >= current_time
-                    idx = bisect_left(timestamps, current_time)
-                    if idx < len(timestamps):
-                        next_time = timestamps[idx]
-                        heapq.heappush(heap, (next_time, neighbor))
+#             # Aggiungi i vicini di current_node con il prossimo timestamp valido
+#             for neighbor, timestamps in adj_list[current_node]:
+#                 if neighbor not in visited or current_time < visited[neighbor]:
+#                     # Trova il primo timestamp >= current_time
+#                     idx = bisect_left(timestamps, current_time)
+#                     if idx < len(timestamps):
+#                         next_time = timestamps[idx]
+#                         heapq.heappush(heap, (next_time, neighbor))
 
-    return visited.keys()
+#     return visited.keys()
 
-def is_temporally_connected_v4(adj_list):
-    """Verifica se il grafo è temporaneamente connesso con un costo O(M log M)"""
-    nodes = list(adj_list.keys())
+# def is_temporally_connected_v4(adj_list):
+#     """Verifica se il grafo è temporaneamente connesso con un costo O(M log M)"""
+#     nodes = list(adj_list.keys())
     
-    # Per ogni nodo u, esegui BFS temporale per trovare tutti i nodi raggiungibili da u
-    for u in nodes:
-        reachable = temporal_bfs_optimized(u, adj_list)
+#     # Per ogni nodo u, esegui BFS temporale per trovare tutti i nodi raggiungibili da u
+#     for u in nodes:
+#         reachable = temporal_bfs_optimized(u, adj_list)
 
-        # Verifica se esiste un nodo non raggiungibile
-        if len(reachable) != len(nodes):
-            return False
+#         # Verifica se esiste un nodo non raggiungibile
+#         if len(reachable) != len(nodes):
+#             return False
     
-    return True
+#     return True
 
 def temporal_bfs_memo(u, adj_list, memo):
     """Esegue una BFS temporale con memorizzazione (memoization)"""
@@ -121,10 +110,6 @@ tree3 = {
     4:[(2,[6])]
 }
 
-start = timer()
-print(f"Albero temporalmente connesso? : {is_temporally_connected_v4(tree3)}")
-end = timer()
-print(f"Tempo di esecuzione per v4: {timedelta(seconds=end-start)}")
 start = timer()
 print(f"Albero temporalmente connesso? : {is_temporally_connected_v5(tree3)}")
 end = timer()
