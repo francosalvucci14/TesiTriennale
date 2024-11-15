@@ -137,28 +137,8 @@
               "icon": "links-going-out",
               "title": "Outgoing links from Algoritmo Funzionante"
             }
-          },
-          {
-            "id": "55b29e4ce693c7ad",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "Path Problems On Temporal Graphs.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Path Problems On Temporal Graphs"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -177,6 +157,7 @@
   },
   "active": "b7d0fd90eba297c4",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike_v2.py",
     "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike.py",
     "Algoritmo Funzionante.pdf",
     "Temporal_Tree_tests/algoritmo_FUNZIONANTE_2.py",
@@ -191,7 +172,6 @@
     "Temporal Connectivity on Graph.pdf",
     "considerazioni.md~",
     "Temporal_Tree_tests/test_tree-to-graph.py",
-    "Temporal_Tree_tests/test2.py",
     "Path Problems On Temporal Graphs.md",
     "img/algoritmo1.png",
     "img.md",

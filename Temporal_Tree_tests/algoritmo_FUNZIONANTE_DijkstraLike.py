@@ -111,5 +111,5 @@ tree5 = {
     4 : [(3,[2])]
 }
 #print(is_temporally_connected_v3(adj_list))
-print_tree(adj_list2)
-print(f"Albero temporalmente connesso? : {is_temporally_connected_v3(adj_list2)}")
+print_tree(tree3)
+print(f"Albero temporalmente connesso? : {is_temporally_connected_v3(tree3)}")

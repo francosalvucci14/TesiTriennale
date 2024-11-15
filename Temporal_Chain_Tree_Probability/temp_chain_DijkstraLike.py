@@ -108,7 +108,7 @@ def calculate_probability_per_interval(tree, trials, max_k, time_ranges):
             time_B = time_range[1]
             if time_A == time_B:
                 probability = 1
-                
+
             interval_probabilities[time_range].append(probability)
     
     return interval_probabilities
@@ -140,8 +140,9 @@ tree5 = {
 }
 
 # Parametri
-trials = 100
-max_k = 15  # Range massimo di K
-time_ranges = [(1,1),(1, 5), (5, 10), (2, 15), (15, 40)]
+trials = 500
+#max_k = random.randint(1,60)  # Range massimo di K
+max_k = 60
+time_ranges = [(1, 5), (5, 10), (2, 15), (15, 40),(1,150)]
 
 generate_connectivity_graph(tree5, trials, max_k, time_ranges)
