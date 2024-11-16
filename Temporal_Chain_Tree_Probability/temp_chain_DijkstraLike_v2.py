@@ -122,7 +122,7 @@ def generate_connectivity_graph(tree, trials, max_k, time_ranges):
     """Genera un grafico della probabilità di connessione temporale al variare di K e per ogni intervallo temporale."""
     interval_probabilities = calculate_probability_per_interval(tree, trials, max_k, time_ranges)
     
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(15, 10))
     
     for time_range, probabilities in interval_probabilities.items():
         k_values = list(range(1, max_k + 1))
@@ -136,21 +136,61 @@ def generate_connectivity_graph(tree, trials, max_k, time_ranges):
     #plt.show()
     plt.savefig('temp_chain_DijkstraLike_v2.png')  # Salva il plot
 
+def generate_random_intervals(num_intervals, min_value, max_value):
+  """
+  Genera un numero specificato di intervalli casuali entro un range definito.
+
+  Args:
+    num_intervals: Numero di intervalli da generare.
+    min_value: Valore minimo per gli estremi degli intervalli.
+    max_value: Valore massimo per gli estremi degli intervalli.
+
+  Returns:
+    Lista di tuple rappresentanti gli intervalli generati casualmente.
+  """
+
+  random_intervals = []
+  for _ in range(num_intervals):
+    start = random.randint(min_value, max_value)
+    end = random.randint(start, max_value)
+    random_intervals.append((start, end))
+
+  return random_intervals
+
 # Esempio di utilizzo
 tree5 = {
     0: [1],
     1: [0, 2],
+    2: [1]
+}
+
+tree15 = {
+    0: [1],
+    1: [0, 2],
     2: [1, 3],
     3: [2, 4],
-    4: [3]
+    4: [3, 5],
+    5: [4, 6],
+    6: [5, 7],
+    7: [6, 8],
+    8: [7, 9],
+    9: [8, 10],
+    10: [9, 11],
+    11: [10, 12],
+    12: [11, 13],
+    13: [12, 14],
+    14: [13]
 }
 
 # Parametri
-trials = 1000
+trials = 10000
 #max_k = random.randint(1,60)  # Range massimo di K
-max_k = 60
-time_ranges = [(1, 5), (5, 10), (2, 15), (15, 40),(1,150)]
+max_k = 150
+#time_ranges = [(1, 5), (5, 10), (2, 15), (15, 40),(1,150)]
+
+randomized_intervals = generate_random_intervals(8,1,10)
+
 start = timer()
-generate_connectivity_graph(tree5, trials, max_k, time_ranges)
+generate_connectivity_graph(tree5, trials, max_k, randomized_intervals)    
 end = timer()
 print(timedelta(seconds=end-start))

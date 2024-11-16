@@ -71,6 +71,7 @@ def temporal_bfs_memo(u, adj_list, memo):
                     visited[neighbor] = next_time
                     heapq.heappush(heap, (next_time, neighbor))
 
+    
     # Restituisce i nodi raggiungibili
     return set(visited.keys())
 
@@ -81,6 +82,7 @@ def is_temporally_connected_v5(adj_list):
 
     for u in nodes:
         reachable = temporal_bfs_memo(u, adj_list, memo)
+        print(f"Nodi visitabili da {u}: {reachable}")
         # Se un nodo non è raggiungibile da u, il grafo non è connesso temporalmente
         if len(reachable) != len(nodes):
             return False
@@ -108,6 +110,15 @@ tree3 = {
     2:[(0,[6]),(4,[6])],
     3:[(1,[1,2,3,4,5,6])],
     4:[(2,[6])]
+}
+
+tree4 = {
+    0:[(1,[2]),(2,[5,7])],
+    1:[(0,[2]),(3,[5])],
+    2:[(0,[5,7]),(4,[8,9]),(5,[8,8])],
+    3:[(1,[5])],
+    4:[(2,[8,9])],
+    5:[(2,[8,8])]
 }
 
 start = timer()

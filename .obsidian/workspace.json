@@ -137,6 +137,25 @@
               "icon": "links-going-out",
               "title": "Outgoing links from Algoritmo Funzionante"
             }
+          },
+          {
+            "id": "4b5de90dde10b935",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Algoritmo Funzionante.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Algoritmo Funzionante"
+            }
           }
         ],
         "currentTab": 1
@@ -158,6 +177,7 @@
   },
   "active": "22ed4519436c56e6",
   "lastOpenFiles": [
+    "temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike.png",
     "Temporal_Chain_Tree_Probability/Failure/temp_chain_v4_withPlot.py",

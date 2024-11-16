@@ -1,3 +1,11 @@
+```table-of-contents
+title: 
+style: nestedList # TOC style (nestedList|nestedOrderedList|inlineFirstLevel)
+minLevel: 0 # Include headings from the specified level
+maxLevel: 0 # Include headings up to the specified level
+includeLinks: true # Make headings clickable
+debugInConsole: false # Print debug info in Obsidian console
+```
 # Algoritmo NAIVE
 
 ```python
@@ -371,7 +379,7 @@ def temporal_bfs_memo(u, adj_list, memo):
         # Esplora i vicini di current_node
         for neighbor, timestamps in adj_list[current_node]:
             # Trova il primo timestamp >= current_time
-            idx = bisect_left(timestamps, current_time)
+            idx = binary_search(timestamps, current_time)
             if idx < len(timestamps):
                 next_time = timestamps[idx]
                 # Se il vicino non è stato visitato o se troviamo un percorso temporale migliore
@@ -382,7 +390,7 @@ def temporal_bfs_memo(u, adj_list, memo):
     # Restituisce i nodi raggiungibili
     return set(visited.keys())
 
-def is_temporally_connected_v5(adj_list):
+def is_temporally_connected_v4(adj_list):
     """Verifica se il grafo è temporaneamente connesso usando la memorizzazione dei percorsi."""
     nodes = list(adj_list.keys())
     memo = defaultdict(dict)  # Dato che vogliamo lanciare BFS per ogni nodo
@@ -409,11 +417,11 @@ Questa funzione esegue una BFS temporale per ogni nodo `u` con l’ottimizzazion
   
 - Durante l’esplorazione, ogni volta che aggiungiamo un nuovo elemento all'heap, il costo è $O(\log k)$, con `k` che rappresenta il numero di elementi nella coda in quel momento.
 
-#### b. **Iterazione sui Vicini e Uso di `bisect_left`**
+#### b. **Iterazione sui Vicini e Uso di `binary_search`**
 
 Per ogni nodo corrente `current_node`, visitiamo i suoi vicini. Il costo per ogni vicino è composto da:
   
-- **Ricerca dei Timestamp**: `bisect_left(timestamps, current_time)` ha complessità $O(\log M)$ per ogni ricerca, dove M è il numero massimo di timestamp associati agli archi nel grafo.
+- **Ricerca dei Timestamp**: `binary_search(timestamps, current_time)` ha complessità $O(\log M)$ per ogni ricerca, dove M è il numero massimo di timestamp associati agli archi nel grafo.
 
 #### c. **Visita e Aggiornamento dei Nodi**
 
