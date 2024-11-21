@@ -156,6 +156,19 @@
               "icon": "links-coming-in",
               "title": "Backlinks for Algoritmo Funzionante"
             }
+          },
+          {
+            "id": "f8f762387e62b35d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
           }
         ],
         "currentTab": 1
@@ -175,8 +188,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "b7d0fd90eba297c4",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/algoritmo3_StruttutaPaper.py",
     "temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike.png",
