@@ -13,13 +13,9 @@ Per farlo basta fare una visita DFS che controlla se ogni nodo rispetta la condi
   
 Fase 2 : Calcolo foglia più profonda con peso massimo nei sottoalberi sinistro e destro
 
-Per trovare la foglia più profonda con peso massimo nei sottoalberi sinistro e destro,
-posso utilizzare la funzione find_deepest_leaves_in_subtrees definita in precedenza.
-Questa funzione calcola la foglia più profonda con peso massimo in un albero binario.
-Per trovare la foglia più profonda con peso massimo nei sottoalberi sinistro e destro,
-posso chiamare questa funzione sui sottoalberi sinistro e destro del nodo radice.
-La funzione restituirà i nodi delle foglie più profonde nei sottoalberi sinistro e destro,
-insieme ai relativi pesi massimi.
+Per trovare la foglia con peso massimo nei sottoalberi sinistro e destro,
+posso utilizzare la funzione find_leaf_max_timestamp definita in precedenza.
+Questa funzione calcola la foglia con peso massimo in un albero binario.
   
 Fase 3 : Calcolo dell'EAmax partendo dalla fgolia più profonda fino alla radice
 
