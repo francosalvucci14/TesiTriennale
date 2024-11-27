@@ -150,9 +150,9 @@ Per ogni nodo NN:
 
 - Se $N$ è una **foglia**, il tempo massimo per visitarlo è semplicemente il massimo $t_\max=\max⁡(\omega(N))$ dei suoi timestamp. Questo è corretto perché una foglia non ha figli da considerare.
 - Se $N$ ha figli $L$ (sinistro) e $R$ (destro), il tempo massimo per visitare il sottoalbero dipende da:
-    - Il tempo massimo $t_{\max, L}$ per visitare il sottoalbero sinistro.
-    - Il tempo massimo $t_{max, R}$​ per visitare il sottoalbero destro.
-    - Per garantire che entrambi i figli siano raggiungibili, $t_\max$​ deve essere il **minimo** tra $t_{\max, L}​$ e $t_{max, R}​$, poiché il percorso verso entrambi deve essere valido temporalmente.
+    - Il tempo massimo $t_{\max,L}$ per visitare il sottoalbero sinistro.
+    - Il tempo massimo $t_{\max,R}$​ per visitare il sottoalbero destro.
+    - Per garantire che entrambi i figli siano raggiungibili, $t_\max$​ deve essere il **minimo** tra $t_{\max,L}​$ e $t_{max,R}​$, poiché il percorso verso entrambi deve essere valido temporalmente.
 
 **Correttezza locale**: Questo approccio assicura che si selezioni sempre un tempo che permetta di visitare sia il sottoalbero sinistro che il destro.
 
