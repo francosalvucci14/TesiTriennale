@@ -8,13 +8,15 @@
 ## posso utilizzare la funzione find_leaf_max_timestamp definita in precedenza.
 ## Questa funzione calcola la foglia con peso massimo in un albero binario.
 
-# Fase 3 : Calcolo dell'EAmax partendo dalla fgolia più profonda fino alla radice
+# Fase 3 : Calcolo dell'EAmax partendo dalla fgolia più profonda fino alla radice (e se fosse EA min? quindi quello che parte dalla foglia più profonda, con peso minimo)
+## se non esiste EAmin allora non esiste EAmax, ma se non esiste EAmax non è detto che non eisste EAmin
 ## Questa fase è simmetrica, ovvero vale per entrambi i sottoalberi, quindi ci concentreremo solo su un sottoalbero
 ## A questo punto, applico l'algoritmo per calcolare l'EA, usando la struttura dati del professore, ovvero quella che impiega tempo O(logMlogL)
 ## Se la funzione ritortna -inf, sia da un lato che dall'altro, allora ritorno subito False (l'albero non è temporalmente connesso)
 
 # Fase 4 : Verifica finale
-## Se l'EAmax calcolato è maggiore o uguale al timestamp massimo del sottoalbero sinistro e destro, allora l'albero è temporalmente connesso. ??
+## Se l'EAmax calcolato è minore o uguale al timestamp massimo del sottoalbero sinistro e destro,
+## ovvero il timestamp che mi permette di visitare tutto il sottoalbero, allora l'albero è temporalmente connesso.
 ## Altrimenti, l'albero non è temporalmente connesso.
 
 ## Oppure faccio cosi, parto dall'EAmax da sx, e lo uso come input per la visita DFS temporale da root, ovvero uso EAmax ad sx come t_start per la visita.
@@ -234,10 +236,14 @@ def algoritmo(root,tree=None):
 # }
 
 root = Node('A')
-root.left = Node('B', weight=[1, 2])
-root.right=Node('C', weight=[2])
-root.left.left=Node('D', weight=[2])
-root.right.right=Node('E', weight=[2])
+root.left = Node('B', weight=[2])
+root.right=Node('C', weight=[3,5])
+root.left.left=Node('D', weight=[1])
+root.left.right=Node('E', weight=[1,5,9])
+root.left.left.left=Node('I', weight=[2,4])
+root.right.left=Node('F', weight=[7])
+root.right.right=Node('G', weight=[6])
+root.right.left.left=Node('H', weight=[8,9,11])
 
 # Calcolo
 #left_leaf, right_leaf, max_t_sx, max_t_dx = find_leaves_with_max_weights_in_subtrees(root)
