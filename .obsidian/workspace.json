@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Nuovo Approccio.md",
+                "file": "Algoritmo Corretto con Dimostrazione.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Nuovo Approccio"
+              "title": "Algoritmo Corretto con Dimostrazione"
             }
           }
         ],
@@ -122,10 +122,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Nuovo Approccio.md"
+                "file": "Algoritmo Corretto con Dimostrazione.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of Nuovo Approccio"
+              "title": "Outline of Algoritmo Corretto con Dimostrazione"
             }
           },
           {
@@ -144,7 +144,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Nuovo Approccio.md",
+                "file": "Algoritmo Corretto con Dimostrazione.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -154,7 +154,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Nuovo Approccio"
+              "title": "Backlinks for Algoritmo Corretto con Dimostrazione"
             }
           }
         ],
@@ -175,12 +175,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "849f1bf1913891b3",
   "lastOpenFiles": [
+    "ProvaAlberoTemporale.png",
+    "Algoritmo Funzionante (costo troppo elevato).md",
+    "Algoritmo Corretto con Dimostrazione.md",
     "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/find_deepest_leaf_with_max_timestamp.py",
     "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2",
-    "Algoritmo Funzionante.md",
-    "Nuovo Approccio.md",
     "Temporal_Tree_tests/algoritmo3_StruttutaPaper.py",
     "temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.png",
@@ -192,10 +193,8 @@
     "Temporal_Chain_Tree_Probability/Failure/temp_chain.py",
     "Temporal_Chain_Tree_Probability/Failure",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.py",
-    "Temporal_Tree_tests/algoritmo_FUNZIONANTE_DijkstraLike_v2.py",
     "Temporal_Tree_tests/complessità_algoritmo_funz.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
-    "ProvaAlberoTemporale.png",
     "Path Problems On Temporal Graphs.md",
     "img/algoritmo1.png",
     "img.md",
