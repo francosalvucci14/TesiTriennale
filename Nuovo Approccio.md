@@ -1,3 +1,11 @@
+```table-of-contents
+title: 
+style: nestedList # TOC style (nestedList|nestedOrderedList|inlineFirstLevel)
+minLevel: 0 # Include headings from the specified level
+maxLevel: 0 # Include headings up to the specified level
+includeLinks: true # Make headings clickable
+debugInConsole: false # Print debug info in Obsidian console
+```
 # Algoritmo
 
 L'algoritmo è diviso in più fasi : 
@@ -98,7 +106,7 @@ La correttezza della dimostrazione e dell'algoritmo dipende dal fatto che ogni f
 Consideriamo i punti critici 
 
 ---
-### **1. Fase 1: Verifica della connettività temporale**
+## **1. Fase 1: Verifica della connettività temporale**
 
 L'algoritmo di visita **DFS Temporale** esplora solo i nodi i cui timestamp sugli archi sono maggiori/uguali al tempo attuale di visita. Infatti alla fine della dfs avremo un'insieme di nodi definito in questo modo 
 $$V(root)=\{v\in V:t_{v}\geq t_{root}\}$$
@@ -109,7 +117,7 @@ Questo lo possiamo affermare perchè, se dalla root esiste almeno un nodo che no
 Questo implica che sul percorso da root al nodo, ovvero $P_{root\to u}$ ,esiste un arco che va a rompere la sequenza crescente dei timestamp, e di conseguenza questo implica che root e $u$ non possono connettersi temporalmente.
 
 ---
-### **2. Fase 2: Ricerca della foglia più profonda con timestamp minimo**
+## **2. Fase 2: Ricerca della foglia più profonda con timestamp minimo**
 
 Questa fase si concentra sul ricercare le foglie più profonde dei rispettivi sottoalberi, tale che la foglia che viene presa è quella con timestamp minimo fra tutte le foglie in profondità massima.
 
@@ -127,16 +135,16 @@ Queste due condizioni si possono dimostrare in modo logico :
 2. Se l'$EA_{\max}$ non esiste, significa che se parto dalla foglia più profonda con timestamp massimo non riesco a raggiungere l'altro nodo, che nel nostro caso è la root. Questo però non implica che sicuramente non esiste $EA_{\min}$ . Infatti, semplicemente possiamo avere la casistica in cui l'$EA_{\max}$ non esiste a causa di una sequenza non crescente tra due nodi, partendo dal nodo con timestamp massimo, ma avere allo stesso tempo l'$EA_{\min}$ partendo sempre da quel nodo.
 
 ---
-### **3. Fase 3: Calcolo dell'EA minimo**
+## **3. Fase 3: Calcolo dell'EA minimo**
 
 In questa fase ci occupiamo di calcolare l'$EA_{\min}$ partendo dalla foglia in fase 2 fino alla radice.
 
 L'algoritmo che fa ciò si basa sulla struttura dati del paper del professore, e la dimostrazione di correttezza è spiegata li
 
 ---
-### **4. Fase 4: Calcolo tempo massimo per visitare il sottoalbero**
+## **4. Fase 4: Calcolo tempo massimo per visitare il sottoalbero**
 
-#### **1. Correttezza dell'aggiornamento a livello locale**
+### **1. Correttezza dell'aggiornamento a livello locale**
 
 Per ogni nodo NN:
 
@@ -150,7 +158,7 @@ Per ogni nodo NN:
 
 ---
 
-#### **2. Propagazione bottom-up**
+### **2. Propagazione bottom-up**
 
 Il calcolo viene effettuato risalendo dai nodi foglia fino alla radice:
 
@@ -159,7 +167,7 @@ Il calcolo viene effettuato risalendo dai nodi foglia fino alla radice:
 
 **Correttezza globale**: La propagazione bottom-up garantisce che ogni sottoalbero soddisfi i vincoli temporali richiesti, e il risultato finale rappresenta il tempo massimo per visitare tutto il sottoalbero.
 
-### **5. Check finale**
+## **5. Check finale**
 
 Nell'ultima fase si fa un semplice controllo tra gli $EA_{\min}$ e i $t_{max}$ dei rispettivi sottoalberi
 

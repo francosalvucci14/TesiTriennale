@@ -139,26 +139,12 @@
             }
           },
           {
-            "id": "2225c7e0aa2c2e1f",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "Algoritmo Funzionante.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "Outgoing links from Algoritmo Funzionante"
-            }
-          },
-          {
             "id": "4b5de90dde10b935",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Algoritmo Funzionante.md",
+                "file": "Nuovo Approccio.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -168,20 +154,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Algoritmo Funzionante"
-            }
-          },
-          {
-            "id": "f8f762387e62b35d",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
+              "title": "Backlinks for Nuovo Approccio"
             }
           }
         ]
