@@ -217,6 +217,8 @@ def algoritmo(root):
         print("\nCheck Fase 4 NO")
         return "\nL'albero non è temporalmente connesso."
 
+    
+
 # root = Node('A')
 # root.left = Node('B', weight=[1, 3, 5, 7])
 # root.right = Node('C', weight=[2, 5, 6])
@@ -229,10 +231,25 @@ def algoritmo(root):
 # root.left.left = Node('D', weight=[2,4])
 # root.right.right = Node('E', weight=[2,5,6])
 
+# root = Node('A')
+# root.left = Node('B', weight=[2,6])
+# root.right = Node('C', weight=[6])
+# root.left.left = Node('D', weight=[1,2,3,4,5])
+# root.right.right = Node('E', weight=[6])
+# root=Node('A')
+# root.left = Node('B', weight=[1,3])
+# root.right = Node('C', weight=[2,5])
+# root.left.left = Node('D', weight=[2,7])
+
+# root = Node('A')
+# root.left = Node('B', weight=[3])
+# root.right = Node('C', weight=[1,4])
+# root.left.left = Node('D', weight=[1,3])
+# root.left.right = Node('E', weight=[2,5])
+
 root = Node('A')
-root.left = Node('B', weight=[2,6])
-root.right = Node('C', weight=[6])
-root.left.left = Node('D', weight=[1,2,3,4,5])
-root.right.right = Node('E', weight=[6])
+root.left = Node('B', weight=[3])
+root.right = Node('C', weight=[2, 5])
+root.right.right = Node('D', weight=[1,2,3,4,5,6,7])
 
 print(algoritmo(root))

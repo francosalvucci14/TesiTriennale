@@ -313,11 +313,10 @@ def algoritmo(root):
 # root.right.right = Node('G', weight=[6, 7])
 
 # Esempio 2
-root = Node('A')
-root.left = Node('B', weight=[1, 3, 5, 7])
-root.right = Node('C', weight=[2, 5, 6])
-root.left.left = Node('D', weight=[2, 3])
-root.right.right = Node('E', weight=[5, 6, 7])
+root=Node('A')
+root.left = Node('B', weight=[1,3])
+root.right = Node('C', weight=[2,5])
+root.left.left = Node('D', weight=[2,7])
 
 # Esempio 3
 # root = Node('A')

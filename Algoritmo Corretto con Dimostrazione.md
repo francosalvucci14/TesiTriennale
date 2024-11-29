@@ -405,3 +405,53 @@ def algoritmo(root):
         print("\nCheck Fase 4 NO")
         return "\nL'albero non è temporalmente connesso."
 ```
+
+---
+# Algoritmo 2
+
+Pseudocode : 
+
+````pseudo
+    \begin{algorithm}
+    \caption{Is Temporaly Connected}
+    \begin{algorithmic}
+      \Procedure{DFS-EA-Tmax}{$v$}
+	      \If{$v$ è foglia}
+		      \Return $L_v[1],L_v[n]$
+          \EndIf
+          \State $min_{sx},max_{sx}=$ DFS-EA-Tmax($sx(v)$)
+          \State $min_{dx},max_{dx}=$ DFS-EA-Tmax($dx(v)$)
+          \If{not ($min_{sx}\leq max_{dx}\lor min_{dx}\leq max_{sx}$)}
+	          \Return $\infty,\infty$
+          \EndIf
+          \State $EA=\max(min_{sx},min_{dx})$
+          \State $Tmax=\min(max_{sx},max_{dx})$
+          \State NextTime=BinarySearch($L_v,EA$)
+          \Return NextTime,$\min(Tmax,L_v[n])$
+      \EndProcedure
+      \end{algorithmic}
+    \end{algorithm}
+````
+
+```python title="Algoritmo 2"
+def dfs_EA_tmax(root):
+    if root is None:
+        return float("-inf"),float("inf")
+    if root.left == None and root.right == None:
+        return root.weight[0],root.weight[-1] #min(root.weight), max(root.weight)
+
+    # Per ogni figlio del nodo corrente, faccio partire scansione ricorsiva per alberi non binari
+    min_sx,max_sx = dfs_EA_tmax(root.left)
+    min_dx,max_dx = dfs_EA_tmax(root.right)
+
+    if not (min_sx<=max_dx or min_dx<=max_sx):
+        return float("inf"),float("inf")
+
+    EA = max(min_sx,min_dx)
+    t_max_visita = min(max_sx,max_dx)
+    k = binary_search(root.weight,EA)
+    if k == -1:
+        return float("inf"),float("inf")
+    return k,min(t_max_visita,root.weight[-1])
+```
+

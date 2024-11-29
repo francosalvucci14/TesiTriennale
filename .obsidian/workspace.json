@@ -139,22 +139,30 @@
             }
           },
           {
-            "id": "4b5de90dde10b935",
+            "id": "e7a0ee2a6a178632",
             "type": "leaf",
             "state": {
-              "type": "backlink",
+              "type": "outgoing-link",
               "state": {
                 "file": "Algoritmo Corretto con Dimostrazione.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
+                "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Algoritmo Corretto con Dimostrazione"
+              "icon": "links-going-out",
+              "title": "Outgoing links from Algoritmo Corretto con Dimostrazione"
+            }
+          },
+          {
+            "id": "4c5c93f67547d14f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           }
         ],
@@ -175,25 +183,25 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "849f1bf1913891b3",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
-    "Algoritmo Corretto con Dimostrazione.pdf",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/__pycache__/test_algoritmo2.cpython-310.pyc",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/__pycache__",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/generate_random_tree.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/utils/generate_random_tree.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/utils/find_leaf_max_timstamp.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/utils/find_deepest_leaf_with_max_timestamp.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/utils/find_deepest_leaf_subtrees.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/utils",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/test/algoritmo_completo.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/test/test_algoritmo_completo.py",
+    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/test",
     "ProvaAlberoTemporale.png",
     "Algoritmo Funzionante (costo troppo elevato).md",
     "Algoritmo Corretto con Dimostrazione.md",
-    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2/find_deepest_leaf_with_max_timestamp.py",
-    "Temporal_Tree_tests/NuovoApproccio/NuovoApproccio2",
-    "Temporal_Tree_tests/algoritmo3_StruttutaPaper.py",
     "temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.png",
     "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike.png",
-    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v4_withPlot.py",
-    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v3_withPlot.py",
-    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v3.py",
-    "Temporal_Chain_Tree_Probability/Failure/temp_chain_v2.py",
-    "Temporal_Chain_Tree_Probability/Failure/temp_chain.py",
-    "Temporal_Chain_Tree_Probability/Failure",
-    "Temporal_Chain_Tree_Probability/temp_chain_DijkstraLike_v2.py",
     "Temporal_Tree_tests/complessità_algoritmo_funz.md",
     "Temporal_Tree_tests/Prove di Algoritmi Funzionanti.md",
     "Path Problems On Temporal Graphs.md",
