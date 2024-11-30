@@ -54,6 +54,7 @@ def dfs_EA_tmax(root):
     if root is None:
         return float("-inf"),float("inf")
     if root.left == None and root.right == None:
+        print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (foglia) : {root.weight[0],root.weight[-1]}")
         return root.weight[0],root.weight[-1] #min(root.weight), max(root.weight)
 
     # Per ogni figlio del nodo corrente, faccio partire scansione ricorsiva per alberi non binari
@@ -65,21 +66,21 @@ def dfs_EA_tmax(root):
     
     EA = max(min_sx,min_dx)
     t_max_visita = min(max_sx,max_dx)
+    print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno) : {EA,t_max_visita}")
     k = binary_search(root.weight,EA)
     if k == -1:
         return float("inf"),float("inf")
     return k,min(t_max_visita,root.weight[-1])
 
 def algoritmo(root):
-    if not verify_temporal_connectivity(root.left):
-       return False
     
     # Tutti figli root, poi dfs per ongi figlio per alberi non binari
     ea_sx,t_max_sx = dfs_EA_tmax(root.left)
     ea_dx,t_max_dx = dfs_EA_tmax(root.right)
-    print(f"ea_sx,t_max_sx : {ea_sx,t_max_sx}")
-    print(f"ea_dx,t_max_dx : {ea_dx,t_max_dx}")
-
+    print("------------------------------------------------")
+    print(f"EA e tempo max visita sx della radice {root.value} : {ea_sx,t_max_sx}")
+    print(f"EA e tempo max visita dx della radice {root.value} : {ea_dx,t_max_dx}")
+    
     if ea_sx == float("inf") or ea_dx == float("inf"):
         return False
     
@@ -132,10 +133,16 @@ def algoritmo(root):
 # root.left.right = Node('E', weight=[4,6])
 
 # Esempio 7
+# root = Node('A')
+# root.left = Node('B', weight=[1,3])
+# root.left.left = Node('D', weight=[1,2])
+# root.left.right = Node('E', weight=[2,4])
+
+# Esempio 8
 root = Node('A')
-root.left = Node('B', weight=[1,2])
-root.right = Node('C', weight=[1,2])
-root.left.left = Node('D', weight=[2])
-root.left.right = Node('E', weight=[3])
+root.left = Node('B', weight=[1,4])
+root.left.left = Node('C', weight=[2,4])
+root.left.left.left = Node('D', weight=[1,3])
+root.left.left.left.left = Node('E', weight=[3,4])
 
 print(f"Albero temporalmente connesso? : {algoritmo(root)}")

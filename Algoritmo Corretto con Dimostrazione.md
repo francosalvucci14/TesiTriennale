@@ -100,13 +100,13 @@ Per questa fase il costo va raddoppiato, in quanto vale la simmetria del problem
 La fase 4 costa $$O(1)$$
 Di conseguenza il costo totale dell'algoritmo risulta essere $$O(M)+O(M)+O(M)+O(\log M\log L)+O(1)\implies O(M)+O(\log M\log L)$$
 Possiamo notare che l'algoritmo risulta essere lineare nel numero di timestamp, e anche nel caso peggiore il costo computazionale sarà $$O(M)$$
-# Correttezza dell'algoritmo
+## Correttezza dell'algoritmo
 
 La correttezza della dimostrazione e dell'algoritmo dipende dal fatto che ogni fase sia implementata in modo rigoroso e che i vincoli posti siano sufficienti per garantire la proprietà di **connessione temporale**. 
 Consideriamo i punti critici 
 
 ---
-## **1. Fase 1: Verifica della connettività temporale**
+### **1. Fase 1: Verifica della connettività temporale**
 
 L'algoritmo di visita **DFS Temporale** esplora solo i nodi i cui timestamp sugli archi sono maggiori/uguali al tempo attuale di visita. Infatti alla fine della dfs avremo un'insieme di nodi definito in questo modo 
 $$V(root)=\{v\in V:t_{v}\geq t_{root}\}$$
@@ -117,7 +117,7 @@ Questo lo possiamo affermare perchè, se dalla root esiste almeno un nodo che no
 Questo implica che sul percorso da root al nodo, ovvero $P_{root\to u}$ ,esiste un arco che va a rompere la sequenza crescente dei timestamp, e di conseguenza questo implica che root e $u$ non possono connettersi temporalmente.
 
 ---
-## **2. Fase 2: Ricerca della foglia più profonda con timestamp minimo**
+### **2. Fase 2: Ricerca della foglia più profonda con timestamp minimo**
 
 Questa fase si concentra sul ricercare le foglie più profonde dei rispettivi sottoalberi, tale che la foglia che viene presa è quella con timestamp minimo fra tutte le foglie in profondità massima.
 
@@ -135,16 +135,16 @@ Queste due condizioni si possono dimostrare in modo logico :
 2. Se l'$EA_{\max}$ non esiste, significa che se parto dalla foglia più profonda con timestamp massimo non riesco a raggiungere l'altro nodo, che nel nostro caso è la root. Questo però non implica che sicuramente non esiste $EA_{\min}$ . Infatti, semplicemente possiamo avere la casistica in cui l'$EA_{\max}$ non esiste a causa di una sequenza non crescente tra due nodi, partendo dal nodo con timestamp massimo, ma avere allo stesso tempo l'$EA_{\min}$ partendo sempre da quel nodo.
 
 ---
-## **3. Fase 3: Calcolo dell'EA minimo**
+### **3. Fase 3: Calcolo dell'EA minimo**
 
 In questa fase ci occupiamo di calcolare l'$EA_{\min}$ partendo dalla foglia in fase 2 fino alla radice.
 
 L'algoritmo che fa ciò si basa sulla struttura dati del paper del professore, e la dimostrazione di correttezza è spiegata li
 
 ---
-## **4. Fase 4: Calcolo tempo massimo per visitare il sottoalbero**
+### **4. Fase 4: Calcolo tempo massimo per visitare il sottoalbero**
 
-### **1. Correttezza dell'aggiornamento a livello locale**
+#### **1. Correttezza dell'aggiornamento a livello locale**
 
 Per ogni nodo NN:
 
@@ -158,7 +158,7 @@ Per ogni nodo NN:
 
 ---
 
-### **2. Propagazione bottom-up**
+#### **2. Propagazione bottom-up**
 
 Il calcolo viene effettuato risalendo dai nodi foglia fino alla radice:
 
@@ -167,7 +167,7 @@ Il calcolo viene effettuato risalendo dai nodi foglia fino alla radice:
 
 **Correttezza globale**: La propagazione bottom-up garantisce che ogni sottoalbero soddisfi i vincoli temporali richiesti, e il risultato finale rappresenta il tempo massimo per visitare tutto il sottoalbero.
 
-## **5. Check finale**
+### **5. Check finale**
 
 Nell'ultima fase si fa un semplice controllo tra gli $EA_{\min}$ e i $t_{max}$ dei rispettivi sottoalberi
 
@@ -175,7 +175,7 @@ Se vale che l'$EA_{\min,sx}\gt t_{\max,dx}$, allora significa che il tempo minim
 
 Ovviamente la stessa cosa vale per l'$EA_{\min,dx}$ e $t_{\max,sx}$.
 
-## Conclusione
+### Conclusione
 
 Seguendo tutte le fasi dell'algoritmo, andiamo a coprire tutte queste casistiche : 
 1. I nodi di un sottoalbero sono temporalmente connessi fra loro (fase 1+fase3)
@@ -183,7 +183,7 @@ Seguendo tutte le fasi dell'algoritmo, andiamo a coprire tutte queste casistiche
 
 E di conseguenza l'algoritmo è corretto, e ritorna correttamente True o False
 
-# Codice dell'algoritmo
+## Codice dell'algoritmo
 
 ```python title="is_temporaly_connected"
 from bisect import bisect_left
@@ -432,6 +432,7 @@ Pseudocode :
       \end{algorithmic}
     \end{algorithm}
 ````
+Codice Python
 
 ```python title="Algoritmo 2"
 def dfs_EA_tmax(root):
@@ -440,7 +441,6 @@ def dfs_EA_tmax(root):
     if root.left == None and root.right == None:
         return root.weight[0],root.weight[-1] #min(root.weight), max(root.weight)
 
-    # Per ogni figlio del nodo corrente, faccio partire scansione ricorsiva per alberi non binari
     min_sx,max_sx = dfs_EA_tmax(root.left)
     min_dx,max_dx = dfs_EA_tmax(root.right)
 
@@ -449,9 +449,42 @@ def dfs_EA_tmax(root):
 
     EA = max(min_sx,min_dx)
     t_max_visita = min(max_sx,max_dx)
-    k = binary_search(root.weight,EA)
-    if k == -1:
+    k = binary_search(root.weight,EA) # K = minimo timestamp >= EA
+    if k == -1: 
         return float("inf"),float("inf")
     return k,min(t_max_visita,root.weight[-1])
 ```
 
+## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
+
+L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
+
+**Funzionamento di base:**
+
+1. **Caso base:** Se il nodo è una foglia, l'EA è il peso minimo dell'arco entrante e il tempo di visita massimo è il peso massimo dell'arco entrante.
+2. **Caso ricorsivo:**
+    - Si calcolano ricorsivamente l'EA massimo e il tempo di visita massimo per i sottoalberi sinistro e destro.
+    - Si verifica se i due sottoalberi sono compatibili temporalmente (cioè se esiste un ordine di visita che rispetta i vincoli temporali).
+    - Si calcola l'EA massimo del nodo corrente come il massimo tra gli EA massimi dei sottoalberi.
+    - Si calcola il tempo di visita massimo del nodo corrente considerando il minimo tra il tempo di visita massimo dei sottoalberi e il peso massimo dell'arco entrante nel nodo corrente.
+
+**Ipotesi induttiva:** Assumiamo che l'algoritmo funzioni correttamente per tutti i sottoalberi di un nodo.
+
+**Passo base:** Per le foglie, l'algoritmo calcola correttamente l'EA e il tempo di visita massimo, in quanto non ci sono sottoalberi.
+
+**Passo induttivo:** Consideriamo un nodo interno. Per ipotesi induttiva, i valori di EA massimo e tempo di visita massimo calcolati per i sottoalberi sinistro e destro sono corretti.
+
+- **Verifica di compatibilità:** La condizione `if not (min_sx<=max_dx or min_dx<=max_sx)` assicura che i due sottoalberi siano compatibili temporalmente. Se questa condizione non fosse verificata, non esisterebbe un ordine di visita valido per l'intero sottoalbero.
+- **Calcolo dell'EA massimo:** Il massimo EA del nodo corrente è correttamente calcolato come il massimo dei minimi timestamo di tutti gli archi di un sottoalbero.
+- **Calcolo del tempo di visita massimo:** Il tempo di visita massimo è calcolato considerando il minimo tra i massimi di tutti i timestamp di un sottoalbero. Questo è corretto perché il tempo di visita massimo è limitato sia dal tempo necessario per visitare tutti i nodi del sottoalbero e sia dal tempo necessario per raggiungere il nodo stesso.
+
+**Conclusione:** L'algoritmo calcola correttamente l'EA massimo e il tempo di visita massimo per ogni nodo dell'albero, e quindi per l'intero albero.
+
+## Costo computazionale
+
+Analizziamo l'equazione di ricorrenza dell'algoritmo, che è la seguente $$T(N)=2T\left(\frac{N}{2}\right)+\log(M)$$
+Applicando lo strotolamento, abbiamo che 
+$$\begin{align}T(N)=&2T\left(\frac{N}{2}\right)+\log(M)\\&2\left(2T\left(\frac{N}{2}\right)+\log(M)\right)+\log(M)\\&\vdots\\&2^iT\left(\frac{N}{2^i}\right)+\sum\limits_{j=0}^{i-1}2^i\log(M)\end{align}$$
+A questo punto, $\frac{N}{2^i}=1\iff i=\log_2(N)$
+Così facendo, l'equazione diventa 
+$$\begin{align}&2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^i\log(M)\\&=\\&N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
