@@ -416,6 +416,9 @@ Pseudocode :
     \caption{Is Temporaly Connected}
     \begin{algorithmic}
       \Procedure{DFS-EA-Tmax}{$v$}
+      \If{$v$ è Nullo}
+	      \Return $-\infty,\infty$
+      \EndIf
 	      \If{$v$ è foglia}
 		      \Return $L_v[1],L_v[n]$
           \EndIf
@@ -426,12 +429,68 @@ Pseudocode :
           \EndIf
           \State $EA=\max(min_{sx},min_{dx})$
           \State $Tmax=\min(max_{sx},max_{dx})$
-          \State NextTime=BinarySearch($L_v,EA$)
+          \State NextTime = BinarySearch($L_v,EA$)
+          \If{NextTime $=-1$}
+	          \Return $\infty,\infty$
+          \EndIf
           \Return NextTime,$\min(Tmax,L_v[n])$
       \EndProcedure
       \end{algorithmic}
     \end{algorithm}
 ````
+
+**Variabili** : 
+- $L_v$ : lista di timestamp associati all'arco entrante in $v$
+- $min,max$ sia $sx,dx$ sono rispettivamente il timestamp minimo e massimo per il sottoalbero radicato nel nodo
+	- Se il nodo è foglia, questi valori saranno semplicemente il tempo minimo e massimo dell'arco entrante nel nodo
+	- Se il nodo è interno, questi valori indicano i tempi minimi e massimi per il sottoalbero radicato nel nodo
+- I valori min e max servono per calcolare l'$EA_\max$ e $T_\max$, valori che poi verrano propagati dal basso verso l'alto. In questo modo, una volta arrivati alla radice dell'albero originale, avremo i valori per quanto riguarda l'$EA_\max$ dal basso verso l'alto, e per quanto riguarda il $T_\max$, ovvero il tempo massimo di visita del sottoalbero
+	- Questi valori vengono calcolati per ogni possibile sottoalbero, in quanto la propagazione parte dal basso verso l'alto
+- La condizione espressa nella riga dell'IF ci assicura che i nodi di un sottoalbero sono temporalmente connessi fra loro, questo sempre per ogni sottoalbero fino a risalire la radice
+- Il valore $NextTime$ indica il prossimo timestamp da prendere per continuare la propagazione dell'$EA_\max$, se tale valore non esiste, ovvero se ci troviamo a guardare un'arco tale che $\forall t\in L_v,t<EA_\max$, allora ritorniamo $\infty$, e di conseguenza affermiamo che non è possibile trovare un'$EA$ bottom-up, che implica che risalendo l'albero, un nodo del livello $i-esimo$ non si potrà connettere con gli altri nodi del livello $(i-1)-esimo$ e cosi via
+
+Questa procedura viene poi applicata all'algoritmo di partenza, ovvero l'algoritmo
+
+```pseudo
+    \begin{algorithm}
+    \caption{Algoritmo}
+    \begin{algorithmic}
+      \Procedure{Alg}{$root$}
+      \State $EA_{sx},T_{max,sx}=$ DFS-EA-Tmax($sx(root)$)
+      \State $EA_{dx},T_{max,dx}=$ DFS-EA-Tmax($dx(root)$)
+      \If{$EA_{sx}=\infty\lor EA_{dx}=\infty$}
+      \Return False
+      \EndIf
+      \If{$EA_{sx}\leq T_{max,dx}\land EA_{dx}\leq T_{max,sx}$}
+      \Return True
+	    \Else
+	    \Return False
+      \EndIf
+      \EndProcedure
+      \end{algorithmic}
+    \end{algorithm}
+```
+Versione python
+
+```python
+def algoritmo(root):
+
+    ea_sx,t_max_sx = dfs_EA_tmax(root.left)
+    ea_dx,t_max_dx = dfs_EA_tmax(root.right)
+    print("------------------------------------------------")
+    print(f"EA e tempo max visita sx della radice {root.value} : {ea_sx,t_max_sx}")
+    print(f"EA e tempo max visita dx della radice {root.value} : {ea_dx,t_max_dx}")
+
+    if ea_sx == float("inf") or ea_dx == float("inf"):
+        return False
+
+    # Ogni controllo del caso per alberi non binari
+    if ea_sx <= t_max_dx and ea_dx <= t_max_sx:
+        return True
+    else:
+        return False
+```
+
 Codice Python
 
 ```python title="Algoritmo 2"
