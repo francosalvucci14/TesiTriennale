@@ -1,10 +1,10 @@
 class Node:
-    def __init__(self, value, weight=[],root=None):
+    def __init__(self, value, weight=[]):
         self.value = value
         self.weight = weight
         self.left = None
         self.right = None
-        self.root = root
+
 
 def binary_search(arr, target):
     if len(arr) == 1:  # Caso in cui l'array ha un solo elemento
@@ -118,6 +118,7 @@ def dfs_EA_tmax_spazioN(root):
 
     return sottoalberi
 
+
 def algoritmo(root):
     print("Questo è per alberi binari\n")
     
@@ -159,6 +160,12 @@ def algoritmo2(root):
         return True
     else:
         return False
+
+def print_tree(root, level=0):
+    if root is not None:
+        print("  " * level + f"Node {root.value}, Weight: {root.weight}")
+        for child in root.children:
+            print_tree(child, level + 1)
 
 
 # Esempio 1
@@ -250,7 +257,9 @@ root.right.right = Node('E', weight=[6])
 # root.right.right.left = Node('I', weight=[1,15])
 # root.right.right.right = Node('J', weight=[1,11])
 
+
 print("Versione con spazio O(1)")
 print(f"Albero temporalmente connesso? : {algoritmo(root)}")
 print("\nVersione con spazio O(n)")
 print(f"Albero temporalmente connesso? : {algoritmo2(root)}")
+
