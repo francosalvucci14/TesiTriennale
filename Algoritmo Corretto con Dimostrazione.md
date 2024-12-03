@@ -409,7 +409,11 @@ def algoritmo(root):
 ---
 # Algoritmo 2
 
-Pseudocode : 
+Due versioni : 
+- una che usa spazio costante ma paga $O(N\log(M))$ per ogni sottoalbero
+- una che usa spazio $O(N)$ ma paga $O(N\log(M))$ sempre, quindi fa una passata per tutto il sottoalbero
+
+Pseudocode versione 1: 
 
 ````pseudo
     \begin{algorithm}
@@ -494,26 +498,80 @@ def algoritmo(root):
 Codice Python
 
 ```python title="Algoritmo 2"
-def dfs_EA_tmax(root):
+def dfs_EA_tmax_spazio1(root):
+
     if root is None:
         return float("-inf"),float("inf")
     if root.left == None and root.right == None:
-        return root.weight[0],root.weight[-1] #min(root.weight), max(root.weight)
+        print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (foglia) : {root.weight[0],root.weight[-1]}")
+        return root.weight[0],root.weight[-1] 
+        
+    min_sx,max_sx = dfs_EA_tmax_spazio1(root.left)
 
-    min_sx,max_sx = dfs_EA_tmax(root.left)
-    min_dx,max_dx = dfs_EA_tmax(root.right)
+    min_dx,max_dx = dfs_EA_tmax_spazio1(root.right)
 
-    if not (min_sx<=max_dx or min_dx<=max_sx):
+    if min_sx>max_dx and min_dx>max_sx:
         return float("inf"),float("inf")
 
     EA = max(min_sx,min_dx)
     t_max_visita = min(max_sx,max_dx)
-    k = binary_search(root.weight,EA) # K = minimo timestamp >= EA
-    if k == -1: 
-        return float("inf"),float("inf")
-    return k,min(t_max_visita,root.weight[-1])
+    print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno) : {EA,t_max_visita}")
+    k = binary_search(root.weight,EA)
+    nextTimeMax = binary_search_leq(root.weight,t_max_visita) 
+    if k == -1 or nextTimeMax == -1:
+        
+        exit("Errore: EA o tempo max visita non trovati")
+    minTime = min(t_max_visita,nextTimeMax)
+
+    return k,minTime
 ```
 
+Versione con spazio $O(N)$
+
+```python title="Versione spazio lineare"
+def dfs_EA_tmax_spazioN(root):
+    # Caso base: nodo nullo
+    if root is None:
+        return {}
+
+    # Caso base: foglia
+    if root.left is None and root.right is None:
+        print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (foglia): {root.weight[0], root.weight[-1]}")
+        return {root.value: (root.weight[0], root.weight[-1])}
+
+    # Variabili per raccogliere i valori EA e Tmax per ogni sottoalbero
+    sottoalberi = {}
+
+    # Calcolo ricorsivo per il sottoalbero sinistro
+    if root.left is not None:
+        sottoalberi.update(dfs_EA_tmax_spazioN(root.left))
+
+    # Calcolo ricorsivo per il sottoalbero destro
+    if root.right is not None:
+        sottoalberi.update(dfs_EA_tmax_spazioN(root.right))
+
+    # Estrai i valori di EA e Tmax dai figli
+    ea_sx, t_max_sx = sottoalberi[root.left.value] if root.left else (float("-inf"), float("inf"))
+    ea_dx, t_max_dx = sottoalberi[root.right.value] if root.right else (float("-inf"), float("inf"))
+
+    # Controllo di consistenza tra i sottoalberi
+    if ea_sx > t_max_dx and ea_dx > t_max_sx:
+        return {root.value: (float("inf"), float("inf"))}
+
+    # Calcolo EA e Tmax per il nodo corrente
+    EA = max(ea_sx, ea_dx)
+    t_max_visita = min(t_max_sx, t_max_dx)
+    print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno): {EA, t_max_visita}")
+
+    k = binary_search(root.weight,EA)
+    nextTimeMax = binary_search_leq(root.weight,t_max_visita) #binary search per trovare il predecessore, quindi il primo tempo t <= t_max_visita
+
+    minTime = min(t_max_visita,nextTimeMax)
+    # Aggiornamento del nodo corrente nei risultati
+    sottoalberi[root.value] = (k, minTime)
+
+    return sottoalberi
+```
 ## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
 
 L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
