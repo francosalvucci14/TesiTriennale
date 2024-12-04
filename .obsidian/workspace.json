@@ -108,52 +108,6 @@
               "icon": "git-pull-request",
               "title": "Source Control"
             }
-          },
-          {
-            "id": "e7a0ee2a6a178632",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "Algoritmo Corretto con Dimostrazione.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "Outgoing links from Algoritmo Corretto con Dimostrazione"
-            }
-          },
-          {
-            "id": "4c5c93f67547d14f",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
-            }
-          },
-          {
-            "id": "fed55855d78b2ee8",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "Algoritmo Corretto con Dimostrazione.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Algoritmo Corretto con Dimostrazione"
-            }
           }
         ],
         "currentTab": 1
@@ -173,7 +127,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "5ed8ac9890be219b",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
     "Algoritmo Corretto con Dimostrazione.pdf",
     "Path Problems On Temporal Graphs.md",
