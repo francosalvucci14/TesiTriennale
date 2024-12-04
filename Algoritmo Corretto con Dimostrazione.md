@@ -14,8 +14,7 @@ Due versioni :
 - una che usa spazio costante ma paga $O(N\log(M))$ per ogni sottoalbero
 - una che usa spazio $O(N)$ ma paga $O(N\log(M))$ sempre, quindi fa una passata per tutto il sottoalbero
 
-Pseudocode versione 1: 
-
+Pseudocode versione 1: (Questo è quello con spazio costante)
 ````pseudo
     \begin{algorithm}
     \caption{Is Temporaly Connected}
