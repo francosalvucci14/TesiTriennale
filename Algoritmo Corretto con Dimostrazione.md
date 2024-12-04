@@ -14,7 +14,9 @@ Due versioni :
 - una che usa spazio costante ma paga $O(N\log(M))$ per ogni sottoalbero
 - una che usa spazio $O(N)$ ma paga $O(N\log(M))$ sempre, quindi fa una passata per tutto il sottoalbero
 
-Pseudocode versione 1: (Questo è quello con spazio costante)
+## Versioni
+
+### Versione spazio costante
 ````pseudo
     \begin{algorithm}
     \caption{Is Temporaly Connected}
@@ -74,7 +76,7 @@ Questa procedura viene poi applicata all'algoritmo di partenza, ovvero l'algorit
       \end{algorithmic}
     \end{algorithm}
 ```
-Versione python
+Codice python algoritmo
 
 ```python
 def algoritmo(root):
@@ -95,7 +97,7 @@ def algoritmo(root):
         return False
 ```
 
-Codice Python
+Codice Python visita
 
 ```python title="Algoritmo 2"
 def dfs_EA_tmax_spazio1(root):
@@ -125,6 +127,12 @@ def dfs_EA_tmax_spazio1(root):
 
     return k,minTime
 ```
+
+### Versione con spazio lineare
+
+Pseudocodice : 
+
+***Da mettere***
 
 Versione con spazio $O(N)$
 
@@ -172,6 +180,17 @@ def dfs_EA_tmax_spazioN(root):
 
     return sottoalberi
 ```
+
+## Costo computazionale
+
+Analizziamo l'equazione di ricorrenza dell'algoritmo di visita DFS, che è la seguente $$T(N)=2T\left(\frac{N}{2}\right)+\log(M)$$
+Applicando lo strotolamento, abbiamo che 
+$$\begin{align}T(N)=&2T\left(\frac{N}{2}\right)+\log(M)\\&2\left(2T\left(\frac{N}{2}\right)+\log(M)\right)+\log(M)\\&\vdots\\&2^iT\left(\frac{N}{2^i}\right)+\sum\limits_{j=0}^{i-1}2^i\log(M)\end{align}$$
+A questo punto, $\frac{N}{2^i}=1\iff i=\log_2(N)$
+Così facendo, l'equazione diventa 
+$$\begin{align}&T(n)=2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^i\log(M)\\&=\\&T(n)=N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
+
+Il costo precedente è valido per entrambe le versioni
 ## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
 
 L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
@@ -197,11 +216,37 @@ L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earlie
 
 **Conclusione:** L'algoritmo calcola correttamente l'EA massimo e il tempo di visita massimo per ogni nodo dell'albero, e quindi per l'intero albero.
 
-## Costo computazionale
 
-Analizziamo l'equazione di ricorrenza dell'algoritmo, che è la seguente $$T(N)=2T\left(\frac{N}{2}\right)+\log(M)$$
-Applicando lo strotolamento, abbiamo che 
-$$\begin{align}T(N)=&2T\left(\frac{N}{2}\right)+\log(M)\\&2\left(2T\left(\frac{N}{2}\right)+\log(M)\right)+\log(M)\\&\vdots\\&2^iT\left(\frac{N}{2^i}\right)+\sum\limits_{j=0}^{i-1}2^i\log(M)\end{align}$$
-A questo punto, $\frac{N}{2^i}=1\iff i=\log_2(N)$
-Così facendo, l'equazione diventa 
-$$\begin{align}&2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^i\log(M)\\&=\\&N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
+## Versione Algoritmo per alberi non binari
+
+Per quanto riguarda gli alberi non binari, abbiamo due casistiche : 
+
+1) Usiamo la versione 1 con spazio costante
+2) Usiamo la versione 2 con spazio lineare
+
+La correttezza è valida per entrambe le versioni, cambia solo il costo totale finale dell'algoritmo.
+### Versione 1
+
+Se usiamo questa versione dell'algoritmo, avremmo un costo di $O(N\log(M))$ per ogni sottoalbero partendo dalla radice (quindi per ogni sottoalbero radicato nei figli della radice)
+
+Così facendo, se indentifichiamo con $\Delta$ il grado massimo dell'albero $T$, avremo che il costo di esecuzione dell'algoritmo di visita sarà pari a 
+$$O(\Delta N\log(M))$$
+A questo punto, la condizione di check tra i valori $EA$ e $T_\max$ verrà effettuata nel seguente modo : 
+
+1) Prendo il primo $EA$ da sinistra, e vedo se vale la seguente condizione $$EA_{1}\leq\min(T_\max),\forall T_{\max,i},i=0,\dots,n-1$$
+2) Se questa condizione è verificata, significa che $EA_1$ sarà sempre $\leq$ di ogni $T_\max$. Questa ricerca del minimo $T_\max$ e check costano $\log(\Delta)$, ne faccio un numero totale pari a $\Delta$, quindi il costo totale del check sarà $$\Delta\log(\Delta)$$
+3) Se anche un solo $EA$ tra tutti non è $\leq\min(T_\max),\forall T_{\max,i},i=0,\dots,n-1$, allora posso affermare che l'albero ***NON*** è temporalmente connesso, in quanto esiste almeno un $EA$  che non può collegarsi con gli altri sottoalberi
+4) Se invece la condizione di connettività vale per tutti gli $EA$ (che ricordiamo essere un numero pari a $\Delta$) allora posso affermare che l'albero ***è*** temporalmente connesso
+
+Il costo totale dell'algoritmo in questo caso diventa $$O(\Delta N\log(M)+\Delta\log(\Delta))$$
+### Versione 2
+
+La versione 2 è sostianzialmente uguale alla prima versione, cambia solamente il costo.
+
+Infatti in questa versione, paghiamo un pochino meno a livello temporale, ma dobbiamo sfruttare un po di memoria.
+
+Il costo in questa versione è 
+$$\begin{align}&\text{Tempo}=O(N\log(M)+\Delta\log(\Delta))\\&\text{Spazio}=O(N)\end{align}$$
+
+Il funzionamento dell'algoritmo è lo stesso della prima versione
+

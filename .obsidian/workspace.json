@@ -109,8 +109,7 @@
               "title": "Source Control"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -127,7 +126,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22ed4519436c56e6",
+  "active": "8975b449b7d163c2",
   "lastOpenFiles": [
     "Algoritmo Corretto con Dimostrazione.pdf",
     "Path Problems On Temporal Graphs.md",

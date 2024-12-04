@@ -112,13 +112,24 @@ def algoritmo3_NonBinary(root):
     for i, child in enumerate(figli):
         print(f"EA e tempo max visita del figlio {child.value}: {ea_vals[i], t_max_vals[i]}")
 
-    # Controllo finale per la radice
+    # Controllo finale per la radice con binsearch
+    #primo_ea = ea_vals[0]
+    check = False
+    min_tmax = t_max_vals[0]
     for i in range(len(ea_vals)):
-        for j in range(len(ea_vals)):
-            if i != j and ea_vals[i] > t_max_vals[j]:
-                return False
+        if ea_vals[i] <= min_tmax:
+            check = True
+        else:
+            return False
+    if check == True:
+        return True
+    # # Controllo finale per la radice
+    # for i in range(len(ea_vals)):
+    #     for j in range(len(ea_vals)):
+    #         if i != j and ea_vals[i] > t_max_vals[j]:
+    #             return False
 
-    return True
+    # return True
 
 def print_tree(root, level=0):
     if root is not None:
