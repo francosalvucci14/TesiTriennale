@@ -237,7 +237,7 @@ La correttezza di questo algoritmo deriva dal seguente ***lemma***
 
 >***Lemma***
 >L'algoritmo calcola correttamente , per ogni nodo $v$ , i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
->Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizone di connettività temporale tra due sottoalberi diversi, detti $T_{v_i},T_{v_j},i\neq j$. 
+>Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizione di connettività temporale tra due sottoalberi diversi, detti $T_{v_i},T_{v_j},i\neq j$. 
 >Quando arriva alla radice, ha correttamente calcolato i valori di $EA$ e $T_\max$ dei sottoalberi relativi ai due figli della radice stessa.
 
 ### Dimostrazione di correttezza
@@ -370,7 +370,7 @@ La correttezza di questo algoritmo deriva dal seguente ***lemma***
 
 >***Lemma***
 >L'algoritmo calcola correttamente , per ogni nodo $v$ , i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
->Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizone di connettività temporale tra tutti i sottoalberi diversi radicati nei figli di $v$
+>Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizione di connettività temporale tra tutti i sottoalberi diversi radicati nei figli di $v$
 >Quando arriva alla radice, ha correttamente calcolato i valori di $EA$ e $T_\max$ dei sottoalberi relativi a tutti i figli della radice stessa.
 
 ### Dimostrazione del lemma
