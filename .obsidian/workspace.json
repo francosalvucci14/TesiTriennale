@@ -110,25 +110,6 @@
             }
           },
           {
-            "id": "4e3bd988dd0010f7",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "Algoritmo Corretto con Dimostrazione.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Algoritmo Corretto con Dimostrazione"
-            }
-          },
-          {
             "id": "1193ff0153543fe5",
             "type": "leaf",
             "state": {
@@ -155,7 +136,8 @@
               "title": "Tags"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -172,7 +154,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8975b449b7d163c2",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
     "Algoritmo Corretto con Dimostrazione.pdf",
     "Path Problems On Temporal Graphs.md",

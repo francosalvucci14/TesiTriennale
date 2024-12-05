@@ -146,10 +146,10 @@ Pseudocodice :
       \EndIf
       \State SottoAlberi = $\{\}$
       \If{$sx(v)$ non è Nullo}
-      \State SottoAlberi.update(DFS-EA-Tmax-SpazioN($sx(v)$))
+      \State Aggiorna i valori nel dizionario SottoAlberi con i risultati di DFS-EA-Tmax-SpazioN($sx(v)$)
       \EndIf
       \If{$dx(v)$ non è Nullo}
-      \State SottoAlberi.update(DFS-EA-Tmax-SpazioN($dx(v)$))
+      \State Aggiorna i valori nel dizionario SottoAlberi con i risultati di DFS-EA-Tmax-SpazioN($dx(v)$)
       \EndIf
       \State $EA_{sx},T_{\max,sx}=$SottoAlberi[$sx(v)$]
       \State $EA_{dx},T_{\max,dx}=$SottoAlberi[$dx(v)$]
@@ -222,7 +222,7 @@ Applicando lo strotolamento, abbiamo che
 $$\begin{align}T(N)=&2T\left(\frac{N}{2}\right)+\log(M)\\&2\left(2T\left(\frac{N}{2}\right)+\log(M)\right)+\log(M)\\&\vdots\\&2^iT\left(\frac{N}{2^i}\right)+\sum\limits_{j=0}^{i-1}2^i\log(M)\end{align}$$
 A questo punto, $\frac{N}{2^i}=1\iff i=\log_2(N)$
 Così facendo, l'equazione diventa 
-$$\begin{align}&T(n)=2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^i\log(M)\\&=\\&T(n)=N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
+$$\begin{align}&T(N)=2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^j\log(M)\\&=\\&T(N)=N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
 
 Il costo precedente è valido per entrambe le versioni
 ## Correttezza
@@ -231,30 +231,30 @@ Definiamo alcune variabili :
 - $L_v$ : Lista di timestamp dell'arco che entra in $v$
 - $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
 	- $T_v$ : sottoalbero radicato nel nodo $v$
-- $T_\max$ : Istante di tempo $t$ tale che se vado al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
+- $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
 
 La correttezza di questo algoritmo deriva dal seguente ***lemma***
 
 >***Lemma***
->L'algoritmo calcola correttamente , $\forall v$ nodo, i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
+>L'algoritmo calcola correttamente , per ogni nodo $v$ , i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
 >Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizone di connettività temporale tra due sottoalberi diversi, detti $T_{v_i},T_{v_j},i\neq j$. 
 >Quando arriva alla radice, ha correttamente calcolato i valori di $EA$ e $T_\max$ dei sottoalberi relativi ai due figli della radice stessa.
 
 ### Dimostrazione di correttezza
 
-L'algoritmo calcola correttamente, per ogni nodo vvì, i valori di $EA$ (Earliest Arrival) e $T_{\max}$ (tempo massimo di visita) per il sottoalbero radicato in $T_v$. Inoltre, mentre risale verso la radice:
+L'algoritmo calcola correttamente, per ogni nodo $v$, i valori di $EA$ (Earliest Arrival) e $T_{\max}$ (tempo massimo di visita) per il sottoalbero radicato in $T_v$. 
+Inoltre, mentre risale verso la radice:
 
-- Usa questi valori per verificare la condizione di connettività temporale tra sottoalberi $T_{v_i}$ e $T_{v_j}$ ($i \neq j$).
-- Al termine, alla radice, ha calcolato correttamente i valori di $EA$ e $⁡T_{\max}$ per i due figli della radice.
+- Usa questi valori per verificare la condizione di connettività temporale tra due sottoalberi $T_{v_i}$ e $T_{v_j}$ ($i \neq j$).
+- Al termine, quando risale verso la radice,l'algoritmo ha calcolato correttamente i valori di $EA$ e $⁡T_{\max}$ per i due figli della radice. Di conseguenza, possiamo verificare in tempo costante $O(1)$ se l'albero è temporalmente connesso oppure no
 
 ---
-
 ### **Struttura della dimostrazione**
 
 La dimostrazione si basa sull'induzione, poiché l'algoritmo risolve il problema tramite una DFS (Depth First Search) che esplora il sottoalbero in maniera ricorsiva.
 #### **Base dell'induzione: nodo foglia**
 
-Per un nodo foglia v:
+Per un nodo foglia $v$:
 
 1. $T_v$ coincide con il singolo nodo v.
 2. I valori $EA$ e $⁡T_{\max}$ del sottoalbero sono esattamente:
@@ -274,10 +274,9 @@ Nell'algoritmo:
 - Il risultato è corretto per il nodo foglia.
 
 ---
-
 #### **Passo induttivo: nodo interno**
 
-Supponiamo che l'algoritmo calcoli correttamente $EA$ e $T_{\max}$ per tutti i sottoalberi dei figli di un nodo v. Dimostriamo che calcola correttamente questi valori per il sottoalbero $T_v$.
+Supponiamo che l'algoritmo calcoli correttamente $EA$ e $T_{\max}$ per tutti i sottoalberi dei figli di un nodo $v$. Dimostriamo che calcola correttamente questi valori per il sottoalbero $T_v$.
 
 1. **Calcolo dei valori dei sottoalberi**:
     
@@ -298,7 +297,7 @@ Supponiamo che l'algoritmo calcoli correttamente $EA$ e $T_{\max}$ per tutti i s
             return {root.value: (float("inf"), float("inf"))}
         ```
         
-    - Se la condizione è soddisfatta, il sottoalbero radicato in v non è temporalmente connesso e si restituiscono valori non validi ($\infty$).
+    - Se questa condizione viene soddisfatta,allora significa che il sottoalbero radicato in $v$ non è temporalmente connesso e vengono restituiti valori non validi ($\infty$).
 3. **Calcolo dei valori per il nodo v**:
     
     - I valori $EA$ e $T_{\max}$ per $T_v$ dipendono dai valori dei figli e dal nodo stesso:
@@ -316,17 +315,16 @@ Supponiamo che l'algoritmo calcoli correttamente $EA$ e $T_{\max}$ per tutti i s
     - Poiché i valori per i figli sono corretti (per ipotesi induttiva) e il calcolo di $EA$ e $T_{\max}$ per v segue le regole definite, anche i valori calcolati per $T_v$ sono corretti.
 
 ---
-
 #### **Conclusione per la radice**
 
 Quando l'algoritmo raggiunge la radice:
 
 1. Ha già calcolato $EA$ e $T_{\max}$ per i due figli della radice.
 2. Verifica la connettività temporale tra i due sottoalberi:
-    - Se soddisfatta, calcola correttamente i valori per il sottoalbero totale.
-    - Se non soddisfatta, restituisce un risultato non valido.
+    - Se soddisfatta, allora l'albero **è temporalmente connesso**
+    - Se non soddisfatta, l'albero **non è temporalmente connesso**
 
-Quindi, l'algoritmo calcola correttamente i valori di $EA$ e $T_{\max}$ per ogni sottoalbero, fino al sottoalbero radicato nella radice.
+Quindi, l'algoritmo calcola correttamente i valori di $EA$ e $T_{\max}$ per ogni sottoalbero, e alla fine risponde correttamente alla richiesta di connettività temporale.
 ## Versione Algoritmo per alberi non binari
 
 Per quanto riguarda gli alberi non binari, abbiamo due casistiche : 
