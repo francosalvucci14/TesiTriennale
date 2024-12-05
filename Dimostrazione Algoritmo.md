@@ -27,6 +27,7 @@ Pseudocodice del preprocessing
 \caption{Procedura Preprocessing}
 \begin{algorithmic}
 \Require $L_v$ : Lista timestamp arco entrante in $v$
+\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
 \Procedure{Preprocessing}{Albero $T$}
       \If{$v$ è Nullo}
 	      \Return $-\infty,\infty$
@@ -44,6 +45,8 @@ Pseudocodice del preprocessing
 	          \Return $\infty,\infty$
           \EndIf
           \State minTime = $\min(Tmax,L_v[n])$
+          \State $D_{EA}(v)$=NextEA
+          \State $D_{Tmax}(v)$=minTime
           \Return NextTime,minTime
       \EndProcedure
 \end{algorithmic}
