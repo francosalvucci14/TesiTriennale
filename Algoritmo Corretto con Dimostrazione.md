@@ -132,7 +132,41 @@ def dfs_EA_tmax_spazio1(root):
 
 Pseudocodice : 
 
-***Da mettere***
+```pseudo
+    \begin{algorithm}
+    \caption{DFS-EA-Tmax-SpazioN}
+    \begin{algorithmic}
+    \Require Dizionario Nodo, Dizionario SottoAlberi
+      \Procedure{DFS}{nodo $v$}
+      \If{$v$ è Nullo}
+      \Return Nodo = $\{\}$
+      \EndIf
+      \If{$v$ è foglia}
+      \Return Nodo$[v]:\{L_v[1],L_v[n]\}$
+      \EndIf
+      \State SottoAlberi = $\{\}$
+      \If{$sx(v)$ non è Nullo}
+      \State SottoAlberi.update(DFS-EA-Tmax-SpazioN($sx(v)$))
+      \EndIf
+      \If{$dx(v)$ non è Nullo}
+      \State SottoAlberi.update(DFS-EA-Tmax-SpazioN($dx(v)$))
+      \EndIf
+      \State $EA_{sx},T_{\max,sx}=$SottoAlberi[$sx(v)$]
+      \State $EA_{dx},T_{\max,dx}=$SottoAlberi[$dx(v)$]
+      \If{$EA_{sx}\gt T_{\max,dx} \lor EA_{dx}\gt T_{\max,sx}$}
+      \Return $D[v]:\{\infty,\infty\}$
+      \EndIf
+      \State $EA=\max(EA_{sx},EA_{dx})$
+      \State $T_{\max}=\min(T_{\max,sx},T_{\max,dx})$
+      \State nextEA = BinarySearch($L_v,EA$)
+      \State nextTmax = BinarySearch($L_v,T_{\max}$)
+      \State minTime = $\min(\text{nextTmax},T_{\max})$
+      \State SottoAlberi[$v$]=$\{\text{nextEA,minTime}\}$
+      \Return SottoAlberi
+	\EndProcedure
+      \end{algorithmic}
+    \end{algorithm}
+```
 
 Versione con spazio $O(N)$
 
@@ -191,32 +225,108 @@ Così facendo, l'equazione diventa
 $$\begin{align}&T(n)=2^{\log_2(N)}+\sum\limits_{j=0}^{\log_2(N)-1}2^i\log(M)\\&=\\&T(n)=N+N\log M\implies T(N)=\Theta(N\log(M))\end{align}$$
 
 Il costo precedente è valido per entrambe le versioni
-## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
+## Correttezza
 
-L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
+Definiamo alcune variabili : 
+- $L_v$ : Lista di timestamp dell'arco che entra in $v$
+- $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
+	- $T_v$ : sottoalbero radicato nel nodo $v$
+- $T_\max$ : Istante di tempo $t$ tale che se vado al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
 
-**Funzionamento di base:**
+La correttezza di questo algoritmo deriva dal seguente ***lemma***
 
-1. **Caso base:** Se il nodo è una foglia, l'EA è il peso minimo dell'arco entrante e il tempo di visita massimo è il peso massimo dell'arco entrante.
-2. **Caso ricorsivo:**
-    - Si calcolano ricorsivamente l'EA massimo e il tempo di visita massimo per i sottoalberi sinistro e destro.
-    - Si verifica se i due sottoalberi sono compatibili temporalmente (cioè se esiste un ordine di visita che rispetta i vincoli temporali).
-    - Si calcola l'EA massimo del nodo corrente come il massimo tra gli EA massimi dei sottoalberi.
-    - Si calcola il tempo di visita massimo del nodo corrente considerando il minimo tra il tempo di visita massimo dei sottoalberi e il peso massimo dell'arco entrante nel nodo corrente.
+>***Lemma***
+>L'algoritmo calcola correttamente , $\forall v$ nodo, i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
+>Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizone di connettività temporale tra due sottoalberi diversi, detti $T_{v_i},T_{v_j},i\neq j$. 
+>Quando arriva alla radice, ha correttamente calcolato i valori di $EA$ e $T_\max$ dei sottoalberi relativi ai due figli della radice stessa.
 
-**Ipotesi induttiva:** Assumiamo che l'algoritmo funzioni correttamente per tutti i sottoalberi di un nodo.
+### Dimostrazione di correttezza
 
-**Passo base:** Per le foglie, l'algoritmo calcola correttamente l'EA e il tempo di visita massimo, in quanto non ci sono sottoalberi.
+L'algoritmo calcola correttamente, per ogni nodo vvì, i valori di $EA$ (Earliest Arrival) e $T_{\max}$ (tempo massimo di visita) per il sottoalbero radicato in $T_v$. Inoltre, mentre risale verso la radice:
 
-**Passo induttivo:** Consideriamo un nodo interno. Per ipotesi induttiva, i valori di EA massimo e tempo di visita massimo calcolati per i sottoalberi sinistro e destro sono corretti.
+- Usa questi valori per verificare la condizione di connettività temporale tra sottoalberi $T_{v_i}$ e $T_{v_j}$ ($i \neq j$).
+- Al termine, alla radice, ha calcolato correttamente i valori di $EA$ e $⁡T_{\max}$ per i due figli della radice.
 
-- **Verifica di compatibilità:** La condizione `if not (min_sx<=max_dx or min_dx<=max_sx)` assicura che i due sottoalberi siano compatibili temporalmente. Se questa condizione non fosse verificata, non esisterebbe un ordine di visita valido per l'intero sottoalbero.
-- **Calcolo dell'EA massimo:** Il massimo EA del nodo corrente è correttamente calcolato come il massimo dei minimi timestamo di tutti gli archi di un sottoalbero.
-- **Calcolo del tempo di visita massimo:** Il tempo di visita massimo è calcolato considerando il minimo tra i massimi di tutti i timestamp di un sottoalbero. Questo è corretto perché il tempo di visita massimo è limitato sia dal tempo necessario per visitare tutti i nodi del sottoalbero e sia dal tempo necessario per raggiungere il nodo stesso.
+---
 
-**Conclusione:** L'algoritmo calcola correttamente l'EA massimo e il tempo di visita massimo per ogni nodo dell'albero, e quindi per l'intero albero.
+### **Struttura della dimostrazione**
 
+La dimostrazione si basa sull'induzione, poiché l'algoritmo risolve il problema tramite una DFS (Depth First Search) che esplora il sottoalbero in maniera ricorsiva.
+#### **Base dell'induzione: nodo foglia**
 
+Per un nodo foglia v:
+
+1. $T_v$ coincide con il singolo nodo v.
+2. I valori $EA$ e $⁡T_{\max}$ del sottoalbero sono esattamente:
+    - $EA(v) = L_v[1]$ (tempo di arrivo minimo).
+    - $T_{\max}(v) = L_v[n]$ (tempo massimo di visita).
+
+Nell'algoritmo:
+
+- Questo viene calcolato e restituito correttamente nella base del caso:
+    
+    ```python
+    if root.left is None and root.right is None:
+        return {root.value: (root.weight[0], root.weight[-1])}
+    ```
+    
+- Non ci sono figli, quindi la condizione di connettività è automaticamente soddisfatta.
+- Il risultato è corretto per il nodo foglia.
+
+---
+
+#### **Passo induttivo: nodo interno**
+
+Supponiamo che l'algoritmo calcoli correttamente $EA$ e $T_{\max}$ per tutti i sottoalberi dei figli di un nodo v. Dimostriamo che calcola correttamente questi valori per il sottoalbero $T_v$.
+
+1. **Calcolo dei valori dei sottoalberi**:
+    
+    - L'algoritmo calcola ricorsivamente $EA$ e $T_{\max}$ per i figli sinistro e destro:
+        
+        ```python
+        sottoalberi.update(dfs_EA_tmax_spazioN(root.left))
+        sottoalberi.update(dfs_EA_tmax_spazioN(root.right))
+        ```
+        
+    - Per ogni figlio $v_i$ (sinistro o destro), $EA$ e $T_{\max}$ sono corretti per il sottoalbero $T_{v_i}$ per ipotesi induttiva.
+2. **Verifica della condizione di connettività**:
+    
+    - La condizione di connettività temporale tra i sottoalberi $T_{v_i}$ e $T_{v_j}$ ($i \neq j$) è verificata:
+        
+        ```python
+        if ea_sx > t_max_dx and ea_dx > t_max_sx:
+            return {root.value: (float("inf"), float("inf"))}
+        ```
+        
+    - Se la condizione è soddisfatta, il sottoalbero radicato in v non è temporalmente connesso e si restituiscono valori non validi ($\infty$).
+3. **Calcolo dei valori per il nodo v**:
+    
+    - I valori $EA$ e $T_{\max}$ per $T_v$ dipendono dai valori dei figli e dal nodo stesso:
+        
+        ```python
+        EA = max(ea_sx, ea_dx)
+        t_max_visita = min(t_max_sx, t_max_dx)
+        ```
+        
+    - L'algoritmo considera il nodo v:
+        - Effettua una ricerca binaria su $L_v$ per determinare il valore $k$ corrispondente a $EA$.
+        - Determina $T_{\max}$ come il minimo tra $t_{\max,visita}$ e il predecessore nell'array dei timestamp.
+4. **Conclusione**:
+    
+    - Poiché i valori per i figli sono corretti (per ipotesi induttiva) e il calcolo di $EA$ e $T_{\max}$ per v segue le regole definite, anche i valori calcolati per $T_v$ sono corretti.
+
+---
+
+#### **Conclusione per la radice**
+
+Quando l'algoritmo raggiunge la radice:
+
+1. Ha già calcolato $EA$ e $T_{\max}$ per i due figli della radice.
+2. Verifica la connettività temporale tra i due sottoalberi:
+    - Se soddisfatta, calcola correttamente i valori per il sottoalbero totale.
+    - Se non soddisfatta, restituisce un risultato non valido.
+
+Quindi, l'algoritmo calcola correttamente i valori di $EA$ e $T_{\max}$ per ogni sottoalbero, fino al sottoalbero radicato nella radice.
 ## Versione Algoritmo per alberi non binari
 
 Per quanto riguarda gli alberi non binari, abbiamo due casistiche : 
@@ -246,7 +356,32 @@ La versione 2 è sostianzialmente uguale alla prima versione, cambia solamente i
 Infatti in questa versione, paghiamo un pochino meno a livello temporale, ma dobbiamo sfruttare un po di memoria.
 
 Il costo in questa versione è 
-$$\begin{align}&\text{Tempo}=O(N\log(M)+\Delta\log(\Delta))\\&\text{Spazio}=O(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=O(N\log(M)+N\cdot\Delta+\Delta\log(\Delta))\\&\text{Spazio}=O(N)\end{align}$$
 
 Il funzionamento dell'algoritmo è lo stesso della prima versione
 
+---
+## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
+
+L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
+
+**Funzionamento di base:**
+
+1. **Caso base:** Se il nodo è una foglia, l'EA è il peso minimo dell'arco entrante e il tempo di visita massimo è il peso massimo dell'arco entrante.
+2. **Caso ricorsivo:**
+    - Si calcolano ricorsivamente l'EA massimo e il tempo di visita massimo per i sottoalberi sinistro e destro.
+    - Si verifica se i due sottoalberi sono compatibili temporalmente (cioè se esiste un ordine di visita che rispetta i vincoli temporali).
+    - Si calcola l'EA massimo del nodo corrente come il massimo tra gli EA massimi dei sottoalberi.
+    - Si calcola il tempo di visita massimo del nodo corrente considerando il minimo tra il tempo di visita massimo dei sottoalberi e il peso massimo dell'arco entrante nel nodo corrente.
+
+**Ipotesi induttiva:** Assumiamo che l'algoritmo funzioni correttamente per tutti i sottoalberi di un nodo.
+
+**Passo base:** Per le foglie, l'algoritmo calcola correttamente l'EA e il tempo di visita massimo, in quanto non ci sono sottoalberi.
+
+**Passo induttivo:** Consideriamo un nodo interno. Per ipotesi induttiva, i valori di EA massimo e tempo di visita massimo calcolati per i sottoalberi sinistro e destro sono corretti.
+
+- **Verifica di compatibilità:** La condizione `if not (min_sx<=max_dx or min_dx<=max_sx)` assicura che i due sottoalberi siano compatibili temporalmente. Se questa condizione non fosse verificata, non esisterebbe un ordine di visita valido per l'intero sottoalbero.
+- **Calcolo dell'EA massimo:** Il massimo EA del nodo corrente è correttamente calcolato come il massimo dei minimi timestamo di tutti gli archi di un sottoalbero.
+- **Calcolo del tempo di visita massimo:** Il tempo di visita massimo è calcolato considerando il minimo tra i massimi di tutti i timestamp di un sottoalbero. Questo è corretto perché il tempo di visita massimo è limitato sia dal tempo necessario per visitare tutti i nodi del sottoalbero e sia dal tempo necessario per raggiungere il nodo stesso.
+
+**Conclusione:** L'algoritmo calcola correttamente l'EA massimo e il tempo di visita massimo per ogni nodo dell'albero, e quindi per l'intero albero.

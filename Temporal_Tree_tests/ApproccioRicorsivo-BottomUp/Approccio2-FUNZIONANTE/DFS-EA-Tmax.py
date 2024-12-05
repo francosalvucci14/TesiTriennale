@@ -101,7 +101,7 @@ def dfs_EA_tmax_spazioN(root):
     ea_dx, t_max_dx = sottoalberi[root.right.value] if root.right else (float("-inf"), float("inf"))
 
     # Controllo di consistenza tra i sottoalberi
-    if ea_sx > t_max_dx and ea_dx > t_max_sx:
+    if not (ea_sx <= t_max_dx and ea_dx <= t_max_sx):
         return {root.value: (float("inf"), float("inf"))}
 
     # Calcolo EA e Tmax per il nodo corrente
@@ -111,7 +111,10 @@ def dfs_EA_tmax_spazioN(root):
     
     k = binary_search(root.weight,EA)
     nextTimeMax = binary_search_leq(root.weight,t_max_visita) #binary search per trovare il predecessore, quindi il primo tempo t <= t_max_visita
-    
+    if root.weight == []:
+        k,nextTimeMax = 0,0
+        sottoalberi[root.value] = (k, nextTimeMax)
+        return sottoalberi
     minTime = min(t_max_visita,nextTimeMax)
     # Aggiornamento del nodo corrente nei risultati
     sottoalberi[root.value] = (k, minTime)
