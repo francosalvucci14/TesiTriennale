@@ -20,29 +20,8 @@ La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'
 Quando l'algoritmo risale alla radice, per i due figli della radice avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 A quel punto, basta chiamare la seconda fase
 
-La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
-$$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}$$
+Pseudocodice del preprocessing
 
-Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
-
-```pseudo
-\begin{algorithm}
-\caption{Algoritmo per Alberi Binari}
-\begin{algorithmic}
-\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
-\Procedure{Algoritmo}{Albero $T$}
-
-\State $D_{EA},D_{Tmax}=$Preprocessing($T$)
-\State Check = CheckTemporalConnectivity($D_{EA},D_{Tmax}$)
-\If{Check = $True$}
-\Return Albero Temporalmente Connesso
-\Else
-\Return Albero Non Temporalmente Connesso
-\EndIf
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-```
 ```pseudo
 \begin{algorithm}
 \caption{Procedura Preprocessing}
@@ -57,10 +36,6 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
           \EndIf
           \State $min_{sx},max_{sx}=$ Preprocessing($sx(v)$)
           \State $min_{dx},max_{dx}=$ Preprocessing($dx(v)$)
-          \If{$(min_{sx}\gt max_{dx})\land (min_{dx}\gt max_{sx})$}
-	          \Return $\infty,\infty$
-          \EndIf
-          \Comment{Questo If va messo nella parte di ottimizzazione, quando si vede che si può fare tutto insieme}
           \State $EA=\max(min_{sx},min_{dx})$
           \State $Tmax=\min(max_{sx},max_{dx})$
           \State NextEA = BinarySearch($L_v,EA$)
@@ -74,6 +49,13 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 \end{algorithmic}
 \end{algorithm}
 ```
+
+La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
+$$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}$$
+
+Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
+
+Pseudocodice fase 2
 ```pseudo
 \begin{algorithm}
 \caption{Procedura Check Temporal Connectivity}
@@ -92,6 +74,25 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 \EndIf
 \EndFor
 \Return Check
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```
+L'algoritmo completo sarà quindi il seguente
+```pseudo
+\begin{algorithm}
+\caption{Algoritmo per Alberi Binari}
+\begin{algorithmic}
+\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
+\Procedure{Algoritmo}{Albero $T$}
+
+\State $D_{EA},D_{Tmax}=$Preprocessing($T$)
+\State Check = CheckTemporalConnectivity($D_{EA},D_{Tmax}$)
+\If{Check = $True$}
+\Return Albero Temporalmente Connesso
+\Else
+\Return Albero Non Temporalmente Connesso
+\EndIf
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
