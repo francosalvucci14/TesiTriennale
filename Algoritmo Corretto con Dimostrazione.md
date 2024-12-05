@@ -325,7 +325,7 @@ Quando l'algoritmo raggiunge la radice:
     - Se non soddisfatta, l'albero **non è temporalmente connesso**
 
 Quindi, l'algoritmo calcola correttamente i valori di $EA$ e $T_{\max}$ per ogni sottoalbero, e alla fine risponde correttamente alla richiesta di connettività temporale.
-## Versione Algoritmo per alberi non binari
+# Versione Algoritmo per alberi non binari
 
 Per quanto riguarda gli alberi non binari, abbiamo due casistiche : 
 
@@ -333,7 +333,7 @@ Per quanto riguarda gli alberi non binari, abbiamo due casistiche :
 2) Usiamo la versione 2 con spazio lineare
 
 La correttezza è valida per entrambe le versioni, cambia solo il costo totale finale dell'algoritmo.
-### Versione 1
+## Versione 1
 
 Se usiamo questa versione dell'algoritmo, avremmo un costo di $O(N\log(M))$ per ogni sottoalbero partendo dalla radice (quindi per ogni sottoalbero radicato nei figli della radice)
 
@@ -347,7 +347,7 @@ A questo punto, la condizione di check tra i valori $EA$ e $T_\max$ verrà effet
 4) Se invece la condizione di connettività vale per tutti gli $EA$ (che ricordiamo essere un numero pari a $\Delta$) allora posso affermare che l'albero ***è*** temporalmente connesso
 
 Il costo totale dell'algoritmo in questo caso diventa $$O(\Delta N\log(M)+\Delta\log(\Delta))$$
-### Versione 2
+## Versione 2
 
 La versione 2 è sostianzialmente uguale alla prima versione, cambia solamente il costo.
 
@@ -358,8 +358,127 @@ $$\begin{align}&\text{Tempo}=O(N\log(M)+N\cdot\Delta+\Delta\log(\Delta))\\&\text
 
 Il funzionamento dell'algoritmo è lo stesso della prima versione
 
+## Correttezza
+
+Le variabili introdotte prima valgono anche qui
+
+Si aggiungono solo due dizionari, che sono 
+- **Nodo** : Dizionario per le foglie
+- **Sottoalberi** : Dizionario per i nodi interni
+
+La correttezza di questo algoritmo deriva dal seguente ***lemma***
+
+>***Lemma***
+>L'algoritmo calcola correttamente , per ogni nodo $v$ , i valori di $EA$ e $T_\max$ del rispettivo sottoalbero $T_v$. 
+>Mentre risale verso la radice, prende i valori appena calcolati e controlla la condizone di connettività temporale tra tutti i sottoalberi diversi radicati nei figli di $v$
+>Quando arriva alla radice, ha correttamente calcolato i valori di $EA$ e $T_\max$ dei sottoalberi relativi a tutti i figli della radice stessa.
+
+### Dimostrazione del lemma
+
+L'algoritmo calcola correttamente, per ogni nodo $v$, i valori di $EA$ (Earliest Arrival) e $T_{\max}$ (tempo massimo di visita) per il sottoalbero $T_v$. Inoltre:
+
+- Risalendo verso la radice, verifica la condizione di connettività temporale tra tutti i sottoalberi $T_{v_i}$ e $T_{v_j}$, dove $v_i,v_j$ sono figli diversi di vv.
+- Al termine, alla radice, calcola correttamente $EA$ e $T_{\max}$ per il sottoalbero complessivo.
+
 ---
-## Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
+
+### **Struttura della dimostrazione**
+
+La dimostrazione si basa sull'**induzione** sulla profondità del nodo $v$ nell'albero $T$.
+
+#### **Base dell'induzione: nodo foglia**
+
+Per un nodo foglia vv:
+
+1. Il sottoalbero $T_v$ coincide con il singolo nodo vv.
+2. I valori $EA(v)$ e $T_{\max}(v)$ sono determinati direttamente dai pesi del nodo:
+    - $EA(v) = L_v[1]$ (tempo di arrivo minimo).
+    - $T_{\max}(v) = L_v[n]$ (tempo massimo di visita).
+
+Nell'algoritmo, ciò è implementato nel caso base:
+
+```python
+if not root.children:
+    return {root.value: (root.weight[0], root.weight[-1])}
+```
+
+Poiché non ci sono figli, la condizione di connettività temporale è automaticamente soddisfatta. Il risultato è corretto per ogni nodo foglia.
+
+---
+
+#### **Passo induttivo: nodo interno**
+
+Supponiamo che l'algoritmo calcoli correttamente i valori $EA$ e $T_{\max}$ per tutti i figli di un nodo vv. Dimostriamo che li calcola correttamente per vv.
+
+1. **Calcolo dei valori dei sottoalberi figli**:
+    
+    - Per ogni figlio $v_i$, l'algoritmo calcola ricorsivamente $EA(T_{v_i})$ e $T_{\max}(T_{v_i})$, che per ipotesi induttiva sono corretti:
+        
+        ```python
+        for child in root.children:
+            sottoalberi.update(dfs_EA_tmax_spazioN_NonBinary(child))
+            ea, t_max = sottoalberi[child.value]
+            ea_vals.append(ea)
+            t_max_vals.append(t_max)
+        ```
+        
+2. **Controllo di consistenza tra i figli**:
+    
+    - L'algoritmo verifica la condizione di connettività temporale tra tutti i sottoalberi figli $T_{v_i}$, $T_{v_j}$, per $i \neq j$:
+        
+        ```python
+        min_tmax = min(t_max_vals)
+        pos_min = t_max_vals.index(min_tmax)
+        for i in range(len(ea_vals)):
+            if ea_vals.index(ea_vals[i]) == pos_min:
+                continue
+            elif ea_vals[i] > min_tmax:
+                return {root.value: (float("inf"), float("inf"))}
+        ```
+        
+    - La condizione richiede che, per ogni coppia (i, j): Se $EA(T_{v_i})>T_\max⁡(T_{v_j})$ allora i sottoalberi non sono connessi temporalmente.
+    - Il codice verifica questa condizione ottimizzando il confronto:
+        - Determina il sottoalbero con il valore $T_{\max}$ minimo.
+        - Confronta tutti gli $EA$ dei figli con questo valore minimo.
+3. **Calcolo dei valori $EA$ e $T_{\max}$ per il nodo v**:
+    
+    - Se la condizione di connettività è soddisfatta, l'algoritmo calcola:
+        
+        ```python
+        EA = max(ea_vals)
+        t_max_visita = min(t_max_vals)
+        ```
+        
+    - Questi valori rispettano le regole di $EA(T_v)$ e **$T_{\max}(T_v)$** per un nodo interno:
+        - $EA(T_v) = \max(EA(T_{v_i}))$: il tempo più tardi tra i sottoalberi figli.
+        - $T_{\max}(T_v) = \min(T_{\max}(T_{v_i}))$: il tempo più presto tra i sottoalberi figli.
+4. **Considerazione del nodo stesso**:
+    
+    - L'algoritmo aggiunge il nodo v calcolando $EA$ e $T_{\max}$ nel contesto dei suoi pesi:
+        
+        ```python
+        k = binary_search(root.weight, EA)
+        nextTimeMax = binary_search_leq(root.weight, t_max_visita)
+        minTime = min(t_max_visita, nextTimeMax)
+        sottoalberi[root.value] = (k, minTime)
+        ```
+        
+    - Ciò garantisce che i valori calcolati per $T_v$ tengano conto sia dei figli sia del nodo vv.
+
+---
+
+#### **Conclusione per la radice**
+
+Quando l'algoritmo raggiunge la radice:
+
+1. Ha già calcolato $EA$ e $T_{\max}$ per tutti i figli della radice.
+2. Verifica la condizione di connettività temporale tra tutti i sottoalberi figli.
+3. Calcola i valori $EA$ e $T_{\max}$ complessivi per il sottoalbero radicato nella radice.
+
+Poiché ogni passo della ricorsione è corretto e la radice è gestita allo stesso modo, l'algoritmo calcola correttamente i valori $EA$ e $T_{\max}$ per tutto l'albero $T$.
+
+---
+# Analisi e Dimostrazione di Correttezza dell'Algoritmo dfs_EA_tmax
 
 L'algoritmo è progettato per trovare, in un albero binario, il massimo **Earliest-Arrival Time (EA)** possibile per un percorso che visiti tutti i nodi, e il corrispondente tempo di visita massimo, in modo tale da poter determinare se l'albero in input è **temporalmente connesso** oppure no.
 
