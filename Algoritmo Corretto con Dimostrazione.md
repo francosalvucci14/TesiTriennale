@@ -206,7 +206,8 @@ def dfs_EA_tmax_spazioN(root):
     print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno): {EA, t_max_visita}")
 
     k = binary_search(root.weight,EA)
-    nextTimeMax = binary_search_leq(root.weight,t_max_visita) #binary search per trovare il predecessore, quindi il primo tempo t <= t_max_visita
+    nextTimeMax = binary_search_leq(root.weight,t_max_visue: (float("inf"), float("inf"))}
+￼ita) #binary search per trovare il predecessore, quindi il primo tempo t <= t_max_visita
 
     minTime = min(t_max_visita,nextTimeMax)
     # Aggiornamento del nodo corrente nei risultati
