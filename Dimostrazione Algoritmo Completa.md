@@ -137,7 +137,7 @@ Pseudocode qui
 \end{algorithm}
 ```
 La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
-$$EA\leq T_{\max}\quad(2),\forall EA,T_\max$$
+$$EA\leq T_{\max},\forall EA,T_\max\quad(2)$$
 
 Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
 ```pseudo

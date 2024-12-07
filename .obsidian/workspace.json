@@ -155,7 +155,8 @@
               "title": "Backlinks for Dimostrazione Algoritmo Completa"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -172,7 +173,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "a171ca1447cbda2f",
+  "active": "22ed4519436c56e6",
   "lastOpenFiles": [
     "Algoritmo Corretto con Dimostrazione.md",
     "Dimostrazione Algoritmo Completa.md",
