@@ -154,6 +154,20 @@
               "icon": "links-coming-in",
               "title": "Backlinks for Dimostrazione Algoritmo Completa"
             }
+          },
+          {
+            "id": "b728020e03a57e9c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Dimostrazione Algoritmo Completa.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Dimostrazione Algoritmo Completa"
+            }
           }
         ],
         "currentTab": 1
