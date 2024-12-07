@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dimostrazione Algoritmo.md",
+                "file": "Dimostrazione Algoritmo Completa.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Dimostrazione Algoritmo"
+              "title": "Dimostrazione Algoritmo Completa"
             }
           },
           {
@@ -107,10 +107,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Dimostrazione Algoritmo.md"
+                "file": "Dimostrazione Algoritmo Completa.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of Dimostrazione Algoritmo"
+              "title": "Outline of Dimostrazione Algoritmo Completa"
             }
           },
           {
@@ -149,9 +149,27 @@
               "icon": "lucide-tags",
               "title": "Tags"
             }
+          },
+          {
+            "id": "e92265428ea1db96",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Dimostrazione Algoritmo Completa.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Dimostrazione Algoritmo Completa"
+            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -171,7 +189,7 @@
   "active": "a171ca1447cbda2f",
   "lastOpenFiles": [
     "Algoritmo Corretto con Dimostrazione.md",
-    "Dimostrazione Algoritmo.md",
+    "Dimostrazione Algoritmo Completa.md",
     "test algoritmo.md",
     "TemporalyyConnectedComponents.pdf",
     "Algoritmo Corretto con Dimostrazione.pdf",

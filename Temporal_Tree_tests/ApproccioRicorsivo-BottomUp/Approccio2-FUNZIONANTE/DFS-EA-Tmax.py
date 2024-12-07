@@ -59,7 +59,7 @@ def dfs_EA_tmax_spazio1(root):
 
     min_dx,max_dx = dfs_EA_tmax_spazio1(root.right)
     
-    if min_sx>max_dx and min_dx>max_sx:
+    if min_sx>max_dx or min_dx>max_sx:
         return float("inf"),float("inf")
     
     EA = max(min_sx,min_dx)
@@ -101,7 +101,7 @@ def dfs_EA_tmax_spazioN(root):
     ea_dx, t_max_dx = sottoalberi[root.right.value] if root.right else (float("-inf"), float("inf"))
 
     # Controllo di consistenza tra i sottoalberi
-    if not (ea_sx <= t_max_dx and ea_dx <= t_max_sx):
+    if ea_sx > t_max_dx or ea_dx > t_max_sx:
         return {root.value: (float("inf"), float("inf"))}
 
     # Calcolo EA e Tmax per il nodo corrente

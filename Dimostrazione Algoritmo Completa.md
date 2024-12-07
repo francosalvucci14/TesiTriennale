@@ -17,8 +17,13 @@ L'algoritmo è diviso in due fasi
 
 La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. Ogni volta che risalgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
 
-Quando l'algoritmo risale alla radice, per i due figli della radice avremo calcolato correttamente i valori $EA$ e $T_\max$. 
-A quel punto, basta chiamare la seconda fase
+Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
+
+Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
+Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
+
+Una volta eseguita la fase 1, verranno ritornati due dizionari, uno per l'$EA$ e uno per il $T_\max$
+Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity
 
 Pseudocodice del preprocessing
 
@@ -30,10 +35,10 @@ Pseudocodice del preprocessing
 \Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
 \Procedure{Preprocessing}{Albero $T$}
       \If{$v$ è Nullo}
-	      \Return $-\infty,\infty$
+	      \Return $-\infty,\infty,D_{EA}=\emptyset,D_{Tmax}=\emptyset$
       \EndIf
 	      \If{$v$ è foglia}
-		      \Return $L_v[1],L_v[n]$
+		      \Return $L_v[1],L_v[n],D_{EA},D_{Tmax}$
           \EndIf
           \State $min_{sx},max_{sx}=$ Preprocessing($sx(v)$)
           \State $min_{dx},max_{dx}=$ Preprocessing($dx(v)$)
@@ -45,16 +50,18 @@ Pseudocodice del preprocessing
 	          \Return $\infty,\infty$
           \EndIf
           \State minTime = $\min(Tmax,L_v[n])$
-          \State $D_{EA}(v)$=NextEA
+          \State $D_{EA}(v)$=NextEA 
+          \Comment{Aggiungo al dizionario EA la coppia (nodo v:NextEA) [chiave,valore]}
           \State $D_{Tmax}(v)$=minTime
-          \Return NextTime,minTime
+          \Comment{Stessa cosa del dizionario EA}
+          \Return NextTime,minTime,$D_{EA},D_{Tmax}$
       \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 ```
 
 La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
-$$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}$$
+$$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}\quad(1)$$
 
 Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
 
@@ -124,6 +131,10 @@ Pseudocode qui
 \end{algorithmic}
 \end{algorithm}
 ```
+La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
+$$EA\leq T_{\max}\quad(2),\forall EA,T_\max$$
+
+Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
 ```pseudo
 \begin{algorithm}
 \caption{Procedura Check Temporal Connectivity}
@@ -134,6 +145,42 @@ Pseudocode qui
 ```
 # Dimostrazione
 
+La dimostrazione verrà fatta per alberi non binari, in quanto per gli alberi binari basta minimizzare tutto a un fattore $2$
+
+Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo calcola $EA$ e $T_\max$, sfruttando l'ordinamento degli archi.
+Quindi per ogni nodo, le informazioni corrette vengono propagante pagando $\log(M)$
+
+Vediamo la fase 2: 
+Per ogni sottoalbero, viene effettuata la seguente verifica
+
+Consideriamo un nodo $u$ con i suoi figli : 
+- $\forall\space EA_v$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
+	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$, mi costa $\log(\Delta_u)$
+	- Trovo il minimo $T_\max$ tra tutti i figli $v_i$ di $u$, mi costa $\log(\Delta_u)$
+	- Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
+	- Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta_u)$
+
+Ovviamente queste operazioni valgono per ogni nodo $u\in T$
+
+Adesso, preso 
+- $\delta_u$ = num. di figli del nodo $u$
+- $\Delta_u$ = num. di valori $T_\max$ del nodo $u$
+Abbiamo che il costo totale dell'algoritmo per il nodo $u$ è il seguente : 
+$$\begin{align}&\delta_u\log(\Delta_u)\end{align}$$
+Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$N\sum\limits_{i}^N\delta_i\log(\Delta_i)\implies N\delta\log(\Delta)$$
+e ora, dato che $\delta\leq N$ e $\Delta\leq M$, il costo diventerà $N^2\log(M)$
+Quindi, abbiamo che l'algoritmo impiega : 
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N^2\log(M))}_{\text{Check Temporal Connectivity}}\\&\text{Spazio}=\Theta(N)\end{align}$$
+## Alberi Binari
+
+Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
+
+Infatti il costo della fase 2 sarà semplicemente $N\log(M)$, in quanto il fattore $\delta=2,\forall\space u\in T$
+
+Il costo totale sarà sempre 
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 # Ottimizzazione dell'algoritmo
+
+
 
 # Osservazione sull'ordinamento degli archi
