@@ -184,5 +184,231 @@ Il costo totale sarà sempre
 $$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 # Ottimizzazione dell'algoritmo
 
-Possiamo notare che, a meno di costanti motliplicative, le due fasi dell'algoritmo possono essere unite in un unico algoritmo, che mentre calcola i valori $EA,T_\max$ bottom-up riesce anche ad effettuare il controllo di connettività temporale fra i sottoalberi realtivi ad un nodo padre $u$
+Possiamo notare che, a meno di costanti motliplicative, le due fasi dell'algoritmo possono essere unite in un unico algoritmo, che mentre calcola i valori $EA,T_\max$ bottom-up riesce anche ad effettuare il controllo di connettività temporale fra tutti i sottoalberi relativi ad un nodo interno $u$, $\forall\space u\in T$
+
+I due pseudocodici sono i seguenti
+
+**Alberi Binari**
+
+```pseudo
+\begin{algorithm}
+\caption{Algoritmo Completo}
+\begin{algorithmic}
+\Require $L_v$ : Lista timestamp arco entrante in $v$
+\Procedure{DFS-EA-Tmax}{Albero $T$,nodo $v$}
+      \If{$v$ è Nullo}
+	      \Return $-\infty,\infty$
+      \EndIf
+	      \If{$v$ è foglia}
+		      \Return $L_v[1],L_v[n]$
+          \EndIf
+          \State $min_{sx},max_{sx}=$ DFS-EA-Tmax($sx(v)$)
+          \State $min_{dx},max_{dx}=$ DFS-EA-Tmax($dx(v)$)
+          \If{($min_{sx}\gt max_{dx})\lor (min_{dx}\gt max_{sx})$}
+	          \Return $\infty,\infty$
+          \EndIf
+          \State $EA=\max(min_{sx},min_{dx})$
+          \State $Tmax=\min(max_{sx},max_{dx})$
+          \State NextEA = BinarySearch($L_v,EA$)
+          \State NextTime = BinarySearch($L_v,Tmax$)
+          \If{(NextEA $=-1$)$\lor$(NextTime=$-1$)}
+	          \Return $\infty,\infty$
+          \EndIf
+          \State minTime = $\min(Tmax,L_v[n])$
+          \Return NextEA,minTime
+      \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```
+
+Possiamo notare che nella versione ottimizzata, per gli alberi binari non c'è bisogno di mantenere in memoria i due dizionari, di conseguenza il costo temporale rimane invariato ma il costo spaziale passa da $O(N)$ a $O(1)$
+
+Una possibile implementazione in Python è la seguente
+
+```python
+def dfs_EA_tmax(nodo):
+
+    if nodo is None:
+        return float("-inf"),float("inf")
+    if nodo.left == None and nodo.right == None:
+        return nodo.weight[0],nodo.weight[-1] 
+        
+    min_sx,max_sx = dfs_EA_tmax(nodo.left)
+    min_dx,max_dx = dfs_EA_tmax(nodo.right)
+
+    if min_sx>max_dx and min_dx>max_sx:
+        return float("inf"),float("inf")
+
+    EA = max(min_sx,min_dx)
+    t_max_visita = min(max_sx,max_dx)
+    
+    nextEA = binary_search(nodo.weight,EA)
+    nextTimeMax = binary_search_leq(nodo.weight,t_max_visita) 
+    if nextEA == -1 or nextTimeMax == -1:
+        
+        exit("Errore: EA o tempo max visita non trovati")
+    minTime = min(t_max_visita,nextTimeMax)
+
+    return nextEA,minTime
+```
+
+L'algoritmo completo sarà quindi 
+
+```pseudo
+    \begin{algorithm}
+    \caption{Algoritmo}
+    \begin{algorithmic}
+      \Procedure{Alg}{Albero $T$,radice $root$}
+      \State $EA_{sx},T_{max,sx}=$ DFS-EA-Tmax($T,sx(root)$)
+      \State $EA_{dx},T_{max,dx}=$ DFS-EA-Tmax($T,dx(root)$)
+      \If{$EA_{sx}=\infty\lor EA_{dx}=\infty$}
+      \Return Albero non è temporalmente connesso
+      \EndIf
+      \If{$EA_{sx}\leq T_{max,dx}\land EA_{dx}\leq T_{max,sx}$}
+      \Return Albero è temporalmente connesso
+	    \Else
+	    \Return Albero non è temporalmente connesso
+      \EndIf
+      \EndProcedure
+      \end{algorithmic}
+    \end{algorithm}
+```
+
+**Alberi Non Binari**
+
+Per gli alberi non binari lo pseudocodice è il seguente
+
+```pseudo
+\begin{algorithm}
+\caption{Algoritmo Completo}
+\begin{algorithmic}
+\Require $L_v$ : Lista timestamp arco entrante in $v$
+\Require Dizionario $D_{Nodi}$
+\Require Dizionario $D_{SottoAlberi}$
+\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
+\Procedure{DFS-EA-Tmax}{Albero $T$,nodo $v$}
+      \If{$v$ è Nullo}
+	      \Return $D_{Nodi}=\emptyset$
+      \EndIf
+	      \If{$child(v)=\emptyset$}
+		      \Return $D_{Nodi}(v)=(L_v[1],L_v[n])$
+          \EndIf
+          \State $D_{SottoAlberi}(v)=\emptyset$
+          \ForAll{figlio $u$ di $v$}
+          \State $update(D_{SottoAlberi}(v)$,DFS-EA-TMax($u$)
+          \State $D_{EA}(v),D_{Tmax}(v)$=$D_{SottoAlberi}(u)$
+          \EndFor
+          \ForAll{$EA_v\in D_{EA}(v)$}
+          \State $delete(D_{Tmax}(v),T_{\max,v})$
+          \State minTime = $FindMin(D_{Tmax}(v))$
+          \If{$EA_v\gt minTime$}
+          \Return $D_{Nodi}(v)=(\infty,\infty)$
+          \EndIf
+          \State $insert(D_{Tmax}(v),T_{\max,v})$
+          \EndFor
+          
+          \State $EA=\max(D_{EA})$
+          \State $Tmax=\min(D_{Tmax})$
+          \State NextEA = BinarySearch($L_v,EA$)
+          \State NextTime = BinarySearch($L_v,Tmax$)
+          
+          \State minTime = $\min(Tmax,L_v[n])$
+          \State $D_{SottoAlberi}(v)=(NextEA,minTime)$
+          \Return $D_{SottoAlberi}$
+      \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```
+Una possibile implementazione in Python di questo pseudocodice potrebbe essere la seguente
+
+```python
+def dfs_EA_tmax_spazioN_NonBinary(root):
+    # Caso base: nodo nullo
+    if root is None:
+        return {}
+
+    # Caso base: foglia
+    if not root.children:
+        return {root.value: (root.weight[0], root.weight[-1])}
+
+    # Variabili per raccogliere i valori EA e Tmax per ogni sottoalbero
+    sottoalberi = {}
+
+    # Calcolo ricorsivo per ogni figlio
+    ea_vals = []
+    t_max_vals = []
+
+    for child in root.children:
+        sottoalberi.update(dfs_EA_tmax_spazioN_NonBinary(child))
+        ea, t_max = sottoalberi[child.value]
+        ea_vals.append(ea)
+        t_max_vals.append(t_max)
+
+    min_tmax = min(t_max_vals)
+    pos_min = t_max_vals.index(min_tmax)
+    #first_ea = ea_vals[pos_min]
+    for i in range(len(ea_vals)):
+        if ea_vals.index(ea_vals[i]) == pos_min:
+            continue
+        elif ea_vals[i] > min_tmax:
+            return {root.value: (float("inf"), float("inf"))}
+
+    # Calcolo EA e Tmax per il nodo corrente
+    EA = max(ea_vals)
+    t_max_visita = min(t_max_vals)
+
+    nextEA = binary_search(root.weight, EA)
+    nextTimeMax = binary_search_leq(root.weight, t_max_visita)  # Binary search per trovare il predecessore
+    minTime = min(t_max_visita, nextTimeMax)
+
+    # Aggiornamento del nodo corrente nei risultati
+    sottoalberi[root.value] = (nextEA, minTime)
+
+    return sottoalberi
+```
+
+L'algoritmo completo sarà quindi il seguente
+
+```pseudo
+    \begin{algorithm}
+    \caption{Algoritmo}
+    \begin{algorithmic}
+    \Require Dizionario $D_{EA}$, Dizionario $D_{Tmax}$
+      \Procedure{Alg}{Albero $T$,radice $root$}
+      \State $D_{Risultati}=$ DFS-EA-Tmax($T,root$)
+      \ForAll{Figlio $u$ di $root$}
+      \State $D_{EA},D_{Tmax}=D_{Risultati}(u)$
+      \EndFor
+      \State Check=True
+      \ForAll{$EA_{v_i}\in D_{EA}(root)$}
+          \State $delete(D_{Tmax}(root),T_{\max,v_i})$
+          \State minTime = $FindMin(D_{Tmax}(root))$
+          \If{$EA_{v_i}\gt minTime$}
+          \State Check=False
+          \EndIf
+          \State $insert(D_{Tmax}(root),T_{\max,v_i})$
+        \EndFor
+      \If{Check=True}
+      \Return Albero temporalmente connesso
+      \Else
+      \Return Albero non temporalmente connesso
+      \EndIf
+      \EndProcedure
+      \end{algorithmic}
+    \end{algorithm}
+```
+In questo caso, l'ottimizzazione si trova solo sulla parte del codice, perchè sia il costo temporale che spaziale rimane invariato
+
+Costo temporale $O(\Delta N\log(M))$
 # Osservazione sull'ordinamento degli archi
+
+Fino ad ora abbiamo fatto l'assunzione che i timestamp sugli archi fossero ordinati in partenza, ma nella realtà nessuno ci conferma se è effettivamente così oppure no.
+
+Nel caso in cui i timestamp degli archi non siano ordinati, si può effettuare una procedura di preprocessing in cui in tempo $O(M\log(M))$ si possono ordinare tutti i timestamp.
+
+Questo vale sia per alberi binari che non binari.
+
+Il costo totale quindi cambierà in questo modo : 
+
+- Alberi Binari : $$O(N\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
+- Alberi Non Binari $$O(N^2\log(M))+O(M\log(M))$$
