@@ -19,8 +19,13 @@ La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'
 
 Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
-Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
-Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
+I valori $EA$ e $T_\max$ sono definiti così : 
+- $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
+- $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
+- $T_v$ : sottoalbero radicato nel nodo $v$
+E vengono calcolati dall'algoritmo in questo modo : 
+- Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
+- Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
 
 Una volta eseguita la fase 1, verranno ritornati due dizionari, uno per l'$EA$ e uno per il $T_\max$
 Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity
@@ -154,13 +159,11 @@ Vediamo la fase 2:
 Per ogni sottoalbero, viene effettuata la seguente verifica
 
 Consideriamo un nodo $u$ con i suoi figli : 
-- $\forall\space EA_v$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
-	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$, mi costa $\log(\Delta_u)$
+- $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
+	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso, mi costa $\log(\Delta_u)$
 	- Trovo il minimo $T_\max$ tra tutti i figli $v_i$ di $u$, mi costa $\log(\Delta_u)$
 	- Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
 	- Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta_u)$
-
-Ovviamente queste operazioni valgono per ogni nodo $u\in T$
 
 Adesso, preso 
 - $\delta_u$ = num. di figli del nodo $u$
@@ -170,17 +173,16 @@ $$\begin{align}&\delta_u\log(\Delta_u)\end{align}$$
 Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$N\sum\limits_{i}^N\delta_i\log(\Delta_i)\implies N\delta\log(\Delta)$$
 e ora, dato che $\delta\leq N$ e $\Delta\leq M$, il costo diventerà $N^2\log(M)$
 Quindi, abbiamo che l'algoritmo impiega : 
-$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N^2\log(M))}_{\text{Check Temporal Connectivity}}\\&\text{Spazio}=\Theta(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N^2\log(M))}_{\text{Check Temporal Connectivity}}=O(N^2\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
 Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
 
-Infatti il costo della fase 2 sarà semplicemente $N\log(M)$, in quanto il fattore $\delta=2,\forall\space u\in T$
+Infatti il costo della fase 2 sarà semplicemente $N\log(M)$, in quanto il valore $\delta$ sarà uguale a 2, $\forall\space u\in T$
 
 Il costo totale sarà sempre 
 $$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 # Ottimizzazione dell'algoritmo
 
-
-
+Possiamo notare che, a meno di costanti motliplicative, le due fasi dell'algoritmo possono essere unite in un unico algoritmo, che mentre calcola i valori $EA,T_\max$ bottom-up riesce anche ad effettuare il controllo di connettività temporale fra i sottoalberi realtivi ad un nodo padre $u$
 # Osservazione sull'ordinamento degli archi
