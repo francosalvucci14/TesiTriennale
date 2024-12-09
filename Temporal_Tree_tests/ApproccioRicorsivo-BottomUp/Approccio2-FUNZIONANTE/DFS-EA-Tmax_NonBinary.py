@@ -69,7 +69,7 @@ def dfs_EA_tmax_spazioN_NonBinary(root):
         ea_vals.append(ea)
         t_max_vals.append(t_max)
 
-    # Controllo di consistenza tra i figli
+    #Controllo di consistenza tra i figli
     # for i in range(len(ea_vals)):
     #     for j in range(i + 1, len(ea_vals)):
     #         if ea_vals[i] > t_max_vals[j] and ea_vals[j] > t_max_vals[i]:
@@ -87,10 +87,14 @@ def dfs_EA_tmax_spazioN_NonBinary(root):
     # Calcolo EA e Tmax per il nodo corrente
     EA = max(ea_vals)
     t_max_visita = min(t_max_vals)
-    print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno): {EA, t_max_visita}")
     
     k = binary_search(root.weight, EA)
     nextTimeMax = binary_search_leq(root.weight, t_max_visita)  # Binary search per trovare il predecessore
+    if nextTimeMax == -1 and root.value != "A":
+        return {root.value: (float("inf"), float("inf"))}
+    print(f"Valore di nextTimeMax: {nextTimeMax} per il nodo {root.value}")
+    print(f"Valore di k: {k} per il nodo {root.value}")
+    print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno): {k, nextTimeMax}")
     minTime = min(t_max_visita, nextTimeMax)
 
     # Aggiornamento del nodo corrente nei risultati
@@ -111,7 +115,8 @@ def algoritmo3_NonBinary(root):
 
     ea_vals = []
     t_max_vals = []
-
+    if risultati[root.value][0] == float("inf") or risultati[root.value][1] == float("inf"):
+        return False
     for child in figli:
         ea, t_max = risultati[child.value]
         ea_vals.append(ea)
@@ -156,28 +161,28 @@ def print_tree(root, level=0):
 # node_c.children = [node_f, node_g]
 # node_d.children = [node_h, node_i, node_j]
 
-# root = NodeNonBinary("A")
-# node_b = NodeNonBinary("B", weight=[1,8], parent=root)
-# node_c = NodeNonBinary("C", weight=[3,11], parent=root)
-# node_d = NodeNonBinary("D", weight=[2,5], parent=root)
-# node_e = NodeNonBinary("E", weight=[2,4,5], parent=node_b)
-# node_f = NodeNonBinary("F", weight=[1,3], parent=node_b)
-# node_g = NodeNonBinary("G", weight=[1,11], parent=node_c)
-# node_h = NodeNonBinary("H", weight=[1,11], parent=node_d)
-# node_i = NodeNonBinary("I", weight=[1,15], parent=node_d)
-# node_j = NodeNonBinary("J", weight=[1,22], parent=node_d)
-
-# root.children = [node_b, node_c,node_d]
-# node_b.children = [node_e, node_f]
-# node_c.children = [node_g]
-# node_d.children = [node_h, node_i, node_j]
-
 root = NodeNonBinary("A")
-node_b = NodeNonBinary("B", weight=[1,3], parent=root)
-node_c = NodeNonBinary("C", weight=[2,4], parent=root)
-node_d = NodeNonBinary("D", weight=[3,7], parent=root)
+node_b = NodeNonBinary("B", weight=[2,6], parent=root)
+node_c = NodeNonBinary("C", weight=[2,11], parent=root)
+node_d = NodeNonBinary("D", weight=[2,5], parent=root)
+node_e = NodeNonBinary("E", weight=[2,4,5], parent=node_b)
+node_f = NodeNonBinary("F", weight=[1,3], parent=node_b)
+node_g = NodeNonBinary("G", weight=[1,11], parent=node_c)
+node_h = NodeNonBinary("H", weight=[1,11], parent=node_d)
+node_i = NodeNonBinary("I", weight=[1,15], parent=node_d)
+node_j = NodeNonBinary("J", weight=[1,22], parent=node_d)
 
-root.children = [node_b, node_c, node_d]
+root.children = [node_b, node_c,node_d]
+node_b.children = [node_e, node_f]
+node_c.children = [node_g]
+node_d.children = [node_h, node_i, node_j]
+
+# root = NodeNonBinary("A")
+# node_b = NodeNonBinary("B", weight=[1,3], parent=root)
+# node_c = NodeNonBinary("C", weight=[2,4], parent=root)
+# node_d = NodeNonBinary("D", weight=[3,7], parent=root)
+
+# root.children = [node_b, node_c, node_d]
 
 
 print_tree(root)
