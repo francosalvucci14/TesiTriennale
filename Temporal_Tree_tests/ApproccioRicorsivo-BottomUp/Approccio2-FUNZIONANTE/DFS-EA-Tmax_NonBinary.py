@@ -161,21 +161,21 @@ def print_tree(root, level=0):
 # node_c.children = [node_f, node_g]
 # node_d.children = [node_h, node_i, node_j]
 
-root = NodeNonBinary("A")
-node_b = NodeNonBinary("B", weight=[2,6], parent=root)
-node_c = NodeNonBinary("C", weight=[2,11], parent=root)
-node_d = NodeNonBinary("D", weight=[2,5], parent=root)
-node_e = NodeNonBinary("E", weight=[2,4,5], parent=node_b)
-node_f = NodeNonBinary("F", weight=[1,3], parent=node_b)
-node_g = NodeNonBinary("G", weight=[1,11], parent=node_c)
-node_h = NodeNonBinary("H", weight=[1,11], parent=node_d)
-node_i = NodeNonBinary("I", weight=[1,15], parent=node_d)
-node_j = NodeNonBinary("J", weight=[1,22], parent=node_d)
+# root = NodeNonBinary("A")
+# node_b = NodeNonBinary("B", weight=[2,6], parent=root)
+# node_c = NodeNonBinary("C", weight=[2,11], parent=root)
+# node_d = NodeNonBinary("D", weight=[2,5], parent=root)
+# node_e = NodeNonBinary("E", weight=[2,4,5], parent=node_b)
+# node_f = NodeNonBinary("F", weight=[1,3], parent=node_b)
+# node_g = NodeNonBinary("G", weight=[1,11], parent=node_c)
+# node_h = NodeNonBinary("H", weight=[1,11], parent=node_d)
+# node_i = NodeNonBinary("I", weight=[1,15], parent=node_d)
+# node_j = NodeNonBinary("J", weight=[1,22], parent=node_d)
 
-root.children = [node_b, node_c,node_d]
-node_b.children = [node_e, node_f]
-node_c.children = [node_g]
-node_d.children = [node_h, node_i, node_j]
+# root.children = [node_b, node_c,node_d]
+# node_b.children = [node_e, node_f]
+# node_c.children = [node_g]
+# node_d.children = [node_h, node_i, node_j]
 
 # root = NodeNonBinary("A")
 # node_b = NodeNonBinary("B", weight=[1,3], parent=root)
@@ -184,6 +184,33 @@ node_d.children = [node_h, node_i, node_j]
 
 # root.children = [node_b, node_c, node_d]
 
+# root = NodeNonBinary("A")
+# node_b = NodeNonBinary("B", weight=[2,4], parent=root)
+# node_c = NodeNonBinary("C", weight=[3,5], parent=root)
+# node_d = NodeNonBinary("D", weight=[1,15], parent=node_b)
+# node_e = NodeNonBinary("E", weight=[3,6], parent=node_b)
+# node_f = NodeNonBinary("F", weight=[1,2], parent=node_c)
+# node_g = NodeNonBinary("G", weight=[1,3], parent=node_c)
+# node_h = NodeNonBinary("H", weight=[1,4], parent=node_c)
+# node_i = NodeNonBinary("I", weight=[2,11], parent=node_c)
+# node_j = NodeNonBinary("J", weight=[2], parent=node_f)
+# node_k = NodeNonBinary("K", weight=[2], parent=node_f)
+# node_l = NodeNonBinary("L", weight=[3], parent=node_g)
 
+# root.children = [node_b, node_c]
+# node_b.children = [node_d, node_e]
+# node_c.children = [node_f, node_g, node_h, node_i]
+# node_f.children = [node_j, node_k]
+# node_g.children = [node_l]
+
+root = NodeNonBinary("A")
+node_b = NodeNonBinary("B", weight=[1,3], parent=root)
+node_c = NodeNonBinary("C", weight=[2,4], parent=root)
+node_d = NodeNonBinary("D", weight=[2,7], parent=root)
+node_e = NodeNonBinary("E", weight=[1,2], parent=node_c)
+node_f = NodeNonBinary("F", weight=[2], parent=node_c)
+
+root.children = [node_b, node_c, node_d]
+node_c.children = [node_e, node_f]
 print_tree(root)
 print(f"\nAlbero non binario temporalmente connesso? : {algoritmo3_NonBinary(root)}")

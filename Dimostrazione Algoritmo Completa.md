@@ -153,14 +153,14 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 La dimostrazione verrà fatta per alberi non binari, in quanto per gli alberi binari basta minimizzare tutto a un fattore $2$
 
 Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo calcola $EA$ e $T_\max$, sfruttando l'ordinamento degli archi.
-Quindi per ogni nodo, le informazioni corrette vengono propagante pagando $\log(M)$
+Quindi per ogni nodo, le informazioni  vengono propagante verso l'alto, fino a raggiungere la radice.
 
 Vediamo la fase 2: 
 Per ogni sottoalbero, viene effettuata la seguente verifica
 
 Consideriamo un nodo $u$ con i suoi figli : 
 - $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
-	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso, mi costa $\log(\Delta_u)$
+	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso,e questo mi costa $\log(\Delta_u)$
 	- Trovo il minimo $T_\max$ tra tutti i figli $v_i$ di $u$, mi costa $\log(\Delta_u)$
 	- Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
 	- Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta_u)$
@@ -170,10 +170,10 @@ Adesso, preso
 - $\Delta_u$ = num. di valori $T_\max$ del nodo $u$
 Abbiamo che il costo totale dell'algoritmo per il nodo $u$ è il seguente : 
 $$\begin{align}&\delta_u\log(\Delta_u)\end{align}$$
-Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$N\sum\limits_{i}^N\delta_i\log(\Delta_i)\implies N\delta\log(\Delta)$$
-e ora, dato che $\delta\leq N$ e $\Delta\leq M$, il costo diventerà $N^2\log(M)$
+Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta_i)\implies \delta\log(\Delta)$$
+e ora, dato che $\delta\leq N$ e $\Delta\leq M$, il costo diventerà $N\log(M)$
 Quindi, abbiamo che l'algoritmo impiega : 
-$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N^2\log(M))}_{\text{Check Temporal Connectivity}}=O(N^2\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
 Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
@@ -399,7 +399,7 @@ L'algoritmo completo sarà quindi il seguente
 ```
 In questo caso, l'ottimizzazione si trova solo sulla parte del codice, perchè sia il costo temporale che spaziale rimane invariato
 
-Costo temporale $O(\Delta N\log(M))$
+Costo temporale $O(N\log(M))$
 # Osservazione sull'ordinamento degli archi
 
 Fino ad ora abbiamo fatto l'assunzione che i timestamp sugli archi fossero ordinati in partenza, ma nella realtà nessuno ci conferma se è effettivamente così oppure no.
@@ -411,4 +411,4 @@ Questo vale sia per alberi binari che non binari.
 Il costo totale quindi cambierà in questo modo : 
 
 - Alberi Binari : $$O(N\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
-- Alberi Non Binari $$O(N^2\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N^2)=\Omega(N)$$
+- Alberi Non Binari $$O(N\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
