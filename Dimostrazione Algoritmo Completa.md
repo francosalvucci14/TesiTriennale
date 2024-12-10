@@ -15,20 +15,22 @@ L'algoritmo è diviso in due fasi
 - Preprocessing
 - Check finale
 
-La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. Ogni volta che risalgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
+La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. 
+Ogni volta che salgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
 
-Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
+Quando l'algoritmo risale alla radice, per ogni sottoalbero avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
 I valori $EA$ e $T_\max$ sono definiti così : 
 - $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
 - $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
 - $T_v$ : sottoalbero radicato nel nodo $v$
+
 E vengono calcolati dall'algoritmo in questo modo : 
 - Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
 - Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
 
-Una volta eseguita la fase 1, verranno ritornati due dizionari, uno per l'$EA$ e uno per il $T_\max$
-Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity
+Una volta eseguita la fase 1, verranno ritornati due dizionari, uno contenente tutti i valori $EA$ e uno contenente tutti i valori $T_\max$
+Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity.
 
 Pseudocodice del preprocessing
 
