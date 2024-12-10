@@ -230,9 +230,9 @@ Vediamo ora la fase 2:
 **Per ogni sottoalbero**, viene effettuata la verifica sottostante
 
 Consideriamo un nodo $u$ con i suoi figli, prendiamo : 
-- $\delta_u$ = num. di figli del nodo $u$
-- $\Delta$ = num. di valori $T_\max$ per il sottoalbero del nodo $u$ (avremo un $T_\max,EA$ per ogni figlio di $u$)
-	- Per alberi binari avremo che $\delta_u,\Delta_u=2,\forall\space u$
+- $\delta_{u,i}$ = figlio $i$-esimo del nodo $u$
+- $\Delta$ = num. di figli del nodo $u$ (avremo un $T_\max,EA$ per ogni figlio di $u$)
+	- Per alberi binari avremo che $\Delta_u=2,\forall\space u$
 
 $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
 - Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso,e questo mi costa $\log(\Delta)$
@@ -240,17 +240,16 @@ $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
 - Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
 - Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta)$
 
-Il costo totale dell'algoritmo di check per il nodo $u$ è quindi : 
-$$\begin{align}&\delta_u\log(\Delta)\end{align}$$
+Il costo totale dell'algoritmo di check per il sottoalbero del nodo $u$ è quindi : 
+$$\sum\limits_{i}\delta_{u,i}\log(\Delta)$$
 Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta)\implies \log(\Delta)\sum\limits_{i}^{N}\delta_i$$
-e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo diventerà $N\log(M)$
+e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo totale diventerà $O(N\log(M))$
 Quindi, abbiamo che l'algoritmo impiega : 
 $$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O( N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
 Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
-
-Infatti il costo della fase 2 sarà semplicemente $N\log(M)$, in quanto il valore $\delta$ sarà uguale a 2, $\forall\space u\in T$
+Infatti il valore $\Delta$ sarà uguale a $2$, $\forall\space u\in T$.
 
 Il costo totale sarà sempre 
 $$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
