@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Theory/Algoritmo Corretto con Dimostrazione.md",
+                "file": "Dimostrazione Algoritmo Completa.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Algoritmo Corretto con Dimostrazione"
+              "title": "Dimostrazione Algoritmo Completa"
             }
           }
         ]
@@ -110,19 +110,6 @@
             }
           },
           {
-            "id": "a414148898704e12",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
-            }
-          },
-          {
             "id": "e92265428ea1db96",
             "type": "leaf",
             "state": {
@@ -176,13 +163,13 @@
   "active": "ff8dee591960f3f0",
   "lastOpenFiles": [
     "Theory/Algoritmo Corretto con Dimostrazione.md",
+    "Theory/Algoritmo Corretto con Dimostrazione.pdf",
     "Theory/2409.18750v1.pdf",
     "Dimostrazione Algoritmo Completa.md",
     "Theory",
     "Dimostrazione Algoritmo Completa.pdf",
     "test algoritmo.md",
     "Theory/TemporalyyConnectedComponents.pdf",
-    "Theory/Algoritmo Corretto con Dimostrazione.pdf",
     "Path Problems On Temporal Graphs.md",
     "Theory/considerazioni.md",
     "Path Problems On Temporal Graphs.pdf",

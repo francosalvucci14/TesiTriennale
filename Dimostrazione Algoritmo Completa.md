@@ -114,25 +114,59 @@ L'algoritmo completo sarà quindi il seguente
 ```
 ## Versione alberi non binari
 
-Mettere algoritmo in due fasi
-- preprocessing
-- check finale
+L'algoritmo è diviso in due fasi
+- Preprocessing
+- Check finale
 
-Pseudocode qui
+La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. Ogni volta che risalgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
 
-```pseudo
-\begin{algorithm}
-\caption{Algoritmo per Alberi Non Binari}
-\begin{algorithmic}
+Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
-\end{algorithmic}
-\end{algorithm}
-```
+I valori $EA$ e $T_\max$ sono definiti così : 
+- $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
+- $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
+- $T_v$ : sottoalbero radicato nel nodo $v$
+E vengono calcolati dall'algoritmo in questo modo : 
+- Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
+- Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
+
+Una volta eseguita la fase 1, verranno ritornati due dizionari, uno per l'$EA$ e uno per il $T_\max$
+Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity
+
+Pseudocodice del preprocessing
 ```pseudo
 \begin{algorithm}
 \caption{Procedura Preprocessing}
 \begin{algorithmic}
-
+\Require $L_v$ : Lista timestamp arco entrante in $v$
+\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
+\Procedure{PreprocessingNonBinary}{Albero $T$}
+      \If{$v$ è Nullo}
+	      \Return $-\infty,\infty,D_{EA}=\emptyset,D_{Tmax}=\emptyset$
+      \EndIf
+	      \If{$v$ è foglia}
+		      \Return $L_v[1],L_v[n],D_{EA},D_{Tmax}$
+          \EndIf
+          \ForAll{figlio $u_i$ di $v$}
+          \State $min_{u_i},max_{u_i}=$ Preprocessing($child(v)$)
+          \EndFor
+          
+          \State $EA=\max(min_{u_i}),$
+          \Comment{$\forall$ figlio di $v$}
+          \State $Tmax=\min(max_{u_i})$
+          \Comment{$\forall$ figlio di $v$}
+          \State NextEA = BinarySearch($L_v,EA$)
+          \State NextTime = BinarySearch($L_v,Tmax$)
+          \If{NextEA $=-1\lor$NextTime=$-1$}
+	          \Return $\infty,\infty$
+          \EndIf
+          \State minTime = $\min(Tmax,L_v[n])$
+          \State $D_{EA}(v)$=NextEA 
+          \Comment{Aggiungo al dizionario EA la coppia (nodo v:NextEA) [chiave,valore]}
+          \State $D_{Tmax}(v)$=minTime
+          \Comment{Stessa cosa del dizionario EA}
+          \Return NextTime,minTime,$D_{EA},D_{Tmax}$
+      \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 ```
@@ -144,36 +178,74 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 \begin{algorithm}
 \caption{Procedura Check Temporal Connectivity}
 \begin{algorithmic}
+\Procedure{CheckTemporalConnectivity}{$D_{EA},D_{Tmax}$}
+\State Controllo in modo ricorsivo la condizione di temporal connectivity per ogni sottoalbero, usando man mano i valori all'interno dei due dizionari.
+\State Check = False
+\ForAll{nodo $v$}
+\State $EA(v),Tmax(v)=D_{EA}.get(v),D_{Tmax}.get(v)$
+\If{$EA(v)\leq Tmax(v)$}
+\State Check=True
+\Else
+\State Check=False
+\State Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check
+\Return False
+\EndIf
+\EndFor
+\Return Check
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```
 
+L'algoritmo completo sarà
+
+```pseudo
+\begin{algorithm}
+\caption{Algoritmo per Alberi Non Binari}
+\begin{algorithmic}
+\Require Dizionario $D_{EA}$,Dizionario $D_{Tmax}$
+\Procedure{Algoritmo}{Albero $T$}
+
+\State $D_{EA},D_{Tmax}=$PreprocessingNonBinary($T$)
+\State Check = CheckTemporalConnectivity($D_{EA},D_{Tmax}$)
+\If{Check = $True$}
+\Return Albero Temporalmente Connesso
+\Else
+\Return Albero Non Temporalmente Connesso
+\EndIf
+\EndProcedure
 \end{algorithmic}
 \end{algorithm}
 ```
 # Dimostrazione
 
-La dimostrazione verrà fatta per alberi non binari, in quanto per gli alberi binari basta minimizzare tutto a un fattore $2$
+La dimostrazione verrà fatta per alberi non binari, in quanto per gli alberi binari basta minimizzare tutto a un fattore $2$ (infatti negli alberi binari ogni nodo $u$ ha al più $2$ figli).
 
-Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo calcola $EA$ e $T_\max$, sfruttando l'ordinamento degli archi.
-Quindi per ogni nodo, le informazioni  vengono propagante verso l'alto, fino a raggiungere la radice.
+Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo l'algoritmo calcola $EA$ e $T_\max$, sfruttando l'ordinamento degli archi.
+Quindi per ogni nodo, le informazioni vengono propagante verso l'alto fino a raggiungere la radice.
+Come vengono calcolati $EA$ e $T_\max$ per ogni nodo è spiegato sopra.
 
-Vediamo la fase 2: 
-Per ogni sottoalbero, viene effettuata la seguente verifica
+Vediamo ora la fase 2: 
 
-Consideriamo un nodo $u$ con i suoi figli : 
-- $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
-	- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso,e questo mi costa $\log(\Delta_u)$
-	- Trovo il minimo $T_\max$ tra tutti i figli $v_i$ di $u$, mi costa $\log(\Delta_u)$
-	- Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
-	- Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta_u)$
+**Per ogni sottoalbero**, viene effettuata la verifica sottostante
 
-Adesso, preso 
+Consideriamo un nodo $u$ con i suoi figli, prendiamo : 
 - $\delta_u$ = num. di figli del nodo $u$
-- $\Delta_u$ = num. di valori $T_\max$ del nodo $u$
-Abbiamo che il costo totale dell'algoritmo per il nodo $u$ è il seguente : 
-$$\begin{align}&\delta_u\log(\Delta_u)\end{align}$$
-Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta_i)\implies \delta\log(\Delta)$$
-e ora, dato che $\delta\leq N$ e $\Delta\leq M$, il costo diventerà $N\log(M)$
+- $\Delta$ = num. di valori $T_\max$ per il sottoalbero del nodo $u$ (avremo un $T_\max,EA$ per ogni figlio di $u$)
+	- Per alberi binari avremo che $\delta_u,\Delta_u=2,\forall\space u$
+
+$\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
+- Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso,e questo mi costa $\log(\Delta)$
+- Trovo il minimo $T_\max$ tra tutti i figli $v_i$ di $u$, mi costa $\log(\Delta)$
+- Eseguo il check tra $EA_v$ e $T_{\max,\text{minimo}}$ e costa $O(1)$
+- Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta)$
+
+Il costo totale dell'algoritmo di check per il nodo $u$ è quindi : 
+$$\begin{align}&\delta_u\log(\Delta)\end{align}$$
+Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta)\implies \log(\Delta)\sum\limits_{i}^{N}\delta_i$$
+e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo diventerà $N\log(M)$
 Quindi, abbiamo che l'algoritmo impiega : 
-$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O( N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
 Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
@@ -192,7 +264,7 @@ I due pseudocodici sono i seguenti
 
 ```pseudo
 \begin{algorithm}
-\caption{Algoritmo Completo}
+\caption{Visita DFS Preprocessing-Check Binari}
 \begin{algorithmic}
 \Require $L_v$ : Lista timestamp arco entrante in $v$
 \Procedure{DFS-EA-Tmax}{Albero $T$,nodo $v$}
@@ -256,9 +328,9 @@ L'algoritmo completo sarà quindi
 
 ```pseudo
     \begin{algorithm}
-    \caption{Algoritmo}
+    \caption{Algoritmo Completo Per Alberi Binari}
     \begin{algorithmic}
-      \Procedure{Alg}{Albero $T$,radice $root$}
+      \Procedure{Algoritmo}{Albero $T$,radice $root$}
       \State $EA_{sx},T_{max,sx}=$ DFS-EA-Tmax($T,sx(root)$)
       \State $EA_{dx},T_{max,dx}=$ DFS-EA-Tmax($T,dx(root)$)
       \If{$EA_{sx}=\infty\lor EA_{dx}=\infty$}
@@ -280,7 +352,7 @@ Per gli alberi non binari lo pseudocodice è il seguente
 
 ```pseudo
 \begin{algorithm}
-\caption{Algoritmo Completo}
+\caption{Visita DFS Preprocessing-Check Non Binary}
 \begin{algorithmic}
 \Require $L_v$ : Lista timestamp arco entrante in $v$
 \Require Dizionario $D_{Nodi}$
@@ -371,22 +443,24 @@ L'algoritmo completo sarà quindi il seguente
 
 ```pseudo
     \begin{algorithm}
-    \caption{Algoritmo}
+    \caption{Algoritmo Completo per Alberi Non Binari}
     \begin{algorithmic}
     \Require Dizionario $D_{EA}$, Dizionario $D_{Tmax}$
-      \Procedure{Alg}{Albero $T$,radice $root$}
+      \Procedure{Algoritmo}{Albero $T$,radice $root$}
       \State $D_{Risultati}=$ DFS-EA-Tmax($T,root$)
+      \State Dizionario $D_{EA}=\{\}$
+      \State Dizionario $D_{Tmax}=\{\}$
       \ForAll{Figlio $u$ di $root$}
       \State $D_{EA},D_{Tmax}=D_{Risultati}(u)$
       \EndFor
       \State Check=True
-      \ForAll{$EA_{v_i}\in D_{EA}(root)$}
-          \State $delete(D_{Tmax}(root),T_{\max,v_i})$
-          \State minTime = $FindMin(D_{Tmax}(root))$
-          \If{$EA_{v_i}\gt minTime$}
+      \ForAll{$EA_i\in D_{EA}$}
+          \State $delete(D_{Tmax},T_{\max,i})$
+          \State minTime = $FindMin(D_{Tmax})$
+          \If{$EA_i\gt minTime$}
           \State Check=False
           \EndIf
-          \State $insert(D_{Tmax}(root),T_{\max,v_i})$
+          \State $insert(D_{Tmax},T_{\max,i})$
         \EndFor
       \If{Check=True}
       \Return Albero temporalmente connesso
