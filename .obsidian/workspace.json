@@ -141,6 +141,19 @@
               "icon": "links-going-out",
               "title": "Outgoing links from Dimostrazione Algoritmo Completa"
             }
+          },
+          {
+            "id": "c0aada0f766ca8e8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
           }
         ],
         "currentTab": 1
