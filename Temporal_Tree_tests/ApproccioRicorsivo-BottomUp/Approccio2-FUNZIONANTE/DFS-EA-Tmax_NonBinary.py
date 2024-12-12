@@ -81,28 +81,35 @@ def dfs_EA_tmax_spazioN_NonBinary(root):
     #         return {root.value: (float("inf"), float("inf"))}
     
     # Controllo di consistenza tra i nodi
-    ea_tmax.sort(key=lambda x: x[1])
+    ea_tmax.sort(key=lambda x: x[1]) # Step 1
 
-    # Iterare su ogni EA nell'array
-    for i, (ea, tmax) in enumerate(ea_tmax):
-        # Metto a +inf il valore di Tmax associato a EA
-        # cerco min
-        # check
-        # rimetto al valore precedente il tmax
-
-        # Salvo il valore del Tmax associato all'EA attuale
-        original_tmax = ea_tmax[i][1]
-        # Imposto il Tmax attuale a +inf
-        ea_tmax[i] = (ea, float("inf"))
-        # Cerco il minimo Tmax nell'array
-        min_tmax = min(ea_tmax, key=lambda x: x[1])[1]
-        # Check tra EA e Tmax minimo
-        check = ea <= min_tmax
-        print(f"EA: {ea}, Tmin: {min_tmax}, Check: {check}")
-        if check == False:
+    if ea_tmax[0][0] > ea_tmax[1][1]: # Step 2
+        return {root.value: (float("inf"), float("inf"))}
+    
+    for i in range(1, len(ea_tmax)): # Step 3
+        if ea_tmax[i][0] > ea_tmax[0][1]:
             return {root.value: (float("inf"), float("inf"))}
-        # Ripristino il valore originale di Tmax
-        ea_tmax[i] = (ea, original_tmax)
+        
+    # # Iterare su ogni EA nell'array
+    # for i, (ea, tmax) in enumerate(ea_tmax):
+    #     # Metto a +inf il valore di Tmax associato a EA
+    #     # cerco min
+    #     # check
+    #     # rimetto al valore precedente il tmax
+
+    #     # Salvo il valore del Tmax associato all'EA attuale
+    #     original_tmax = ea_tmax[i][1]
+    #     # Imposto il Tmax attuale a +inf
+    #     ea_tmax[i] = (ea, float("inf"))
+    #     # Cerco il minimo Tmax nell'array
+    #     min_tmax = min(ea_tmax, key=lambda x: x[1])[1]
+    #     # Check tra EA e Tmax minimo
+    #     check = ea <= min_tmax
+    #     print(f"EA: {ea}, Tmin: {min_tmax}, Check: {check}")
+    #     if check == False:
+    #         return {root.value: (float("inf"), float("inf"))}
+    #     # Ripristino il valore originale di Tmax
+    #     ea_tmax[i] = (ea, original_tmax)
         
     
 
@@ -147,30 +154,39 @@ def algoritmo3_NonBinary(root):
     print("------------------------------------------------")
     for i, child in enumerate(figli):
         print(f"EA e tempo max visita del figlio {child.value}: {ea_tmax[i][0], ea_tmax[i][1]}")
+        
     
-    ea_tmax.sort(key=lambda x: x[1])
-    check = True
-    # Iterare su ogni EA nell'array
-    for i, (ea, tmax) in enumerate(ea_tmax):
-        # Metto a +inf il valore di Tmax associato a EA
-        # cerco min
-        # check
-        # rimetto al valore precedente il tmax
+    ea_tmax.sort(key=lambda x: x[1]) # Step 1
 
-        # Salvo il valore del Tmax associato all'EA attuale
-        original_tmax = ea_tmax[i][1]
-        # Imposto il Tmax attuale a +inf
-        ea_tmax[i] = (ea, float("inf"))
-        # Cerco il minimo Tmax nell'array
-        min_tmax = min(ea_tmax, key=lambda x: x[1])[1]
-        # Check tra EA e Tmax minimo
-        check = ea <= min_tmax
-        if check == False:
-            return False
-        # Ripristino il valore originale di Tmax
-        ea_tmax[i] = (ea, original_tmax)
+    if ea_tmax[0][0] > ea_tmax[1][1]: # Step 2
+        return False
     
-    return check
+    for i in range(1, len(ea_tmax)): # Step 3
+        if ea_tmax[i][0] > ea_tmax[0][1]:
+            return False
+    
+    
+    # # Iterare su ogni EA nell'array
+    # for i, (ea, tmax) in enumerate(ea_tmax):
+    #     # Metto a +inf il valore di Tmax associato a EA
+    #     # cerco min
+    #     # check
+    #     # rimetto al valore precedente il tmax
+
+    #     # Salvo il valore del Tmax associato all'EA attuale
+    #     original_tmax = ea_tmax[i][1]
+    #     # Imposto il Tmax attuale a +inf
+    #     ea_tmax[i] = (ea, float("inf"))
+    #     # Cerco il minimo Tmax nell'array
+    #     min_tmax = min(ea_tmax, key=lambda x: x[1])[1]
+    #     # Check tra EA e Tmax minimo
+    #     check = ea <= min_tmax
+    #     if check == False:
+    #         return False
+    #     # Ripristino il valore originale di Tmax
+    #     ea_tmax[i] = (ea, original_tmax)
+    
+    return True
     
 
 def print_tree(root, level=0):
