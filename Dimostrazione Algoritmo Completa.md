@@ -7,6 +7,13 @@ includeLinks: true # Make headings clickable
 hideWhenEmpty: true # Hide TOC if no headings are found
 debugInConsole: false # Print debug info in Obsidian console
 ```
+# Preliminari
+
+Assumiamo che tutti i timestamp degli archi siano ordinati in senso crescente.
+
+Tutti gli algoritmi che seguiranno sfruttano qeusta assunzione.
+
+Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 5](#^33fd38)
 # Algoritmo
 
 ## Versione alberi binari
@@ -21,9 +28,9 @@ Ogni volta che salgo di livello, propago le informazioni dai figli di $u$ fino a
 Quando l'algoritmo risale alla radice, per ogni sottoalbero avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
 I valori $EA$ e $T_\max$ sono definiti così : 
+- $T_v$ : sottoalbero radicato nel nodo $v$
 - $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
 - $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
-- $T_v$ : sottoalbero radicato nel nodo $v$
 
 E vengono calcolati dall'algoritmo in questo modo : 
 - Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
@@ -69,6 +76,8 @@ Pseudocodice del preprocessing
 
 La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
 $$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}\quad(1)$$
+La formula $(1)$ è al formula relativa alla radice, per ogni altro sottoalbero $T_v$ la condizone sarà
+$$EA_{sx}(T_v)\leq T_{\max,dx}(T_v)\land EA_{dx}(T_v)\leq T_{\max,sx}(T_v)\quad(1.1)$$
 
 Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
 
@@ -86,7 +95,7 @@ Pseudocodice fase 2
 \State Check=True
 \Else
 \State Check=False
-\State Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check
+\Comment{Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check}
 \Return False
 \EndIf
 \EndFor
@@ -125,9 +134,10 @@ La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'
 Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
 I valori $EA$ e $T_\max$ sono definiti così : 
+- $T_v$ : sottoalbero radicato nel nodo $v$
 - $EA_\max$ : $\max_{f:\text{ f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$
 - $T_\max$ : Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$ allora riesco a visitare tutto $T_v$
-- $T_v$ : sottoalbero radicato nel nodo $v$
+
 E vengono calcolati dall'algoritmo in questo modo : 
 - Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
 - Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
@@ -476,6 +486,8 @@ In questo caso, l'ottimizzazione si trova solo sulla parte del codice, perchè s
 
 Costo temporale $O(N\log(M))$
 # Osservazione sull'ordinamento degli archi
+
+^33fd38
 
 Fino ad ora abbiamo fatto l'assunzione che i timestamp sugli archi fossero ordinati in partenza, ma nella realtà nessuno ci conferma se è effettivamente così oppure no.
 
