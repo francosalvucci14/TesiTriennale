@@ -11,11 +11,23 @@ debugInConsole: false # Print debug info in Obsidian console
 
 Assumiamo che tutti i timestamp degli archi siano ordinati in senso crescente.
 
-Tutti gli algoritmi che seguiranno sfruttano qeusta assunzione.
+Tutti gli algoritmi che seguiranno sfruttano questa assunzione.
 
 Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 5](#^33fd38)
+
+**Osservazione** : Tutti i dizionari negli pseudocodici sono implementati usando alberi $AVL$, in modo tale da poter eseguire le operazioni di 
+- FindMin
+- Insert
+- Delete
+
+In tempo $O(\log(n))$
 # Algoritmo
 
+L'algoritmo è diviso in due versioni.
+
+La logica di base dell'algoritmo è la stessa sia per alberi binari sia per i non binari, cambia solamente l'implementazione.
+
+Negli alberi binari, posso anche evitare di fare operazioni con i dizionari, in quanto ogni nodo avrà sempre al più $2$ figli, e di conseguenza il costo delle operazioni sarà costante.
 ## Versione alberi binari
 
 L'algoritmo è diviso in due fasi
@@ -36,11 +48,10 @@ E vengono calcolati dall'algoritmo in questo modo :
 - Il valore dell'$EA$ è uguale al massimo dei minimi timestamp di ogni livello
 - Il valore del $T_\max$ è uguale al minimo dei massimi timestamp di ogni livello
 
-Una volta eseguita la fase 1, verranno ritornati due dizionari, uno contenente tutti i valori $EA$ e uno contenente tutti i valori $T_\max$
+Una volta eseguita la fase 1 verranno ritornati due dizionari, uno contenente tutti i valori $EA$ e uno contenente tutti i valori $T_\max$
 Usando poi questi dizionari, passiamo in fase 2 per il check della temporal connectivity.
 
 Pseudocodice del preprocessing
-
 ```pseudo
 \begin{algorithm}
 \caption{Procedura Preprocessing}
@@ -79,7 +90,8 @@ $$EA_{sx}\leq T_{\max,dx}\land EA_{dx}\leq T_{\max,sx}\quad(1)$$
 La formula $(1)$ è al formula relativa alla radice, per ogni altro sottoalbero $T_v$ la condizone sarà
 $$EA_{sx}(T_v)\leq T_{\max,dx}(T_v)\land EA_{dx}(T_v)\leq T_{\max,sx}(T_v)\quad(1.1)$$
 
-Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogni sottoalbero, allora posso affermare che l'albero è temporalmente connesso, altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
+Se usando i valori ottenuti in fase 1 la condizione $(1.1)$ viene verificata per ogni sottoalbero, e la condizione $(1)$ viene verificata per la radice,  allora posso affermare che l'albero è temporalmente connesso. 
+Altrimenti se almeno un sottoalbero non mi verifica la condizione, affermo che l'albero non è temporalmente connesso.
 
 Pseudocodice fase 2
 ```pseudo
@@ -94,7 +106,6 @@ Pseudocodice fase 2
 \If{$EA(v)\leq Tmax(v)$}
 \State Check=True
 \Else
-\State Check=False
 \Comment{Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check}
 \Return False
 \EndIf
@@ -104,7 +115,8 @@ Pseudocodice fase 2
 \end{algorithmic}
 \end{algorithm}
 ```
-L'algoritmo completo sarà quindi il seguente
+
+A questo punto, possiamo definire l'algoritmo completo per risolvere il problema della temporal connectivity, che sarà il seguente : 
 ```pseudo
 \begin{algorithm}
 \caption{Algoritmo per Alberi Binari}
@@ -129,7 +141,8 @@ L'algoritmo è diviso in due fasi
 - Preprocessing
 - Check finale
 
-La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. Ogni volta che risalgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
+La **fase di preprocessing** è la fase che calcola, con approccio bottom-up, l'$EA_{\max}$ e il $T_\max$ di ogni sottoalbero fino alla radice. 
+Ogni volta che salgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
 
 Quando l'algoritmo risale alla radice, per ogni sottoalbero  avremo calcolato correttamente i valori $EA$ e $T_\max$. 
 
@@ -198,8 +211,7 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 \If{$EA(v)\leq Tmax(v)$}
 \State Check=True
 \Else
-\State Check=False
-\State Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check
+\Comment{Se Check diventa False, significa che un sottoalbero non rispetta la condizione, quindi esco subito dal ciclo e ritorno Check}
 \Return False
 \EndIf
 \EndFor
@@ -208,9 +220,7 @@ Se usando i valori ottenuti in fase 1 questa condizione viene verificata per ogn
 \end{algorithmic}
 \end{algorithm}
 ```
-
-L'algoritmo completo sarà
-
+A questo punto, possiamo definire l'algoritmo completo per risolvere il problema della temporal connectivity, che sarà il seguente : 
 ```pseudo
 \begin{algorithm}
 \caption{Algoritmo per Alberi Non Binari}
@@ -231,10 +241,11 @@ L'algoritmo completo sarà
 ```
 # Dimostrazione
 
-La dimostrazione verrà fatta per alberi non binari, in quanto per gli alberi binari basta minimizzare tutto a un fattore $2$ (infatti negli alberi binari ogni nodo $u$ ha al più $2$ figli).
+La dimostrazione verrà fatta per alberi non binari. 
 
-Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo l'algoritmo calcola $EA$ e $T_\max$, sfruttando l'ordinamento degli archi.
-Quindi per ogni nodo, le informazioni vengono propagante verso l'alto fino a raggiungere la radice.
+Abbiamo che la fase 1 impiega tempo $\Theta(N\log(M))$, in quanto per ogni nodo l'algoritmo calcola $EA$ e $T_\max$. 
+
+Quindi per ogni nodo, le informazioni verranno propagante verso l'alto fino a raggiungere la radice.
 Come vengono calcolati $EA$ e $T_\max$ per ogni nodo è spiegato sopra.
 
 Vediamo ora la fase 2: 
@@ -253,21 +264,24 @@ $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
 - Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta)$
 
 Il costo totale dell'algoritmo di check per il sottoalbero del nodo $u$ è quindi : 
-$$\sum\limits_{i}\delta_{u,i}\log(\Delta)$$
+$$\log(\Delta)\sum\limits_{i}\delta_{u,i}=\log(\Delta)\delta_u$$
 Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta)\implies \log(\Delta)\sum\limits_{i}^{N}\delta_i$$
-e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo totale diventerà $O(N\log(M))$
+e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo totale sarà $O(N\log(M))$
 Quindi, abbiamo che l'algoritmo impiega : 
 $$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O( N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
-Per quanto riguarda gli alberi binari, la dimostrazione è la stessa, semplicemente il tutto viene abbassato di un fattore 2.
-Infatti il valore $\Delta$ sarà uguale a $2$, $\forall\space u\in T$.
+La dimostrazione dell'algoritmo di check temporale per gli arlberi binari è sostanzialmente la stessa degli alberi non binari.
+
+La cosa che cambia è che, essendo che ogni nodo può avere al più $2$ figli, il costo di check temporale per ogni nodo sarà sempre $2\log(2)$.
+
+Per ogni nodo $u\in T$ infatti, il check temporale costerà $$N\cdot2\log(2)=N$$
 
 Il costo totale sarà sempre 
-$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N)}_{\text{Check Temporal Connectivity}}=\Theta(N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
 # Ottimizzazione dell'algoritmo
 
-Possiamo notare che, a meno di costanti motliplicative, le due fasi dell'algoritmo possono essere unite in un unico algoritmo, che mentre calcola i valori $EA,T_\max$ bottom-up riesce anche ad effettuare il controllo di connettività temporale fra tutti i sottoalberi relativi ad un nodo interno $u$, $\forall\space u\in T$
+Possiamo osservare che le due fasi dell'algoritmo possono essere unite in un unico algoritmo, che mentre calcola i valori $EA,T_\max$ bottom-up riesce anche ad effettuare il controllo di connettività temporale fra tutti i sottoalberi relativi ad un nodo interno $u$, $\forall\space u\in T$
 
 I due pseudocodici sono i seguenti
 
