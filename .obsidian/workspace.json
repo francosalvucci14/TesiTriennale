@@ -173,8 +173,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ff8dee591960f3f0",
+  "active": "a171ca1447cbda2f",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/DFS-EA-Tmax",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/DFS-EA-Tmax.cpp",
     "Theory/Algoritmo Corretto con Dimostrazione.md",
     "Theory/Algoritmo Corretto con Dimostrazione.pdf",
     "Theory/2409.18750v1.pdf",
@@ -192,7 +194,6 @@
     "ProvaAlberoTemporale.png",
     "Algoritmo Funzionante.pdf",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/DFS-EA-Tmax_NonBinary.py",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/find_leaf_max_timstamp.py",
     "Temporal_Tree_tests/DijkstraLike_TroppoComplesso/Prove di Algoritmi Funzionanti.md",
     "Temporal_Tree_tests/DijkstraLike_TroppoComplesso/dettagli.md",
     "Temporal_Tree_tests/DijkstraLike_TroppoComplesso/complessità_algoritmo_funz.md",

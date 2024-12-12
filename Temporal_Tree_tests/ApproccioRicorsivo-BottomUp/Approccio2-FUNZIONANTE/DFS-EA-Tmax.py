@@ -1,3 +1,6 @@
+from timeit import default_timer as timer
+from datetime import timedelta
+
 class Node:
     def __init__(self, value, weight=[]):
         self.value = value
@@ -179,11 +182,11 @@ def print_tree(root, level=0):
 # root.left.right = Node('E', weight=[2,5])
 
 # Esempio 2
-root = Node('A')
-root.left = Node('B', weight=[2,6])
-root.right = Node('C', weight=[6])
-root.left.left = Node('D', weight=[1,2,3,4,5,6])
-root.right.right = Node('E', weight=[6])
+# root = Node('A')
+# root.left = Node('B', weight=[2,6])
+# root.right = Node('C', weight=[6])
+# root.left.left = Node('D', weight=[1,2,3,4,5,6])
+# root.right.right = Node('E', weight=[6])
 
 # Esempio 3
 # root = Node('A')
@@ -227,15 +230,15 @@ root.right.right = Node('E', weight=[6])
 # root.left.left.left.left = Node('E', weight=[3,4])
 
 # Esempio 9
-# root = Node('A')
-# root.left = Node('B', weight=[2])
-# root.right = Node('C', weight=[3,5])
-# root.left.left = Node('D', weight=[1])
-# root.left.right = Node('E', weight=[1,5,9])
-# root.right.left = Node('F', weight=[7])
-# root.right.right = Node('G', weight=[6])
-# root.left.left.left = Node('H', weight=[2,4])
-# root.right.left.right = Node('I', weight=[8,9,11])
+root = Node('A')
+root.left = Node('B', weight=[2,3,5,8])
+root.right = Node('C', weight=[3,5])
+root.left.left = Node('D', weight=[1,4,5,6])
+root.left.right = Node('E', weight=[1,5,9])
+root.right.left = Node('F', weight=[1,2,5])
+root.right.right = Node('G', weight=[2,5])
+root.left.left.left = Node('H', weight=[2,4])
+root.right.left.right = Node('I', weight=[1,11])
 
 # Esempio 10
 # root = Node('A')
@@ -260,9 +263,10 @@ root.right.right = Node('E', weight=[6])
 # root.right.right.left = Node('I', weight=[1,15])
 # root.right.right.right = Node('J', weight=[1,11])
 
-
+start = timer()
 print("Versione con spazio O(1)")
 print(f"Albero temporalmente connesso? : {algoritmo(root)}")
 print("\nVersione con spazio O(n)")
 print(f"Albero temporalmente connesso? : {algoritmo2(root)}")
-
+end = timer()
+print(timedelta(seconds=end-start))
