@@ -432,23 +432,21 @@ def dfs_EA_tmax_spazioN_NonBinary(root):
     sottoalberi = {}
 
     # Calcolo ricorsivo per ogni figlio
-    ea_vals = []
-    t_max_vals = []
+    ea_tmax=[]
 
     for child in root.children:
         sottoalberi.update(dfs_EA_tmax_spazioN_NonBinary(child))
         ea, t_max = sottoalberi[child.value]
-        ea_vals.append(ea)
-        t_max_vals.append(t_max)
+        ea_tmax.append((ea,t_max))
 
-    min_tmax = min(t_max_vals)
-    pos_min = t_max_vals.index(min_tmax)
-    #first_ea = ea_vals[pos_min]
-    for i in range(len(ea_vals)):
-        if ea_vals.index(ea_vals[i]) == pos_min:
-            continue
-        elif ea_vals[i] > min_tmax:
-            return {root.value: (float("inf"), float("inf"))}
+    ea_tmax.sort(key=lambda x: x[1]) # Step 1
+
+    if ea_tmax[0][0] > ea_tmax[1][1]: # Step 2
+        return False
+
+    for i in range(1, len(ea_tmax)): # Step 3
+        if ea_tmax[i][0] > ea_tmax[0][1]:
+            return False
 
     # Calcolo EA e Tmax per il nodo corrente
     EA = max(ea_vals)
