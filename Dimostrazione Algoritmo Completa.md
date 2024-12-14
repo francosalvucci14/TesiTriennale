@@ -253,9 +253,7 @@ Vediamo ora la fase 2:
 **Per ogni sottoalbero**, viene effettuata la verifica sottostante
 
 Consideriamo un nodo $u$ con i suoi figli, prendiamo : 
-- $\delta_{u,i}$ = figlio $i$-esimo del nodo $u$
-- $\Delta$ = num. di figli del nodo $u$ (avremo un $T_\max,EA$ per ogni figlio di $u$)
-	- Per alberi binari avremo che $\Delta_u=2,\forall\space u$
+- $\Delta_u$ = num. di figli del nodo $u$ 
 
 $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
 - Elimino dal dizionario $D_{Tmax}$ il $T_\max(v)$ corrispondente all'$EA(v)$ appena preso,e questo mi costa $\log(\Delta)$
@@ -264,11 +262,11 @@ $\forall\space EA(v)$ con $v$ figlio di $u$ eseguiamo le seguenti operazioni
 - Riaggiungo il valore $T_\max(v)$ eliminato prima nel dizionario corrispondente, costo $\log(\Delta)$
 
 Il costo totale dell'algoritmo di check per il sottoalbero del nodo $u$ è quindi : 
-$$\log(\Delta)\sum\limits_{i}\delta_{u,i}=\log(\Delta)\delta_u$$
-Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\delta_i\log(\Delta)\implies \log(\Delta)\sum\limits_{i}^{N}\delta_i$$
-e ora, dato che $\Delta\leq M$ e $\sum\limits_{i}^{N}\delta_i\leq N$, il costo totale sarà $O(N\log(M))$
+$$\Delta_u\log(\Delta_u)$$
+Ora, per ogni nodo $u\in T$, il costo totale dell'algoritmo di check sarà $$\sum\limits_{i}^N\Delta_i\log(\Delta_i)\implies\Delta\log(\Delta)$$
+e ora, dato che $\Delta\leq N$ il costo totale sarà $O(N\log(N))$
 Quindi, abbiamo che l'algoritmo impiega : 
-$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(M))}_{\text{Check Temporal Connectivity}}=O( N\log(M))\\&\text{Spazio}=\Theta(N)\end{align}$$
+$$\begin{align}&\text{Tempo}=\underbrace{\Theta(N\log(M))}_{\text{Preprocessing}}+\underbrace{O(N\log(N))}_{\text{Check Temporal Connectivity}}=\underbrace{O(N\log(M))}_{M=\Omega(N)}\\&\text{Spazio}=\Theta(N)\end{align}$$
 ## Alberi Binari
 
 La dimostrazione dell'algoritmo di check temporale per gli arlberi binari è sostanzialmente la stessa degli alberi non binari.
