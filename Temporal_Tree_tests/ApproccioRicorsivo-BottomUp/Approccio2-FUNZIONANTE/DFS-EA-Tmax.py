@@ -57,7 +57,6 @@ def dfs_EA_tmax_spazio1(root):
         print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (foglia) : {root.weight[0],root.weight[-1]}")
         return root.weight[0],root.weight[-1] #min(root.weight), max(root.weight)
 
-    # Per ogni figlio del nodo corrente, faccio partire scansione ricorsiva per alberi non binari
     min_sx,max_sx = dfs_EA_tmax_spazio1(root.left)
 
     min_dx,max_dx = dfs_EA_tmax_spazio1(root.right)
@@ -70,9 +69,9 @@ def dfs_EA_tmax_spazio1(root):
     print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (nodo interno) : {EA,t_max_visita}")
     k = binary_search(root.weight,EA)
     nextTimeMax = binary_search_leq(root.weight,t_max_visita) #binary search per trovare il predecessore, quindi il primo tempo t <= t_max_visita
-    if k == -1 or nextTimeMax == -1:
-        #return float("inf"),float("inf")
-        exit("Errore: EA o tempo max visita non trovati")
+    if k == -1 or nextTimeMax == -1 or nextTimeMax < t_max_visita:
+        return float("inf"),float("inf")
+        #exit("Errore: EA o tempo max visita non trovati")
     minTime = min(t_max_visita,nextTimeMax)
     #valori_EA_Tmax=(EA,t_max_visita)
 
@@ -83,13 +82,15 @@ def dfs_EA_tmax_spazioN(root):
     if root is None:
         return {}
 
+    sottoalberi = {}
     # Caso base: foglia
     if root.left is None and root.right is None:
         print(f"EA e tempo max visita per il sottoalbero radicato nel nodo {root.value} (foglia): {root.weight[0], root.weight[-1]}")
-        return {root.value: (root.weight[0], root.weight[-1])}
-
+        #return {root.value: (root.weight[0], root.weight[-1])}
+        sottoalberi[root.value] = (root.weight[0], root.weight[-1])
+        return sottoalberi
     # Variabili per raccogliere i valori EA e Tmax per ogni sottoalbero
-    sottoalberi = {}
+    
 
     # Calcolo ricorsivo per il sottoalbero sinistro
     if root.left is not None:
@@ -105,7 +106,9 @@ def dfs_EA_tmax_spazioN(root):
 
     # Controllo di consistenza tra i sottoalberi
     if ea_sx > t_max_dx or ea_dx > t_max_sx:
-        return {root.value: (float("inf"), float("inf"))}
+        #return {root.value: (float("inf"), float("inf"))}
+        sottoalberi[root.value] = (float("inf"), float("inf"))
+        return sottoalberi
 
     # Calcolo EA e Tmax per il nodo corrente
     EA = max(ea_sx, ea_dx)
@@ -117,6 +120,10 @@ def dfs_EA_tmax_spazioN(root):
     if root.weight == []:
         k,nextTimeMax = 0,0
         sottoalberi[root.value] = (k, nextTimeMax)
+        return sottoalberi
+    if k == -1 or nextTimeMax == -1 or nextTimeMax < t_max_visita:
+        sottoalberi[root.value] = (float("inf"), float("inf"))
+        #return {root.value: (float("inf"), float("inf"))}
         return sottoalberi
     minTime = min(t_max_visita,nextTimeMax)
     # Aggiornamento del nodo corrente nei risultati
@@ -182,11 +189,11 @@ def print_tree(root, level=0):
 # root.left.right = Node('E', weight=[2,5])
 
 # Esempio 2
-# root = Node('A')
-# root.left = Node('B', weight=[2,6])
-# root.right = Node('C', weight=[6])
-# root.left.left = Node('D', weight=[1,2,3,4,5,6])
-# root.right.right = Node('E', weight=[6])
+root = Node('A')
+root.left = Node('B', weight=[2,6])
+root.right = Node('C', weight=[6])
+root.left.left = Node('D', weight=[1,2,3,4,5])
+root.right.right = Node('E', weight=[6])
 
 # Esempio 3
 # root = Node('A')
@@ -230,15 +237,15 @@ def print_tree(root, level=0):
 # root.left.left.left.left = Node('E', weight=[3,4])
 
 # Esempio 9
-root = Node('A')
-root.left = Node('B', weight=[2,3,5,8])
-root.right = Node('C', weight=[3,5])
-root.left.left = Node('D', weight=[1,4,5,6])
-root.left.right = Node('E', weight=[1,5,9])
-root.right.left = Node('F', weight=[1,2,5])
-root.right.right = Node('G', weight=[2,5])
-root.left.left.left = Node('H', weight=[2,4])
-root.right.left.right = Node('I', weight=[1,11])
+# root = Node('A')
+# root.left = Node('B', weight=[2,3,5,8])
+# root.right = Node('C', weight=[3,5])
+# root.left.left = Node('D', weight=[1,4,5,6])
+# root.left.right = Node('E', weight=[1,5,9])
+# root.right.left = Node('F', weight=[1,2,5])
+# root.right.right = Node('G', weight=[2,5])
+# root.left.left.left = Node('H', weight=[2,4])
+# root.right.left.right = Node('I', weight=[1,11])
 
 # Esempio 10
 # root = Node('A')
