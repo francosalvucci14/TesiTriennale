@@ -508,5 +508,5 @@ Questo vale sia per alberi binari che non binari.
 
 Il costo totale quindi cambierà in questo modo : 
 
-- Alberi Binari : $$O(N\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
-- Alberi Non Binari $$O(N\log(M))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
+- Alberi Binari : $$O(N\log(M))+O(N)+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
+- Alberi Non Binari $$O(N\log(M))+O(N\log(N))+O(M\log(M))=O(M\log(M)),\quad M=\Omega(N)$$
