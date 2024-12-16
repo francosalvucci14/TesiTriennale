@@ -22,13 +22,12 @@ def create_tree_with_networkx():
     #     ("C", "F")
     # ])
     tree.add_node("A", weight=None)
-    tree.add_node("B", weight=[2, 6])
-    tree.add_node("C", weight=[6])
-    tree.add_node("D", weight=[1, 2, 3, 4, 5, 6])
-    tree.add_node("E", weight=[6])
-    tree.add_node("F", weight=[1, 6])
+    tree.add_node("B", weight=[3,4,5,8,9])
+    tree.add_node("C", weight=[1,2,3,6])
+    tree.add_node("D", weight=[1,4,5])
+    tree.add_node("E", weight=[2])
 
-    tree.add_edges_from([("A", "B"), ("A", "C"), ("A", "F"), ("B", "D"), ("C", "E")])
+    tree.add_edges_from([("A", "B"), ("B", "C"), ("B", "D"), ("C", "E")])
 
     return tree
 
@@ -140,6 +139,7 @@ def algoritmo3_networkx(tree):
 
 
 tree = create_tree_with_networkx()
+#tree = create_random_tree(8, (1, 150)) # per random
 print("Albero creato con NetworkX:")
 print_tree_networkx(tree, "A")
 # print_tree(tree)  # Funzione per stampare il grafo in modo leggibile

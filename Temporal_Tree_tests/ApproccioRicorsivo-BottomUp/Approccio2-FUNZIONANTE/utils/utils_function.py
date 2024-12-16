@@ -1,4 +1,5 @@
-
+import random
+import networkx as nx
 def binary_search(arr, target):
     if len(arr) == 1:  # Caso in cui l'array ha un solo elemento
         return (
@@ -63,3 +64,41 @@ def print_tree_networkx(tree, root, level=0):
         edge_weight = tree.edges[root, child].get("weight", None)
         print(f"{indent}  ↳ Edge to {child}, Weight: {edge_weight}")
         print_tree_networkx(tree, child, level + 1)
+
+
+def create_random_tree(N, timestamp_range):
+    """
+    Crea un albero diretto casuale con N nodi e timestamp casuali ordinati.
+
+    Parametri:
+        N (int): Numero di nodi dell'albero.
+        timestamp_range (tuple): Intervallo dei timestamp, ad esempio (1, 10).
+
+    Ritorna:
+        tree (nx.DiGraph): Un albero diretto casuale.
+    """
+    if N < 1:
+        raise ValueError("Il numero di nodi deve essere almeno 1.")
+
+    # Crea un grafo diretto
+    tree = nx.DiGraph()
+
+    # Aggiungi il nodo radice
+    tree.add_node("A", weight=None)
+
+    # Genera i restanti nodi
+    nodes = [f"N{i}" for i in range(1, N)]
+
+    # Assegna pesi (timestamp) ai nodi e costruisce l'albero
+    for node in nodes:
+        num_timestamps = random.randint(1, 5)  # Numero casuale di timestamp per nodo
+        timestamps = sorted(random.sample(range(timestamp_range[0], timestamp_range[1] + 1), num_timestamps))
+        tree.add_node(node, weight=timestamps)
+
+    # Collegare i nodi per formare un albero
+    all_nodes = ["A"] + nodes
+    for node in nodes:
+        parent = random.choice(all_nodes[:all_nodes.index(node)])  # Seleziona un genitore tra i nodi già aggiunti
+        tree.add_edge(parent, node)
+
+    return tree
