@@ -16,6 +16,7 @@ Tutti gli algoritmi che seguiranno sfruttano questa assunzione.
 Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 5](#^33fd38)
 
 **Osservazione** : Tutti i dizionari negli pseudocodici sono implementati usando alberi $AVL$, in modo tale da poter eseguire le operazioni di 
+
 - FindMin
 - Insert
 - Delete

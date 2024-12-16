@@ -256,7 +256,7 @@ def print_tree(root, level=0):
 root = NodeNonBinary("A")
 node_b = NodeNonBinary("B", weight=[1,3], parent=root)
 node_c = NodeNonBinary("C", weight=[2,4], parent=root)
-node_d = NodeNonBinary("D", weight=[2,7], parent=root)
+node_d = NodeNonBinary("D", weight=[4,7], parent=root)
 node_e = NodeNonBinary("E", weight=[1,2], parent=node_c)
 node_f = NodeNonBinary("F", weight=[2], parent=node_c)
 
