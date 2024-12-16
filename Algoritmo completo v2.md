@@ -87,18 +87,23 @@ Lo pseudocodice della fase 2 è il seguente
 \caption{Procedura Check Temporal Connectivity}
 \begin{algorithmic}
 \Procedure{CheckTemporalConnectivity}{$v,EA_{\max},LD_{\max},D_v$}
-\State Check=True
+\If{$v$ is foglia}
+\Return True
+\EndIf
 \ForAll{$u\in\text{child(v)}$}
 \State Check = Check $\land$ CheckTemporalConnectivity($u,EA_{\max},LD_{\max},D_v$)
 \EndFor
-\If{Check = False}
-\Return False
-\EndIf
 \State Check = True
 \ForAll{$u\in\text{child(v)}$}
-\If{$EA_{\max}[u]\leq\min_{u'\in\text{child(v)},u'\neq u}LD_{\max}[u']$}
+\If{$EA_{\max}[u]\gt\max_{u'\in\text{child(v)},u'\neq u}LD_{\max}[u']$}
+\Return False
 \EndIf
 \EndFor
+\If{Check = False}
+\Return False
+\Else 
+\Return True
+\EndIf
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
