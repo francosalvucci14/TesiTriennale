@@ -125,25 +125,6 @@
             }
           },
           {
-            "id": "e92265428ea1db96",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "Dimostrazione Algoritmo Completa.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for Dimostrazione Algoritmo Completa"
-            }
-          },
-          {
             "id": "c0aada0f766ca8e8",
             "type": "leaf",
             "state": {
@@ -154,6 +135,20 @@
               },
               "icon": "lucide-tags",
               "title": "Tags"
+            }
+          },
+          {
+            "id": "69eef8feeb2bd605",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Algoritmo completo v2.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Algoritmo completo v2"
             }
           }
         ],

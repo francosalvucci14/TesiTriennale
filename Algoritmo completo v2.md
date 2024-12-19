@@ -174,19 +174,26 @@ Quando il nodo $v$ è nodo interno l'algoritmo opera in questo modo :
 Vediamo come funziona il check effettivo tra i sottoalberi di un nodo $v$
 
 Questo pezzo dell'algoritmo opera in $3$ fasi : 
-1) Ordina il vettore $D_V$ in modo crescente rispetto ai valori $LD_\max$ presenti al suo interno, in modo tale da avere il minimo $LD$, tra tutti i figli di $v$, nella prima posizione del vettore $D_v$
+1) Ordina il vettore $D_v$ in modo crescente rispetto ai valori $LD_\max$ presenti al suo interno, in modo tale da avere il minimo $LD$, tra tutti i figli di $v$, nella prima posizione del vettore $D_v$
 2) Controllo se il primo $EA$ che trovo, ovvero l'$EA$ relativo al $LD$ minimo fra tutti i figli (quindi l'$EA$ in posizione $1$), è minore/uguale al secondo $LD$ (ovvero il $LD$ minimo levando il primo). In questo modo evitiamo di confrontare fra loro $EA$ e $LD$ relativi allo stesso figlio $u$ di $v$. Se questa condizione è vera, allora proseguiamo tranquillamente, altrimeni ritorno subito `False`
 3) Partendo dalla seconda posizione del vettore $D_v$ fino al $\delta_u$, controllo se l'$i$-esimo $EA$ è minore/uguale al $LD$ minimo (quello in prima posizione.). Se la condizione sarà sempre verificata, allora ritorno `True`, altrimenti se un solo valore non mi verifica la condizione, ritorno `False`
-4) In modo ricorsivo propago il valore del check, e se alla fine check sarà uguale a `True` allora ritorno che l'Albero è temporalmente connesso, altrimenti ritorno che l'Albero non è temporalmente connesso.
+4) In modo ricorsivo propago il valore del check verso la radice, e se alla fine check sarà uguale a `True` allora ritorno che l'Albero è temporalmente connesso, altrimenti ritorno che l'Albero non è temporalmente connesso.
 
 Quanto costa l'intero algoritmo?
 
 - **Fase (1)** : Dato che il vettore $D_v$ ha size $\delta_v=\text{num. figli di v}$, l'ordinamento di tale vettore mi costerà $$\delta_v\log(\delta_v)$$
-- **Fase (2)** : Costo costante $O(1)$
-- **Fase (3)** : Costo lineare nel numero di figli di $v$, ovvero $O(\delta_v)$
+- **Fase (2)** : Check tra il primo $EA$ e il secondo $LD$ minimo, e costa costante $O(1)$
+- **Fase (3)** : Check per ogni $EA_i$ , con $i=2,\dots,\delta_u$ . Costo lineare nel numero di figli di $v$, ovvero $O(\delta_v)$
 
 Quindi in totale il costo per il nodo $v$ sarà $\delta_v\log(\delta_v)$, che sarà sempre minore/uguale di $\delta_v\log(\Delta)$ con $\Delta=\text{grado massimo dell'albero}$
 
 Di conseguenza, per ogni nodo $v\in T$, il costo sarà $$\sum\limits_v\delta_i\log(\Delta)\implies\log(\Delta)\sum\limits_v\delta_i\implies\Delta\log(\Delta)$$
-Ora, dato che il grado massimo dell'albero sarà al più $N-1$, l'algoritmo di check della temporal connectivity sarà $$N\log(N)$$
+Ora, dato che il grado massimo dell'albero sarà al più $N-1$, l'algoritmo di check della temporal connectivity costerà $$O(N\log(N))$$
+# Ottimizzazione dell'algoritmo
 
+Possiamo notare che le due procedure possono essere unite in un unica procedura, ovvero una procedura che mentre calcola i valori $EA$ e $LD$ esegue anche il check temporale tra i sottoalberi.
+
+Osserviamo che, in caso di alberi binari il costo della procedura di check sarà sovrastato dal costo del calcolo dei valori $EA$ e $LD$, in quanto check costante
+
+In caso di alberi non binari, su ogni nodo viene fatto il check tra i suoi figli. Ogni nodo ha $\delta_u$ figli, che al più saranno $\Delta$. Il costo totale sarà 
+$$O(N[\log(M)+\log(\Delta)])=O(N\log(M)+N\log(\Delta))=O(N\log(M))\quad M=\Omega(\Delta)$$
