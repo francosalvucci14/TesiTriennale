@@ -11,7 +11,7 @@ debugInConsole: false # Print debug info in Obsidian console
 
 Assumiamo che tutti i timestamp degli archi siano ordinati in senso crescente.
 Tutti gli algoritmi che seguiranno sfruttano questa assunzione.
-Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 5](#^33fd38)
+Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 4](#^cc0759)
 # Algoritmo
 
 L'algoritmo è diviso in due fasi
@@ -296,6 +296,25 @@ L'algoritmo che richiamerà questa funzione sarà il seguente
 \end{algorithmic}
 \end{algorithm}
 ```
+
+# Ordinamento dei timestamp sugli archi
+
+^cc0759
+
+Fin'ora abbiamo fatto l'assunzione che i timestamp sugli archi fossero effettivamente ordinati in senso crescente, ma non è detto che sia sempre così.
+
+Infatti, se i timestamp non fossero ordinati noi non potremmo effettuare query di successore e precedessore in tempo $\log(M)$, ma saremmo costretti a farlo in tempo $O(M)$, cosa che ci andrà a rallentare il tempo di esecuzione in modo esponenziale; infatti si passerebbe da $N\log(M)$ a $N\cdot M$ 
+
+Per ovviare a questo problema, possiamo definire un'algoritmo che con una visita controlla se i timestamp sono ordinati.
+
+Se la risposta è si si continua in modo normale con gli algoritmi precedenti, altrimenti si ordinano i timestamp.
+
+L'algoritmo per vedere se i timestamp sono ordinati può essere fatto in tempo $O(M)$, usando una semplice visita `DFS`, mentre l'ordinamento effettivo dei timestamp impiegherà tempo $M\log(M)$ sfruttando il `MergeSort`.
+
+Per quanto riguarda i costi, avremo che : 
+1) Per la versione non unificata, il costo sarà $$O(N\log(M)+O(M)+O(M\log(M)))\implies O(M\log(M))$$
+2) Per la versione unificata, il costo sarà $$O(N^2\log(M)+O(M)+O(M\log(M)))\implies O(N^2\log(M))$$
+Come si può notare, abbiamo che per la versione non unificata il costo sarà sovrastato dall'ordinamento dei timestamp; mentre nella versione unificata, il costo rimarrà invariato.
 # Appendice dei codici
 
 **Possibile implementazione algoritmo separato**
