@@ -210,7 +210,7 @@ Nel caso degli alberi non binari, per ogni nodo $v$ verrà eseguito il check su 
 Per un singolo nodo $v$ pago $$O(\underbrace{\delta_v}_\text{check}+\underbrace{\delta_v\log(\delta_v)}_\text{ordinamento}+\underbrace{\log(M)}_\text{query di succ. e predec.})\implies O(\delta_v\log(\delta_v)+\log(M))$$
 
 Per ogni nodo $v\in T$, il costo totale dell'algoritmo sarà : 
-$$O(N[\underbrace{\log(M)}_{\text{costo per succ. e pred.}}+\underbrace{\Delta\log(\Delta)}_{\text{check su sottoalberi}}])=O(N\log(M)+N^2\log(N))=O(N^2\log(N))$$
+$$O(N[\underbrace{\log(M)}_{\text{costo per succ. e pred.}}+\underbrace{\Delta\log(\Delta)}_{\text{check su sottoalberi}}])=O(N\log(M)+N\cdot\Delta\log(\Delta))=O(N\cdot\Delta\log(\Delta))$$
 
 Possiamo notare quindi un'ottimizzazione sia nella scrittura del codice sia nel costo computazionale.
 
