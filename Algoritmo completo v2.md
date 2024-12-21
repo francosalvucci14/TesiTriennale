@@ -313,7 +313,7 @@ L'algoritmo per vedere se i timestamp sono ordinati può essere fatto in tempo $
 
 Per quanto riguarda i costi, avremo che : 
 1) Per la versione non unificata, il costo sarà $$O(N\log(M)+O(M)+O(M\log(M)))\implies O(M\log(M))$$
-2) Per la versione unificata, il costo sarà $$O(N^2\log(M)+O(M)+O(M\log(M)))\implies O(N^2\log(M))$$
+2) Per la versione unificata, il costo sarà $$O(N^2\log(N)+O(M)+O(M\log(M)))\implies O(N^2\log(N))$$
 Come si può notare, abbiamo che per la versione non unificata il costo sarà sovrastato dall'ordinamento dei timestamp; mentre nella versione unificata, il costo rimarrà invariato.
 # Appendice dei codici
 
