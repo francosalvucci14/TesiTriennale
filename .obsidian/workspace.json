@@ -150,6 +150,25 @@
               "icon": "links-going-out",
               "title": "Outgoing links from Algoritmo completo v2"
             }
+          },
+          {
+            "id": "2e9623e7e14b9522",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Algoritmo completo v2.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Algoritmo completo v2"
+            }
           }
         ],
         "currentTab": 1
@@ -171,18 +190,19 @@
   },
   "active": "41586740df6cbf79",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test_totale_con_alberi_Random_e_Tempi.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/test_totale_con_alberi_Random_e_Tempi.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/test_algoritmo_con_minimi.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/DFS-EA-Tmax_NonBinary.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/DFS-EA-Tmax.cpp",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/DFS-EA-Tmax.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test_totale.py",
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/algoritmo_separato.py",
     "Dimostrazione Algoritmo Completa.md",
     "Algoritmo completo v2.md",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__pycache__/utils_function.cpython-310.pyc",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/utils_function.py",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__pycache__/__init__.cpython-310.pyc",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__init__.py",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__init.py__",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__pycache__/print_tree_networkx.cpython-310.pyc",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/__pycache__",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/utils/print_tree_networkx.py",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/DFS-EA-Tmax_NetworkX.py~",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/DFS-EA-Tmax_NetworkX.py",
     "Theory/Algoritmo Corretto con Dimostrazione.md",
     "test algoritmo.md",
     "Path Problems On Temporal Graphs.md",

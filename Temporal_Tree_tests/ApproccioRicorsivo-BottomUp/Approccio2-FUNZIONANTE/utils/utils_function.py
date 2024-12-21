@@ -91,7 +91,7 @@ def create_random_tree(N, timestamp_range):
 
     # Assegna pesi (timestamp) ai nodi e costruisce l'albero
     for node in nodes:
-        num_timestamps = random.randint(1, 5)  # Numero casuale di timestamp per nodo
+        num_timestamps = random.randint(1, 8)  # Numero casuale di timestamp per nodo
         timestamps = sorted(random.sample(range(timestamp_range[0], timestamp_range[1] + 1), num_timestamps))
         tree.add_node(node, weight=timestamps)
 
