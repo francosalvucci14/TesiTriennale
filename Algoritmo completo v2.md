@@ -203,19 +203,27 @@ $$O(N\log(M))+O(N\log(N))\implies O(N\log(M)),\quad M=\Omega(N)$$
 
 Possiamo notare che le due procedure possono essere unite in un unica procedura, ovvero una procedura che mentre calcola i valori $EA$ e $LD$ esegue anche il check temporale tra i sottoalberi.
 
-Nel caso degli alberi binari il costo della procedura di check sarà sovrastato dal costo del calcolo dei valori $EA$ e $LD$, in quanto il costo della fase di check risulterà essere costante. Di conseguenza il costo della procedura unificata sarà semplicemente uguale al costo della fase di preprocessing, quindi $O(N\log(M))$. 
+Nel caso degli **alberi binari** il costo della procedura di check sarà sovrastato dal costo del calcolo dei valori $EA$ e $LD$, in quanto il costo della fase di check risulterà essere costante. Di conseguenza il costo della procedura unificata sarà semplicemente uguale al costo della fase di preprocessing, quindi $O(N\log(M))$. 
 
-Nel caso degli alberi non binari, per ogni nodo $v$ verrà eseguito il check su tutti i suoi figli. Ogni nodo $v$ ha $\delta_v$ figli, che al più saranno $\Delta=\text{grado massimo dell'albero }T$. 
+Nel caso degli **alberi non binari**, per ogni nodo $v$ verrà eseguito il check su tutti i suoi figli. Ogni nodo $v$ ha $\delta_v$ figli.
 
 Per un singolo nodo $v$ pago $$O(\underbrace{\delta_v}_\text{check}+\underbrace{\delta_v\log(\delta_v)}_\text{ordinamento}+\underbrace{\log(M)}_\text{query di succ. e predec.})\implies O(\delta_v\log(\delta_v)+\log(M))$$
-
 Per ogni nodo $v\in T$, il costo totale dell'algoritmo sarà : 
-$$O(N[\underbrace{\log(M)}_{\text{costo per succ. e pred.}}+\underbrace{\Delta\log(\Delta)}_{\text{check su sottoalberi}}])=O(N\log(M)+N\cdot\Delta\log(\Delta))=O(N\cdot\Delta\log(\Delta))$$
+$$\sum\limits_{v\in\text{nodi}}(\underbrace{O(\log(M)}_{\text{Costo query succ./pred.}}+\underbrace{O(\delta_v\log(\delta_v)}_{\text{Check temporale}}\space)$$
+Dividiamo i costi.
 
+**Parte** $O(\log(M))$ : 
+- Ogni nodo contribuisce pagando $\log(M)$
+- Abbiamo in totale $N$ nodi, di conseguenza il costo sarà $$\sum\limits_{v\in\text{nodi}}O(\log(M))=O(N\log(M))$$
+**Parte** $O(\delta_v\log(\delta_v))$ :
+- La somma $\sum\limits_{v\in\text{nodi}}O(\delta_v\log(\delta_v))$ dipende dalla distribuzione dei figli di ogni nodo $v$.
+- Sappiamo che $\sum\limits_{v\in\text{nodi}}\delta_v\leq\Delta=N-1$, con $\Delta=\text{grado max. dell'albero }T$ 
+- Il costo totale sarà $$O\left(\sum\limits_{v\in\text{nodi}}\delta_v\log(\delta_v)\right)\leq O(\Delta\log(\Delta))=O(N\log(N))$$
+Di conseguenza, il costo totale dell'algoritmo è $$O(N\log(M))+O(N\log(N))$$
+Ora, dato che $M=\Omega(N)$, il costo complessivo sarà $$O(N\log(M))$$
 Possiamo notare quindi un'ottimizzazione sia nella scrittura del codice sia nel costo computazionale.
 
 Lo pseudocodice della procedura unificata sarà il seguente : 
-
 ```pseudo
 \begin{algorithm}
 \caption{Algoritmo Unificato}
@@ -275,8 +283,7 @@ Lo pseudocodice della procedura unificata sarà il seguente :
 \end{algorithmic}
 \end{algorithm}
 ```
-L'algoritmo che richiamerà questa funzione sarà il seguente
-
+L'algoritmo che richiamerà questa funzione sarà il seguente :
 ```pseudo
 \begin{algorithm}
 \caption{Algoritmo Completo}
@@ -303,18 +310,19 @@ L'algoritmo che richiamerà questa funzione sarà il seguente
 
 Fin'ora abbiamo fatto l'assunzione che i timestamp sugli archi fossero effettivamente ordinati in senso crescente, ma non è detto che sia sempre così.
 
-Infatti, se i timestamp non fossero ordinati noi non potremmo effettuare query di successore e precedessore in tempo $\log(M)$, ma saremmo costretti a farlo in tempo $O(M)$, cosa che ci andrà a rallentare il tempo di esecuzione in modo esponenziale; infatti si passerebbe da $N\log(M)$ a $N\cdot M$ 
+Infatti, se i timestamp non fossero ordinati noi non potremmo effettuare query di successore e precedessore in tempo $\log(M)$, ma saremmo costretti a farlo in tempo $O(M)$, cosa che ci andrebbe a rallentare il tempo di esecuzione in modo esponenziale.
+Infatti il costo computazionale passerebbe da $N\log(M)$ a $NM$  
 
-Per ovviare a questo problema, possiamo definire un'algoritmo che con una visita controlla se i timestamp sono ordinati.
+Per ovviare a questo problema, possiamo definire un'algoritmo che con una semplice visita DFS controlla se i timestamp sono ordinati oppure no : 
+- Se la risposta è **positiva**, si continua in modo normale con gli algoritmi precedenti
+- Altrimenti : i timestamp verranno ordinati, poi si proseguirà con l'algoritmo principale.
 
-Se la risposta è si si continua in modo normale con gli algoritmi precedenti, altrimenti si ordinano i timestamp.
+L'algoritmo per controllare se i timestamp sono ordinati oppure no può essere fatto in tempo $O(M)$, usando una semplice visita `DFS`, mentre l'ordinamento effettivo dei timestamp impiegherà tempo $M\log(M)$. L'ordinamento avverrà usando il `MergeSort`.
 
-L'algoritmo per vedere se i timestamp sono ordinati può essere fatto in tempo $O(M)$, usando una semplice visita `DFS`, mentre l'ordinamento effettivo dei timestamp impiegherà tempo $M\log(M)$ sfruttando il `MergeSort`.
-
-Per quanto riguarda i costi, avremo che : 
-1) Per la versione non unificata, il costo sarà $$O(N\log(M)+O(M)+O(M\log(M)))\implies O(M\log(M))$$
-2) Per la versione unificata, il costo sarà $$O(N^2\log(N)+O(M)+O(M\log(M)))\implies O(N^2\log(N))$$
-Come si può notare, abbiamo che per la versione non unificata il costo sarà sovrastato dall'ordinamento dei timestamp; mentre nella versione unificata, il costo rimarrà invariato.
+Per quanto riguarda i costi, avremo che 
+- Se la verifica accerta che bisogna eseguire l'ordinamento allora il costo sarà $$\underbrace{O(M)}_{\text{Check ordinamento}}+\underbrace{O(M\log(M))}_{\text{Ordinamento dei timestamp}}+\underbrace{O(N\log(M))}_{\text{Algoritmo principale}}=O(M\log(M)),\quad M=\Omega(N)$$
+- Altrimenti, il costo rimarrà quello dell'algoritmo principale, ovvero : $$O(N\log(M))$$
+Da come possiamo notare, il costo dell'algoritmo principale verrà sovrastato dal costo dell'ordinamento (ovviamente solo nel caso in cui dovremmo ordinare effettivamente i timestamp), altrimenti il costo rimarrà uguale all'algoritmo principale.
 # Appendice dei codici
 
 **Possibile implementazione algoritmo separato**

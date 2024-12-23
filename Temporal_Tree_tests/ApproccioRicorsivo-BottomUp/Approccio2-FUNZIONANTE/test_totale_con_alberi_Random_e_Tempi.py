@@ -67,7 +67,7 @@ def check_temporal_connectivity(tree, node, EA_max, LD_max):
         return True
 
     intervals = []
-
+    
     for child in children:
         if not check_temporal_connectivity(tree, child, EA_max, LD_max):
             return False
