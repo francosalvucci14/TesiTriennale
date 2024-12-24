@@ -14,9 +14,9 @@ Tutti gli algoritmi che seguiranno sfruttano questa assunzione.
 Se i timestamp sugli archi non sono ordinati, possiamo ovviare al problema ordinandoli usando l'algoritmo MergeSort, vedi [Capitolo 4](#^cc0759)
 # Algoritmo
 
-L'algoritmo è diviso in due fasi
+L'algoritmo per verificare se un dato albero $T$ è temporalmente connesso oppure no è diviso in due fasi : 
 - Preprocessing dei vettori $EA_\max,LD_\max$
-- Check finale
+- Check finale della temporal connectivity
 
 La **fase di preprocessing** è la fase che calcola con approccio bottom-up i seguenti valori, per ogni nodo $v$ : 
 - $EA_{\max}(v)=\max_{f:\text{f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$ 
@@ -186,12 +186,34 @@ Se alla fine check sarà uguale a `True` allora ritorno che l'Albero è temporal
 ## Analisi dei costi
 
 Quanto costa la fase di preprocessing e la fase di check della temporal connectivity?
-
 ### Costo della fase di preprocessing
 
+La fase di preprocessing calcola i valori $EA,LD$ per ogni nodo $v\in T$.
+
+Dopo averli calcolati, controlla tramite query di successore/predecessore se da un nodo $v$ posso risalire verso il padre di $v$.
+Per risalive verso il padre di $v$ , si prendono come successore di $EA(v)$ il primo valore $\geq EA(v)$, e come predecessore di $LD(v)$ il primo valore $\leq LD(v)$, ovviamente sempre se questi valori esistono.
+
+In caso contrario, i valori nei vettori $EA_\max[v],LD_\max[v]$ verranno impostati a $\infty$. 
+Questo ci permetterà in fase di check di poter ritornare subito `False`, e poter affermare che l'albero $T$ non è temporalmente connesso.
+
+Vediamo quanto costa calcolare i valori $EA,LD$ per ogni nodo $v$.
+
+- Se il nodo $v$ è nodo interno il calcolo di $EA[v],LD[v]$ è lineare nel numero di figli del nodo $v$, ovvero $\delta_v$.
+- Se il nodo $v$ è foglia il calcolo di $EA[v],LD[v]$ risulterà costante, in quanto $EA[v]=\min(L_v)$ e $LD[v]=\max(L_v)$, e dato che i timestamp sono ordinati questi valori verranno presi in tempo costante.
+
+Le query di successore/predecessore impiegano tempo $\log(M)$, in quanto vengono applicate usando l'approccio della ricerca binaria sui timestamp del padre di $v$, per ogni nodo $v$
+
+Il costo totale di questa fase per un singolo nodo è quindi : $$O(\delta_v)+O(\log(M))$$
+Per ogni nodo $v\in T$, il costo complessivo sarà quindi $$\sum\limits_vO(\delta_v)+O(\log(M))\implies\Delta+N\log(M)$$
+Ora, dato che $\Delta\leq N-1$, il costo sarà $$O(N)+O(N\log(M))\implies O(N\log(M))$$
 ### Costo della fase di check
 
-- **Fase (1)** : Dato che il vettore $D_v$ ha size $\delta_v=\text{num. figli di v}$, l'ordinamento di tale vettore mi costerà $$\delta_v\log(\delta_v)$$
+Come abbiamo detto, la fase di check opera in $3$ fasi.
+Poi il valore check verrà trasmesso verso la radice in modo ricorsivo.
+
+Vediamo il costo delle $3$ fasi : 
+
+- **Fase (1)** : Dato che il vettore $D_v$ ha size $\delta_v=\text{num. figli di v}$, l'ordinamento di tale vettore costerà $$\delta_v\log(\delta_v)$$
 - **Fase (2)** : Check tra il primo $EA$ e il secondo $LD$ costa costante $O(1)$
 - **Fase (3)** : Check per ogni $EA(u_i)$ , con $i=2,\dots,\delta_u$ . Costo lineare nel num. di figli di $v$, ovvero $O(\delta_v)$
 
@@ -202,7 +224,17 @@ Ora, dato che un nodo potrà avere al più $\Delta$ figli, con $\Delta=\text{gra
 Di conseguenza, per ogni nodo $v\in T$, il costo complessivo dell'algoritmo di check sarà $$\sum\limits_v\delta_i\log(\Delta)\implies\log(\Delta)\sum\limits_v\delta_i\implies\Delta\log(\Delta)$$
 Adesso, dato che $\Delta\leq N-1$,  l'algoritmo di check della temporal connectivity costerà complessivamente $$O(N\log(N))$$
 Di conseguenza, l'algoritmo completo compreso di preprocessing dei valori e check temporal connectivity costerà
-$$O(N\log(M))+O(N\log(N))\implies O(N\log(M)),\quad M=\Omega(N)$$
+$$O(N\log(M))+O(N\log(N))$$
+
+## Analisi caso migliore/peggiore
+
+A questo punto possiamo definire i due casi che l'algoritmo si troverà ad affrontare
+
+- Il caso migliore è quando tutti gli archi hanno un solo timestamp. 
+- Il caso peggiore è quando tutti gli archi hanno molti timestamp, un numero molto maggiore del numero di nodi
+
+Nel primo caso abbiamo che $M=N-1$, di conseguenza il costo totale sarà $$O(N\log(N))+O(N\log(N))=O(N\log(N))$$
+Nel secondo caso invece, dato che $M\gt\gt N$ il costo totale sarà $$O(N\log(M))+O(N\log(N))=O(N\log(M))$$
 # Unificazione delle procedure
 
 Possiamo notare che le due procedure possono essere unite in un unica procedura, ovvero una procedura che mentre calcola i valori $EA$ e $LD$ esegue anche il check temporale tra i sottoalberi.
@@ -332,9 +364,9 @@ Per quanto riguarda i costi, avremo che
 Da come possiamo notare, il costo dell'algoritmo principale verrà sovrastato dal costo dell'ordinamento (ovviamente solo nel caso in cui dovremmo ordinare effettivamente i timestamp), altrimenti il costo rimarrà uguale all'algoritmo principale.
 # Appendice dei codici
 
-**Possibile implementazione algoritmo separato**
+## Codici python algoritmo separato
 
-Preprocessing
+Una possibile implementazione in python della fase di preprocessing è la seguente : 
 
 ```python
 def preprocess(tree, node, EA_max, LD_max):
@@ -387,7 +419,7 @@ def preprocess(tree, node, EA_max, LD_max):
 
 ```
 
-Fase di check 
+Una possibile implementazione in python della fase di check è la seguente : 
 
 ```python
 def check_temporal_connectivity(tree, node, EA_max, LD_max):
@@ -431,7 +463,7 @@ def check_temporal_connectivity(tree, node, EA_max, LD_max):
 	return True
 ```
 
-Algoritmo
+L'algoritmo completo è quindi il seguente
 
 ```python
 def algoritmo(T):
@@ -451,9 +483,9 @@ def algoritmo(T):
         return "L'albero non è temporalmente connesso"
 ```
 
-**Possibile implementazione algoritmo unificato**
+## Codici python algoritmo unificato
 
-Visita
+Una possibile implementazione in python dell'algoritmo unificato è la seguente : 
 
 ```python
 def DFS_Totale(tree, root):
@@ -509,7 +541,7 @@ def DFS_Totale(tree, root):
     return sottoalberi
 ```
 
-Algoritmo completo
+L'algoritmo completo è il seguente :
 
 ```python
 def algoritmo3_networkx(tree):

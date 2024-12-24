@@ -137,19 +137,19 @@ def algoritmo(T):
     
     T: grafo orientato rappresentante l'albero
     """
-    start = timer()
+    #start = timer()
     EA_max = {}
     LD_max = {}
     preprocess(T, "A", EA_max, LD_max)
     print("Valori di EA_max:", EA_max,"\n")
     print("Valori di LD_max:", LD_max,"\n")
     check = check_temporal_connectivity(T, "A", EA_max, LD_max) 
-    end = timer()
-    print("Tempo di esecuzione:", timedelta(seconds=end-start))
+    #end = timer()
+    #print("Tempo di esecuzione:", timedelta(seconds=end-start))
     if check:
-        return "L'albero è temporalmente connesso",timedelta(seconds=end-start)
+        return "L'albero è temporalmente connesso"
     else:
-        return "L'albero non è temporalmente connesso",timedelta(seconds=end-start)
+        return "L'albero non è temporalmente connesso"
     
 def calculate_average_time():
     tempo_totale = timedelta()
@@ -163,7 +163,7 @@ def calculate_average_time():
     print("Tempo totale di esecuzione:", tempo_totale)
 
 if __name__ == "__main__":
-    # tree = create_tree_with_networkx()
-    # print(algoritmo(tree))
-    calculate_average_time()
+    tree = create_tree_with_networkx()
+    print(algoritmo(tree))
+    #calculate_average_time()
 

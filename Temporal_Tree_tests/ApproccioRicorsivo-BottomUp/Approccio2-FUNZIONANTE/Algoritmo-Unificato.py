@@ -105,13 +105,8 @@ def dfs_EA_tmax_networkx(tree, root):
 
 
 def algoritmo3_networkx(tree):
-    # Trova la radice (nodo senza archi entranti)
-    root = [n for n, d in tree.in_degree() if d == 0][0]
-
     # Esegui DFS-EA-Tmax
-    start = timer()
-    start1 = timer()
-    start2 = timer()
+    root = "A"
     risultati = dfs_EA_tmax_networkx(tree, root)
 
     # Ottieni i risultati per i figli della radice
@@ -121,9 +116,7 @@ def algoritmo3_networkx(tree):
 
     ea_tmax = []
     if risultati[root][0] == float("inf") or risultati[root][1] == float("inf"):
-        end1 = timer()
-        print(f"\nTempo di esecuzione: {timedelta(seconds=end1 - start1)}")
-        return False,timedelta(seconds=end1 - start1)
+        return False
 
     for child in figli:
         ea, t_max = risultati[child]
@@ -146,13 +139,11 @@ def algoritmo3_networkx(tree):
         for i in range(1, len(ea_tmax)):
             if ea_tmax[i][0] > ea_tmax[0][1]:
                 return False
+            
     elif len(ea_tmax) == 1:
-        end2 = timer()
-        print(f"\nTempo di esecuzione: {timedelta(seconds=end2 - start2)}")
-        return True,timedelta(seconds=end2 - start2)
-    end = timer()
-    print(f"\nTempo di esecuzione: {timedelta(seconds=end - start)}")
-    return True,timedelta(seconds=end - start)
+        return True
+    
+    return True
 
 def calculate_average_time():
     tempo_totale = timedelta()
@@ -166,13 +157,13 @@ def calculate_average_time():
     print("Tempo totale di esecuzione:", tempo_totale)
 
 if __name__ == "__main__":
-    calculate_average_time()
+    #calculate_average_time()
+    tree = create_tree_with_networkx()
 
-# tree = create_tree_with_networkx()
-# #tree = create_random_tree(8, (1, 150)) # per random
-# print("Albero creato con NetworkX:")
-# print_tree_networkx(tree, "A")
-# # print_tree(tree)  # Funzione per stampare il grafo in modo leggibile
-# print(f"\nAlbero temporalmente connesso? : {algoritmo3_networkx(tree)}")
+    print("Albero creato con NetworkX:")
+    print_tree_networkx(tree, "A")
+    print(f"\nAlbero temporalmente connesso? : {algoritmo3_networkx(tree)}")
+
+
 
 
