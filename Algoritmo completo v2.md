@@ -22,7 +22,7 @@ La **fase di preprocessing** è la fase che calcola con approccio bottom-up i se
 - $EA_{\max}(v)=\max_{f:\text{f è foglia}}EA$ da $f\in T_v$ fino al padre di $v$ 
 - $LD_\max(v)=$ Istante di tempo $t$ tale che se arrivo al padre di $v$ a tempo $\leq t$, allora posso visitare tutto $T_v$
 
-Ogni volta che salgo di livello, propago le informazioni dai figli di $u$ fino a $u$ , e combino le informazioni che ho ottenuto con i valori sul nodo $u$.
+Ogni volta che salgo di livello, propago le informazioni dai figli di $v$ fino a $v$ , e combino le informazioni che ho ottenuto con i valori sul nodo $v$.
 
 Una volta eseguita la fase 1, verranno ritornati questi $2$ vettori che poi useremo nella fase di check per determinare se l'albero è temporalmente connesso oppure no.
 
@@ -73,7 +73,7 @@ Lo pseudocodice della fase di preprocessing è il seguente
 Le query di `Successore` e `Predecessore` vengono implementate usando l'idea della ricerca binaria, che possiamo usare avendo assunto che i timestamp sugli archi sono tutti ordinati.
 
 La **fase di check finale** è la fase che si occupa di vedere se l'albero rispetta la condizione di connettività temporale, ovvero 
-$$EA_\max\leq LD_{\max},\forall EA_\max,LD_\max$$
+$$EA\leq LD,\forall\space(EA,LD)\in EA_\max,LD_\max$$
 Usando sempre l'approccio bottom-up.
 
 Mentre controlla queste condizioni, l'algoritmo calcola anche un vettore $D_v$ definito così:
@@ -134,21 +134,20 @@ Codice fase 2 con calcolo di $D_v$
 \end{algorithm}
 ```
 
-Dopo aver definito le due procedure in modo separato, diamo lo pseudociodice dell'algoritmo completo, che sarà il seguente :
+Dopo aver definito le due procedure in modo separato, diamo lo pseudocodice dell'algoritmo completo, che sarà il seguente :
 
 ```pseudo
 \begin{algorithm}
 \caption{Algoritmo Completo}
 \begin{algorithmic}
 \Procedure{Algoritmo}{Albero $T$}
-\State $EA_{\max} $ vettore vuoto
-\State $LD_{\max} $ vettore vuoto
+\State $EA_{\max} =$ vettore vuoto
+\State $LD_{\max} =$ vettore vuoto
 \State $EA_{\max},LD_{\max}$ = Preprocessing(Radice $v$)
-\State check = CheckTemporalConnectivity($EA_{\max},LD_{\max}$)
-\If{check = False}
-\Return False
-\Else
+\If{CheckTemporalConnectivity($EA_{\max},LD_{\max}$)}
 \Return True
+\Else
+\Return False
 \EndIf
 
 \EndProcedure
@@ -161,7 +160,7 @@ La dimostrazione di correttezza verrà effettuata sulla procedura di `CheckTempo
 
 L'algoritmo di check funziona nel modo seguente.
 
-Vengono definite due casistiche : 
+Si definite due casistiche : 
 - quando il nodo $v$ è foglia
 - quando il nodo $v$ è nodo interno
 
@@ -175,28 +174,33 @@ Quando il nodo $v$ è nodo interno l'algoritmo opera in questo modo :
 - Esegue effettivamente il check tra i sottoalberi relativi ai figli di $v$
 - Ritorna il check per quel sottoalbero, se il check diventerà `False` anche solo una volta, l'algoritmo ritornerà `False` e si potrà affermare che l'albero totale $T$ non è temporalmente connesso; altrimenti, se nessun sottoalbero darà `False`, si potrà affermare che l'albero completo $T$ è temporalmente connesso.
 
-Vediamo come funziona il check effettivo tra i sottoalberi di un nodo $v$
+**Vediamo come funziona il check effettivo** tra i sottoalberi di un nodo $v$
 
 La fase di check dei sottoalberi opera in $3$ fasi : 
 1) Ordina il vettore $D_v$ in modo crescente rispetto ai valori $LD_\max$ presenti al suo interno, in modo tale da avere il minimo $LD$, tra tutti i figli di $v$, nella prima posizione del vettore $D_v$
 2) Controllo se l'$EA$ in posizione $1$ è minore/uguale al secondo $LD$ (ovvero l'$LD$ in posizione $2$). In questo modo evitiamo di confrontare fra loro $EA$ e $LD$ relativi allo stesso figlio $u$ di $v$. Se questa condizione è vera, allora proseguiamo in fase $3$, altrimeni ritorno subito `False` ed esco dall'algoritmo.
-3) Partendo dalla seconda posizione del vettore $D_v$ fino al $\delta_u$, controllo se l'$i$-esimo $EA$ è minore/uguale al $LD$ minimo (ovvero quello in prima posizione.). Se la condizione sarà sempre verificata, allora ritorno `True`, altrimenti se un solo valore non mi verifica la condizione, ritorno `False`
+3) Partendo dalla seconda posizione del vettore $D_v$ fino al $\delta_u$, controllo se l'$i$-esimo $EA$ è minore/uguale al $LD$ minimo (ovvero quello in prima posizione). Se la condizione sarà sempre verificata, allora ritorno `True`, altrimenti se un solo valore non mi verifica la condizione, ritorno `False`
 
 In modo ricorsivo risalgo l'albero verso la radice, propagando il check verso l'alto. 
 Se alla fine check sarà uguale a `True` allora ritorno che l'Albero è temporalmente connesso, altrimenti ritorno che l'Albero non è temporalmente connesso.
+## Analisi dei costi
 
-Quanto costa l'intero algoritmo?
+Quanto costa la fase di preprocessing e la fase di check della temporal connectivity?
+
+### Costo della fase di preprocessing
+
+### Costo della fase di check
 
 - **Fase (1)** : Dato che il vettore $D_v$ ha size $\delta_v=\text{num. figli di v}$, l'ordinamento di tale vettore mi costerà $$\delta_v\log(\delta_v)$$
 - **Fase (2)** : Check tra il primo $EA$ e il secondo $LD$ costa costante $O(1)$
-- **Fase (3)** : Check per ogni $EA_i$ , con $i=2,\dots,\delta_u$ . Costo lineare nel num. di figli di $v$, ovvero $O(\delta_v)$
+- **Fase (3)** : Check per ogni $EA(u_i)$ , con $i=2,\dots,\delta_u$ . Costo lineare nel num. di figli di $v$, ovvero $O(\delta_v)$
 
 Quindi in totale il costo per il nodo $v$ sarà $\delta_v\log(\delta_v)$.
 
 Ora, dato che un nodo potrà avere al più $\Delta$ figli, con $\Delta=\text{grado massimo dell'albero}$, possiamo affermare che $\delta_v\log(\delta_v)$ sarà sempre $\leq\delta_v\log(\Delta)$. 
 
 Di conseguenza, per ogni nodo $v\in T$, il costo complessivo dell'algoritmo di check sarà $$\sum\limits_v\delta_i\log(\Delta)\implies\log(\Delta)\sum\limits_v\delta_i\implies\Delta\log(\Delta)$$
-Adesso, dato che $\Delta\leq N-1$,  l'algoritmo di check della temporal connectivity costerà $$O(N\log(N))$$
+Adesso, dato che $\Delta\leq N-1$,  l'algoritmo di check della temporal connectivity costerà complessivamente $$O(N\log(N))$$
 Di conseguenza, l'algoritmo completo compreso di preprocessing dei valori e check temporal connectivity costerà
 $$O(N\log(M))+O(N\log(N))\implies O(N\log(M)),\quad M=\Omega(N)$$
 # Unificazione delle procedure
@@ -221,7 +225,9 @@ Dividiamo i costi.
 - Il costo totale sarà $$O\left(\sum\limits_{v\in\text{nodi}}\delta_v\log(\delta_v)\right)\leq O(\Delta\log(\Delta))=O(N\log(N))$$
 Di conseguenza, il costo totale dell'algoritmo è $$O(N\log(M))+O(N\log(N))$$
 Ora, dato che $M=\Omega(N)$, il costo complessivo sarà $$O(N\log(M))$$
-Possiamo notare quindi un'ottimizzazione sia nella scrittura del codice sia nel costo computazionale.
+Da quanto possiamo notare, non abbiamo un ottimizzazione computazionale vera e propria, ma sicuramente possiamo ottimizzare la scrittura del codice stesso.
+
+Infatti, cosi facendo il codice risulterà più compatto
 
 Lo pseudocodice della procedura unificata sarà il seguente : 
 ```pseudo
@@ -245,6 +251,7 @@ Lo pseudocodice della procedura unificata sarà il seguente :
           \State Appendo al vettore $D_v$ la tripla $\langle EA_{\max}[u],LD_{\max}[u],Check\rangle$
           
           \EndFor
+          \Comment{Inizio parte di check}
           \If{lenght($D_v$)$\gt1$}
           \State Ordino il vettore $D_v$ in modo crescente rispetto ai valori $LD_{\max}$ al suo interno
           \Comment{Step 1}
@@ -283,6 +290,7 @@ Lo pseudocodice della procedura unificata sarà il seguente :
 \end{algorithmic}
 \end{algorithm}
 ```
+
 L'algoritmo che richiamerà questa funzione sarà il seguente :
 ```pseudo
 \begin{algorithm}
@@ -303,7 +311,6 @@ L'algoritmo che richiamerà questa funzione sarà il seguente :
 \end{algorithmic}
 \end{algorithm}
 ```
-
 # Ordinamento dei timestamp sugli archi
 
 ^cc0759
