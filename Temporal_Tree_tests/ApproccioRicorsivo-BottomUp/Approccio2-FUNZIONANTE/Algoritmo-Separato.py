@@ -9,36 +9,35 @@ def create_tree_with_networkx():
     tree = nx.DiGraph()
 
     # # Aggiungi i nodi e i pesi degli archi entranti
-    # tree.add_node("A", weight=None)  # Radice senza arco entrante
-    # tree.add_node("B", weight=[1, 3])
-    # tree.add_node("C", weight=[2, 2])
-    # tree.add_node("D", weight=[2, 7])
+    # tree.add_node("A", weight=None)
+    # tree.add_node("B", weight=[2,6])
+    # tree.add_node("C", weight=[6])
+    # tree.add_node("D", weight=[1,2,3,4,5,6])
+    # tree.add_node("E", weight=[6])
+    # tree.add_node("F", weight=[1,6])
+    # tree.add_node("G", weight=[2,3])
+    # tree.add_node("H", weight=[3,4])
 
-    # # Aggiungi gli archi (parent -> child)
     # tree.add_edges_from([
     #     ("A", "B"),
     #     ("A", "C"),
-    #     ("A", "D")
+    #     ("A", "F"),
+    #     ("B", "D"),
+    #     ("C", "E"),
+    #     ("F", "G"),
+    #     ("F", "H")
     # ])
     tree.add_node("A", weight=None)
-    tree.add_node("B", weight=[2,6])
-    tree.add_node("C", weight=[6])
-    tree.add_node("D", weight=[1,2,3,4,5,6])
-    tree.add_node("E", weight=[6])
-    tree.add_node("F", weight=[1,6])
-    tree.add_node("G", weight=[2,3])
-    tree.add_node("H", weight=[3,4])
+    tree.add_node("B", weight=[1,3])
+    tree.add_node("C", weight=[2])
+    tree.add_node("D", weight=[2,7])
 
+    # Aggiungi gli archi (parent -> child)
     tree.add_edges_from([
         ("A", "B"),
         ("A", "C"),
-        ("A", "F"),
-        ("B", "D"),
-        ("C", "E"),
-        ("F", "G"),
-        ("F", "H")
+        ("A", "D")
     ])
-    
 
     return tree
 

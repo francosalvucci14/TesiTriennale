@@ -190,6 +190,7 @@
   },
   "active": "41586740df6cbf79",
   "lastOpenFiles": [
+    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/Algoritmo-Naive.py",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/Algoritmo-Separato.py",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/algoritmo-Separato.py",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/Algoritmo-Unificato.py",
@@ -200,7 +201,6 @@
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/DFS-EA-Tmax.cpp",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test/DFS-EA-Tmax.py",
     "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/test_totale.py",
-    "Temporal_Tree_tests/ApproccioRicorsivo-BottomUp/Approccio2-FUNZIONANTE/algoritmo_separato.py",
     "Dimostrazione Algoritmo Completa.md",
     "Algoritmo completo v2.md",
     "Theory/Algoritmo Corretto con Dimostrazione.md",

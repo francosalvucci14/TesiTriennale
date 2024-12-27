@@ -8,34 +8,21 @@ def create_tree_with_networkx():
     tree = nx.DiGraph()
 
     # # # Aggiungi i nodi e i pesi degli archi entranti
-    # tree.add_node("A", weight=None)  # Radice senza arco entrante
-    # tree.add_node("B", weight=[1, 3])
-    # tree.add_node("C", weight=[2, 2])
-    # tree.add_node("D", weight=[2, 7])
-
-    # # Aggiungi gli archi (parent -> child)
-    # tree.add_edges_from([
-    #     ("A", "B"),
-    #     ("A", "C"),
-    #     ("A", "D")
-    # ])
-    tree.add_node("A", weight=None)
-    tree.add_node("B", weight=[2,6])
+    
+    tree.add_node("A", weight=None)  # Radice senza arco entrante
+    tree.add_node("B", weight=[2, 6])
     tree.add_node("C", weight=[6])
-    tree.add_node("D", weight=[1,2,3,4,5,6])
+    tree.add_node("D", weight=[1, 2, 3, 4, 5, 6])
     tree.add_node("E", weight=[6])
-    tree.add_node("F", weight=[1,6])
-    tree.add_node("G", weight=[2,3])
-    tree.add_node("H", weight=[3,4])
+    tree.add_node("F", weight=[1, 6])
 
+    # Aggiungi gli archi (parent -> child)
     tree.add_edges_from([
         ("A", "B"),
         ("A", "C"),
         ("A", "F"),
         ("B", "D"),
-        ("C", "E"),
-        ("F", "G"),
-        ("F", "H")
+        ("C", "E")
     ])
 
     return tree
@@ -158,12 +145,14 @@ def calculate_average_time():
 
 if __name__ == "__main__":
     #calculate_average_time()
+    start = timer()
     tree = create_tree_with_networkx()
 
-    print("Albero creato con NetworkX:")
-    print_tree_networkx(tree, "A")
+    #print("Albero creato con NetworkX:")
+    #print_tree_networkx(tree, "A")
     print(f"\nAlbero temporalmente connesso? : {algoritmo3_networkx(tree)}")
-
+    end = timer()
+    print("Tempo di esecuzione:", timedelta(seconds=end - start))
 
 
 
