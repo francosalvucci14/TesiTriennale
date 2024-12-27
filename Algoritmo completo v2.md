@@ -114,9 +114,9 @@ Codice fase 2 con calcolo di $D_v$
 \State Ordino il vettore $D_v$ in modo crescente rispetto ai valori $LD_{\max}$ al suo interno
 
 \Comment{Step 1}
-\If{$D_{v}[1][1]\leq D_v[2][2]$}
+\If{Not ($D_{v}[1][1]\leq D_v[2][2]$)}
 \Comment{Step 2}
-\State Vado avanti
+\Return False
 \EndIf
 
 \For{$i$=2 to $\delta_u$}
@@ -311,10 +311,12 @@ Lo pseudocodice della procedura unificata sarà il seguente :
           \If{NextEA $=-1\space\lor\space$NextTime=$-1$}
 		        \State $EA_{\max}[v]=\infty$
 		        \State $LD_{\max}[v]=\infty$
+		        \State Check=False
 	          
 	    \Else
 		    \State $EA_{\max}[v]=$NextEA
 		    \State $LD_{\max}[v]=$NextLD
+		    \State Check=True
 		    
           \EndIf
           \Return $EA_{\max}[v],LD_{\max}[v]$,Check
