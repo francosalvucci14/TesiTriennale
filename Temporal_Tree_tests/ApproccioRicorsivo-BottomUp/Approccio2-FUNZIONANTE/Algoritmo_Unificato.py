@@ -9,22 +9,56 @@ def create_tree_with_networkx():
 
     # # # Aggiungi i nodi e i pesi degli archi entranti
     
+    # tree.add_node("A", weight=None)  # Radice senza arco entrante
+    # tree.add_node("B", weight=[2, 6])
+    # tree.add_node("C", weight=[6])
+    # tree.add_node("D", weight=[1, 2, 3, 4, 5, 6])
+    # tree.add_node("E", weight=[6])
+    # tree.add_node("F", weight=[1, 6])
+
+    # # Aggiungi gli archi (parent -> child)
+    # tree.add_edges_from([
+    #     ("A", "B"),
+    #     ("A", "C"),
+    #     ("A", "F"),
+    #     ("B", "D"),
+    #     ("C", "E")
+    # ])
     tree.add_node("A", weight=None)  # Radice senza arco entrante
-    tree.add_node("B", weight=[2, 6])
-    tree.add_node("C", weight=[6])
-    tree.add_node("D", weight=[1, 2, 3, 4, 5, 6])
-    tree.add_node("E", weight=[6])
-    tree.add_node("F", weight=[1, 6])
+    tree.add_node("B", weight=[1, 2, 3, 4, 5, 6])
+    tree.add_node("C", weight=[1,9])
+    tree.add_node("D", weight=[2,6])
+    tree.add_node("E", weight=[1, 2, 3, 4, 5, 6])
+    tree.add_node("F", weight=[2, 6])
+    tree.add_node("G", weight=[1,4])
+    tree.add_node("H", weight=[10])
+    tree.add_node("I", weight=[1])
+    tree.add_node("J", weight=[1])
+    tree.add_node("K", weight=[1])
+    tree.add_node("L", weight=[1])
+    tree.add_node("M", weight=[1])
+    tree.add_node("N", weight=[1])
+    tree.add_node("O", weight=[1])
+    tree.add_node("P", weight=[1])
 
     # Aggiungi gli archi (parent -> child)
     tree.add_edges_from([
         ("A", "B"),
         ("A", "C"),
-        ("A", "F"),
-        ("B", "D"),
-        ("C", "E")
+        ("A", "D"),
+        ("B", "E"),
+        ("B", "F"),
+        ("C", "G"),
+        ("C", "H"),
+        ("C", "I"),
+        ("D", "J"),
+        ("F", "K"),
+        ("H", "L"),
+        ("H", "M"),
+        ("K", "O"),
+        ("O", "P"),
+        ("J", "N")
     ])
-
     return tree
 
 def dfs_EA_tmax_networkx(tree, root):
@@ -75,8 +109,8 @@ def dfs_EA_tmax_networkx(tree, root):
     k = binary_search(weight, EA)
     nextTimeMax = binary_search_leq(weight, t_max_visita)
 
-    if nextTimeMax == -1 and root != "A":
-        return {root: (float("inf"), float("inf"))}
+    if (nextTimeMax == -1 or k == -1) and root != "A":
+        return {root: (float("inf"), -float("inf"))}
 
     #print(f"Valore di nextTimeMax: {nextTimeMax} per il nodo {root}")
     #print(f"Valore di k: {k} per il nodo {root}")
@@ -107,6 +141,8 @@ def algoritmo3_networkx(tree):
 
     for child in figli:
         ea, t_max = risultati[child]
+        if ea == float("inf") or t_max == float("inf"):
+            return False
         ea_tmax.append((ea, t_max))
 
     print("------------------------------------------------")
@@ -132,27 +168,25 @@ def algoritmo3_networkx(tree):
     
     return True
 
-def calculate_average_time():
-    tempo_totale = timedelta()
-    for _ in range(400):
-        tree = create_random_tree(8, (1, 15))
-        check, elapsed_time = algoritmo3_networkx(tree)
-        tempo_totale += elapsed_time
-        print(check)
+# def calculate_average_time():
+#     tempo_totale = timedelta()
+#     for _ in range(400):
+#         tree = create_random_tree(8, (1, 15))
+#         check, elapsed_time = algoritmo3_networkx(tree)
+#         tempo_totale += elapsed_time
+#         print(check)
 
-    print("Tempo medio di esecuzione:", tempo_totale / 400)
-    print("Tempo totale di esecuzione:", tempo_totale)
+#     print("Tempo medio di esecuzione:", tempo_totale / 400)
+#     print("Tempo totale di esecuzione:", tempo_totale)
 
 if __name__ == "__main__":
     #calculate_average_time()
     start = timer()
     tree = create_tree_with_networkx()
-
-    #print("Albero creato con NetworkX:")
-    #print_tree_networkx(tree, "A")
     print(f"\nAlbero temporalmente connesso? : {algoritmo3_networkx(tree)}")
     end = timer()
     print("Tempo di esecuzione:", timedelta(seconds=end - start))
+    
 
 
 

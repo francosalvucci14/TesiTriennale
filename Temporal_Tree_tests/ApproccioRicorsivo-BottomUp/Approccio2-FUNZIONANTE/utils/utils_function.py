@@ -102,3 +102,69 @@ def create_random_tree(N, timestamp_range):
         tree.add_edge(parent, node)
 
     return tree
+
+def generate_random_temporal_tree(N=50, max_timestamps=35, timestamp_range=(1, 150)):
+    """
+    Genera un albero temporale casuale con N nodi e al più K timestamp per ogni nodo.
+
+    Args:
+        N (int): Numero di nodi dell'albero (N >= 1).
+        max_timestamps (int): Numero massimo di timestamp per nodo (1 <= max_timestamps <= 15).
+        timestamp_range (tuple): Intervallo dei valori possibili per i timestamp (min, max).
+
+    Returns:
+        nx.DiGraph: Albero temporale con timestamp sui nodi.
+    """
+    if N < 1:
+        raise ValueError("Il numero di nodi deve essere almeno 1.")
+    if not (1 <= max_timestamps <= 5000):
+        raise ValueError("Il numero massimo di timestamp deve essere tra 1 e 5000.")
+
+    # Crea un grafo diretto
+    tree = nx.DiGraph()
+
+    # Genera i nomi dei nodi (A, B, C, ...)
+    #nodes = [chr(65 + i) for i in range(N)]  # A, B, C, ... fino a N nodi
+    nodes = ["A"] + [f"N{i+1}" for i in range(1, N)]
+
+    # Aggiungi i nodi all'albero
+    for node in nodes:
+        if node == nodes[0]:
+            tree.add_node(node, weight=None)  # La radice non ha timestamp
+        else:
+            num_timestamps = random.randint(1, max_timestamps)
+            timestamps = sorted(random.sample(range(timestamp_range[0], timestamp_range[1] + 1), num_timestamps))
+            tree.add_node(node, weight=timestamps)
+
+    # Collega i nodi al parent generando un albero
+    for node in nodes[1:]:
+        # Scegli un parent casuale tra i nodi già aggiunti (garantisce un albero valido)
+        parent = random.choice(nodes[:nodes.index(node)])
+
+        # Aggiungi l'arco (i timestamp sono già sui nodi)
+        tree.add_edge(parent, node)
+
+    return tree
+
+
+def print_temporal_tree(tree):
+    """
+    Stampa l'albero temporale in una struttura leggibile.
+
+    Args:
+        tree (nx.DiGraph): Albero temporale generato.
+    """
+    def print_subtree(node, depth=0):
+        indent = "    " * depth
+        if depth == 0:
+            print(f"- Radice {node}")
+        else:
+            parent = list(tree.predecessors(node))[0]  # Ottieni il genitore
+            timestamps = tree.nodes[node]['weight']
+            print(f"{indent}- Nodo Interno (figlio di {parent}) {node} . lista timestamp: {timestamps}")
+
+        for child in tree.successors(node):
+            print_subtree(child, depth + 1)
+
+    root = [n for n, d in tree.in_degree() if d == 0][0]  # Trova la radice (nodo con in-degree 0)
+    print_subtree(root)
