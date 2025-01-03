@@ -61,6 +61,34 @@ def create_tree_with_networkx():
     ])
     return tree
 
+def create_tree_for_test():
+    tree = nx.DiGraph()
+
+    tree.add_node("A",weight=None)
+    tree.add_node("N2",weight=[1])
+    tree.add_node("N3",weight=[1,2,3,4])
+    tree.add_node("N7",weight=[1,2,4])
+    tree.add_node("N9",weight=[1,2])
+    tree.add_node("N4",weight=[1])
+    tree.add_node("N5",weight=[3])
+    tree.add_node("N10",weight=[1,3,4])
+    tree.add_node("N6",weight=[2,3])
+    tree.add_node("N8",weight=[1,2,3,4])
+
+    tree.add_edges_from([
+        ("A","N2"),
+        ("A","N3"),
+        ("A","N7"),
+        ("N2","N9"),
+        ("N9","N10"),
+        ("N3","N4"),
+        ("N3","N5"),
+        ("N4","N6"),
+        ("N4","N8"),
+    ])
+
+    return tree
+
 def dfs_EA_tmax_networkx(tree, root):
     # Caso base: nodo nullo
     if root is None:
@@ -72,9 +100,9 @@ def dfs_EA_tmax_networkx(tree, root):
 
     # Caso base: foglia
     if not children:
-        #print(
+        # print(
         #    f"EA e tempo max visita per il sottoalbero radicato nel nodo {root} (foglia): {weight[0], weight[-1]}"
-        #)
+        # )
         return {root: (weight[0], weight[-1])}
 
     # Variabili per raccogliere i valori EA e Tmax per ogni sottoalbero
@@ -112,11 +140,11 @@ def dfs_EA_tmax_networkx(tree, root):
     if (nextTimeMax == -1 or k == -1) and root != "A":
         return {root: (float("inf"), -float("inf"))}
 
-    #print(f"Valore di nextTimeMax: {nextTimeMax} per il nodo {root}")
-    #print(f"Valore di k: {k} per il nodo {root}")
-    #print(
+    # print(f"Valore di nextTimeMax: {nextTimeMax} per il nodo {root}")
+    # print(f"Valore di k: {k} per il nodo {root}")
+    # print(
     #    f"EA e tempo max visita per il sottoalbero radicato nel nodo {root} (nodo interno): {k, nextTimeMax}"
-    #)
+    # )
 
     #minTime = min(t_max_visita, nextTimeMax)
 
@@ -182,7 +210,7 @@ def algoritmo3_networkx(tree):
 if __name__ == "__main__":
     #calculate_average_time()
     start = timer()
-    tree = create_tree_with_networkx()
+    tree = create_tree_for_test()
     print(f"\nAlbero temporalmente connesso? : {algoritmo3_networkx(tree)}")
     end = timer()
     print("Tempo di esecuzione:", timedelta(seconds=end - start))

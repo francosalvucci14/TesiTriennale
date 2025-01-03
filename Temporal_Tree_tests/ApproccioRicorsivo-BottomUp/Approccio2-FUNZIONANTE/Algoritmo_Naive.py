@@ -247,12 +247,12 @@ def create_tree_with_networkx():
     
 
     ## Aggiungi i nodi e i pesi degli archi entranti
-    tree.add_node("A", timestamp=None)  # Radice senza arco entrante
-    tree.add_node("B", timestamp=[2, 6])
-    tree.add_node("C", timestamp=[6])
-    tree.add_node("D", timestamp=[1, 2, 3, 4, 5,6])
-    tree.add_node("E", timestamp=[6])
-    tree.add_node("F", timestamp=[1, 6])
+    tree.add_node("A", weight=None)  # Radice senza arco entrante
+    tree.add_node("B", weight=[2, 6])
+    tree.add_node("C", weight=[6])
+    tree.add_node("D", weight=[1, 2, 3, 4, 5,6])
+    tree.add_node("E", weight=[6])
+    tree.add_node("F", weight=[1, 6])
 
     # Aggiungi gli archi (parent -> child)
     tree.add_edges_from([

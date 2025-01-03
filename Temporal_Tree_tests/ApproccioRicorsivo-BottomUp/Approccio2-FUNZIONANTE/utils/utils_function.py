@@ -66,44 +66,7 @@ def print_tree_networkx(tree, root, level=0):
         print_tree_networkx(tree, child, level + 1)
 
 
-def create_random_tree(N, timestamp_range):
-    """
-    Crea un albero diretto casuale con N nodi e timestamp casuali ordinati.
-
-    Parametri:
-        N (int): Numero di nodi dell'albero.
-        timestamp_range (tuple): Intervallo dei timestamp, ad esempio (1, 10).
-
-    Ritorna:
-        tree (nx.DiGraph): Un albero diretto casuale.
-    """
-    if N < 1:
-        raise ValueError("Il numero di nodi deve essere almeno 1.")
-
-    # Crea un grafo diretto
-    tree = nx.DiGraph()
-
-    # Aggiungi il nodo radice
-    tree.add_node("A", weight=None)
-
-    # Genera i restanti nodi
-    nodes = [f"N{i}" for i in range(1, N)]
-
-    # Assegna pesi (timestamp) ai nodi e costruisce l'albero
-    for node in nodes:
-        num_timestamps = random.randint(1, 8)  # Numero casuale di timestamp per nodo
-        timestamps = sorted(random.sample(range(timestamp_range[0], timestamp_range[1] + 1), num_timestamps))
-        tree.add_node(node, weight=timestamps)
-
-    # Collegare i nodi per formare un albero
-    all_nodes = ["A"] + nodes
-    for node in nodes:
-        parent = random.choice(all_nodes[:all_nodes.index(node)])  # Seleziona un genitore tra i nodi già aggiunti
-        tree.add_edge(parent, node)
-
-    return tree
-
-def generate_random_temporal_tree(N=50, max_timestamps=35, timestamp_range=(1, 150)):
+def generate_random_temporal_tree(N=10, max_timestamps=1, timestamp_range=(1, 1)):
     """
     Genera un albero temporale casuale con N nodi e al più K timestamp per ogni nodo.
 
@@ -168,3 +131,34 @@ def print_temporal_tree(tree):
 
     root = [n for n, d in tree.in_degree() if d == 0][0]  # Trova la radice (nodo con in-degree 0)
     print_subtree(root)
+
+def create_tree_with_networkx():
+    # Crea un grafo diretto
+    tree = nx.DiGraph()
+
+    # # # Aggiungi i nodi e i pesi degli archi entranti
+    
+    tree.add_node("A", weight=None)  # Radice senza arco entrante
+    tree.add_node("B", weight=[3,4,5])
+    tree.add_node("C", weight=[2,4])
+    tree.add_node("D", weight=[1, 2, 3, 4, 5, 6])
+    tree.add_node("E", weight=[2,3,4,5,6])
+    tree.add_node("F", weight=[2,3])
+    tree.add_node("G", weight=[1,2,3,4,5,6])
+    tree.add_node("H", weight=[2,6])
+    tree.add_node("I", weight=[1,3])
+    tree.add_node("J", weight=[1,3])
+
+    # Aggiungi gli archi (parent -> child)
+    tree.add_edges_from([
+        ("A", "B"),
+        ("A", "E"),
+        ("A", "F"),
+        ("B", "C"),
+        ("B", "D"),
+        ("C", "G"),
+        ("C", "H"),
+        ("D", "J"),
+        ("F", "I")
+    ])
+    return tree
