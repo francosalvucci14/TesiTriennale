@@ -63,30 +63,11 @@ def create_tree_with_networkx():
 
 def create_tree_for_test():
     tree = nx.DiGraph()
-
-    tree.add_node("A",weight=None)
-    tree.add_node("N2",weight=[1])
-    tree.add_node("N3",weight=[1,2,3,4])
-    tree.add_node("N7",weight=[1,2,4])
-    tree.add_node("N9",weight=[1,2])
-    tree.add_node("N4",weight=[1])
-    tree.add_node("N5",weight=[3])
-    tree.add_node("N10",weight=[1,3,4])
-    tree.add_node("N6",weight=[2,3])
-    tree.add_node("N8",weight=[1,2,3,4])
-
-    tree.add_edges_from([
-        ("A","N2"),
-        ("A","N3"),
-        ("A","N7"),
-        ("N2","N9"),
-        ("N9","N10"),
-        ("N3","N4"),
-        ("N3","N5"),
-        ("N4","N6"),
-        ("N4","N8"),
-    ])
-
+    tree.add_node("A", weight=None)
+    tree.add_node("B", weight=[8,9])
+    tree.add_node("C", weight=[2])
+    tree.add_node("D", weight=[2, 6])
+    tree.add_edges_from([("A", "B"), ("A", "C"), ("A", "D")])
     return tree
 
 def dfs_EA_tmax_networkx(tree, root):
