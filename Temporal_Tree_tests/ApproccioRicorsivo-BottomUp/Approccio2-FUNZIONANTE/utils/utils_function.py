@@ -109,6 +109,68 @@ def generate_random_temporal_tree(N=10, max_timestamps=1, timestamp_range=(1, 1)
 
     return tree
 
+def genera_albero_temporale(N, M,timestamp_range):
+    """
+    Genera un albero temporale casuale con N nodi e un totale di M timestamp distribuiti sui nodi.
+
+    Args:
+        N (int): Numero di nodi dell'albero (N >= 1).
+        timestamp_range (tuple): Intervallo dei valori possibili per i timestamp (min, max).
+        M (int): Numero totale di timestamp da distribuire sui nodi.
+
+    Returns:
+        nx.DiGraph: Albero temporale con timestamp sui nodi.
+    """
+    if N < 1:
+        raise ValueError("Il numero di nodi deve essere almeno 1.")
+    if M < N - 1:
+        raise ValueError("Il numero totale di timestamp deve essere almeno pari al numero di archi (N-1).")
+
+    # Crea un grafo diretto
+    tree = nx.DiGraph()
+
+    # Genera i nomi dei nodi (A, N1, N2, ...)
+    nodes = ["A"] + [f"N{i}" for i in range(1, N)]
+
+    # Aggiungi i nodi all'albero
+    for node in nodes:
+        if node == "A":
+            tree.add_node(node, weight=None)  # La radice "A" non ha timestamp (weight)
+        else:
+            tree.add_node(node)
+
+    # Collega i nodi al parent generando un albero
+    edges = []
+    for node in nodes[1:]:
+        # Scegli un parent casuale tra i nodi già aggiunti (garantisce un albero valido)
+        parent = random.choice(nodes[:nodes.index(node)])
+        edges.append((parent, node))
+        tree.add_edge(parent, node)
+
+    # Distribuisci i timestamp sui nodi (esclusa la radice)
+    remaining_timestamps = M
+    available_timestamps = list(range(timestamp_range[0], timestamp_range[1] + 1))
+
+    if len(available_timestamps) < M:
+        raise ValueError("Intervallo dei timestamp troppo piccolo per distribuirli tutti.")
+
+    random.shuffle(available_timestamps)
+
+    for node in nodes[1:]:
+        if len(nodes) - 1 == 1:  # Ultimo nodo
+            timestamps = available_timestamps[:remaining_timestamps]
+        else:
+            max_possible = remaining_timestamps // (len(nodes) - 1)
+            num_timestamps = random.randint(1, max_possible)
+            timestamps = available_timestamps[:num_timestamps]
+
+        tree.nodes[node]['weight'] = sorted(timestamps)
+
+        # Rimuovi i timestamp utilizzati
+        available_timestamps = available_timestamps[num_timestamps:]
+        remaining_timestamps -= num_timestamps
+
+    return tree
 
 def print_temporal_tree(tree):
     """
