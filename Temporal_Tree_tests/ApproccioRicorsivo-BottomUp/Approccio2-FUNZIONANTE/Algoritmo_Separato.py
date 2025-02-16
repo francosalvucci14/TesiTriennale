@@ -149,17 +149,6 @@ def algoritmo(T):
         return "L'albero è temporalmente connesso"
     else:
         return "L'albero non è temporalmente connesso"
-    
-def calculate_average_time():
-    tempo_totale = timedelta()
-    for _ in range(400):
-        tree = create_random_tree(8, (1, 15))
-        check, elapsed_time = algoritmo(tree)
-        tempo_totale += elapsed_time
-        print(check)
-
-    print("Tempo medio di esecuzione:", tempo_totale / 400)
-    print("Tempo totale di esecuzione:", tempo_totale)
 
 if __name__ == "__main__":
     tree = create_tree_with_networkx()

@@ -4,25 +4,27 @@ from timeit import default_timer as timer
 import time
 from datetime import timedelta
 import Algoritmo_Naive as naive
+import Algoritmo_Naive_V2 as naive_v2
 import Algoritmo_Unificato as unificato
+import ALgoritmo_Unificato_V2 as unificato_v2
 import matplotlib.pyplot as plt
 import numpy as np
 
 def test1():
 
-    for i in range(1,21):
+    for i in range(1,12):
         print("\nTempi con N = ",10*i," nodi e L = ",25*i," timestamp")
         tree = generate_random_temporal_tree(10*i, 25*i, (1, 1500))
         tree2 = tree.to_undirected()
         #print(type(tree))
         #print_temporal_tree(tree)
         start = timer()
-        print(f"\nAlbero temporalmente connesso? Algoritmo 1 : {unificato.algoritmo3_networkx(tree)}")
+        print(f"\nAlbero temporalmente connesso? Algoritmo 1 : {unificato_v2.algoritmo_unificato(tree)}")
         #unificato.algoritmo3_networkx(tree)
         end = timer()
         print("Tempo di esecuzione:", timedelta(seconds=end - start))
         start2 = timer()
-        print(f"\nAlbero temporalmente connesso? Algoritmo Naive : {naive.is_temporally_connected(tree2)}")
+        print(f"\nAlbero temporalmente connesso? Algoritmo Naive : {naive_v2.is_temporally_connected(tree2)}")
         #naive.is_temporally_connected_v2(tree)
         end2 = timer()
         print("Tempo di esecuzione algoritmo naive:", timedelta(seconds=end2 - start2))
@@ -55,13 +57,13 @@ def test3(trials=100):
         print(f"Trial {i + 1}/{trials}")
         # Misura il tempo di esecuzione di algoritmo3_networkx
         start = timer()
-        risposta1 = unificato.algoritmo3_networkx(tree)
+        risposta1 = unificato_v2.algoritmo_unificato(tree)
         end= timer()
         total_time_algo3 += timedelta(seconds=end - start)
 
         # Misura il tempo di esecuzione di is_temporally_connected_v2
         start2 = timer()
-        risposta2 = naive.is_temporally_connected(tree2)
+        risposta2 = naive_v2.naive_temporal_connectivity(tree2)
         end2= timer()
         total_time_is_connected += timedelta(seconds=end2 - start2)
     #avg_time_algo3 = total_time_algo3 / trials
@@ -76,7 +78,7 @@ def test3(trials=100):
     #Algoritmo 1: Tempo medio di esecuzione su 100 prove: 0:00:00.001651
     #Algoritmo Naive: Tempo medio di esecuzione su 100 prove: 0:00:27.620086
 
-def test3_plot(trials=100, node_sizes=[50,100,200]):
+def test3_plot(trials=100, node_sizes=[10,50,100,200,500,1000]):
     """
     Confronta i tempi medi di esecuzione di due algoritmi su un numero specificato di prove
     per varie dimensioni del problema (numero di nodi) e produce un grafico.
@@ -95,8 +97,8 @@ def test3_plot(trials=100, node_sizes=[50,100,200]):
         print("\nNumero di nodi: ", num_nodes)
 
         for _ in range(trials):
-            timestamp_range = (1, 500)  # Intervallo casuale di timestamp
-            tree = generate_random_temporal_tree(num_nodes, 2*num_nodes, timestamp_range)
+            timestamp_range = (1, num_nodes*2+100)  # Intervallo casuale di timestamp
+            tree = generate_random_temporal_tree(num_nodes, num_nodes**2, timestamp_range)
             #tree = genera_albero_temporale(num_nodes, num_nodes*10, timestamp_range)
 
             print("Trials : {}/{}".format(_+1,trials))
@@ -104,13 +106,13 @@ def test3_plot(trials=100, node_sizes=[50,100,200]):
 
             # Misura il tempo di esecuzione di algoritmo3_networkx
             start = timer()
-            risposta1 = unificato.algoritmo3_networkx(tree)
+            risposta1 = unificato_v2.algoritmo_unificato(tree)
             end = timer()
             total_time_algo3 += timedelta(seconds=end - start)
 
             # Misura il tempo di esecuzione di is_temporally_connected
             start2 = timer()
-            risposta2 = naive.is_temporally_connected(tree2)
+            risposta2 = naive_v2.naive_temporal_connectivity(tree2)
             end2 = timer()
             total_time_is_connected += timedelta(seconds=end2 - start2)
 
@@ -127,7 +129,7 @@ def test3_plot(trials=100, node_sizes=[50,100,200]):
     plt.figure(figsize=(10, 6))
     plt.plot(x, avg_times_algo3,marker='o',linewidth=3.5, color='red', label='Algoritmo Unificato')
     plt.plot(x, avg_times_naive,marker='o',linewidth=3.5, color='blue', label='Algoritmo Naive')
-    plt.yscale('log')
+    #plt.yscale('log')
     plt.xticks(ticks=x, labels=[f"{n} nodi" for n in node_sizes])
     plt.xlabel("Numero di nodi")
     plt.ylabel("Tempo medio di esecuzione (secondi)")
@@ -136,7 +138,8 @@ def test3_plot(trials=100, node_sizes=[50,100,200]):
     plt.grid(True, linestyle='--', alpha=0.6)
 
     plt.tight_layout()
-    plt.show()
+    #plt.show()
+    plt.savefig("Test_n^2_2000n.png")
 
 
 def test2(intervals):

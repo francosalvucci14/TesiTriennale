@@ -80,15 +80,16 @@ def generate_random_temporal_tree(N=10, max_timestamps=1, timestamp_range=(1, 1)
     """
     if N < 1:
         raise ValueError("Il numero di nodi deve essere almeno 1.")
-    if not (1 <= max_timestamps <= 5000):
-        raise ValueError("Il numero massimo di timestamp deve essere tra 1 e 5000.")
+    #if not (1 <= max_timestamps <= 5000):
+        #raise ValueError("Il numero massimo di timestamp deve essere tra 1 e 5000.")
 
     # Crea un grafo diretto
     tree = nx.DiGraph()
 
     # Genera i nomi dei nodi (A, B, C, ...)
     #nodes = [chr(65 + i) for i in range(N)]  # A, B, C, ... fino a N nodi
-    nodes = ["A"] + [f"N{i+1}" for i in range(1, N)]
+    #nodes = ["A"] + [f"N{i+1}" for i in range(1, N)]
+    nodes = list(range(1, N + 1))
 
     # Aggiungi i nodi all'albero
     for node in nodes:

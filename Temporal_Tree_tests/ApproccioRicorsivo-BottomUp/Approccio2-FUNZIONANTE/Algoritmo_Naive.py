@@ -238,6 +238,7 @@ def temporal_path_exists(graph, start, target):
                     # Usa il timestamp minimo valido come prossimo timestamp
                     next_time = min(t for t in timestamps if t >= last_time)
                     queue.append((neighbor, next_time))
+                
     return False
 
 # Esempio di utilizzo
