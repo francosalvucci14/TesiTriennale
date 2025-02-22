@@ -1,4 +1,6 @@
 import networkx as nx
+from timeit import default_timer as timer
+from datetime import timedelta
 
 def exists_temporal_path_for_nodes(path, tree):
     """
@@ -63,5 +65,28 @@ def create_example_tree():
     tree.add_edge(3, 5, weight=[6])
     return tree
 
-tree = create_example_tree()
+def create_example_tree_2():
+    tree = nx.Graph()
+    tree.add_edge(1, 2, weight=[1,3,5])
+    tree.add_edge(1, 3, weight=[2,4])
+    tree.add_edge(1, 4, weight=[1,2,6])
+    tree.add_edge(2, 5, weight=[3, 5])
+    tree.add_edge(2, 6, weight=[2,4,6,8])
+    return tree
+def tree_test():
+    tree = nx.Graph()
+    tree.add_edge(1, 2, weight=[1,3,5])
+    tree.add_edge(1, 5, weight=[2,4])
+    tree.add_edge(1, 8, weight=[1,4,7])
+    tree.add_edge(2, 3, weight=[3,5])
+    tree.add_edge(2,4, weight=[2,4,6,8])
+    tree.add_edge(5, 6, weight=[1,3])
+    tree.add_edge(7, 8, weight=[1,4,7])
+    tree.add_edge(7, 9, weight=[1,2,6])
+    
+    return tree
+tree = tree_test()
+start = timer()
 print(naive_temporal_connectivity(tree))  # Output: True
+end = timer()
+print("Tempo di esecuzione:", timedelta(seconds=end - start))

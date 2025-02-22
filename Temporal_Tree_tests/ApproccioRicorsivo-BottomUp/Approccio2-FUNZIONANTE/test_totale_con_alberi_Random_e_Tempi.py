@@ -12,9 +12,9 @@ import numpy as np
 
 def test1():
 
-    for i in range(1,12):
+    for i in range(1,13):
         print("\nTempi con N = ",10*i," nodi e L = ",25*i," timestamp")
-        tree = generate_random_temporal_tree(10*i, 25*i, (1, 1500))
+        tree = generate_random_temporal_tree(10*i, 25*i, (1, 25*i+100))
         tree2 = tree.to_undirected()
         #print(type(tree))
         #print_temporal_tree(tree)
@@ -24,7 +24,7 @@ def test1():
         end = timer()
         print("Tempo di esecuzione:", timedelta(seconds=end - start))
         start2 = timer()
-        print(f"\nAlbero temporalmente connesso? Algoritmo Naive : {naive_v2.is_temporally_connected(tree2)}")
+        print(f"\nAlbero temporalmente connesso? Algoritmo Naive : {naive_v2.naive_temporal_connectivity(tree2)}")
         #naive.is_temporally_connected_v2(tree)
         end2 = timer()
         print("Tempo di esecuzione algoritmo naive:", timedelta(seconds=end2 - start2))
@@ -97,8 +97,8 @@ def test3_plot(trials=100, node_sizes=[10,50,100,200,500,1000]):
         print("\nNumero di nodi: ", num_nodes)
 
         for _ in range(trials):
-            timestamp_range = (1, num_nodes*2+100)  # Intervallo casuale di timestamp
-            tree = generate_random_temporal_tree(num_nodes, num_nodes**2, timestamp_range)
+            timestamp_range = (1, 450)  # Intervallo casuale di timestamp
+            tree = generate_random_temporal_tree(num_nodes, 300, timestamp_range)
             #tree = genera_albero_temporale(num_nodes, num_nodes*10, timestamp_range)
 
             print("Trials : {}/{}".format(_+1,trials))
@@ -139,7 +139,7 @@ def test3_plot(trials=100, node_sizes=[10,50,100,200,500,1000]):
 
     plt.tight_layout()
     #plt.show()
-    plt.savefig("Test_n^2_2000n.png")
+    plt.savefig("Test_300_1000n.png")
 
 
 def test2(intervals):
@@ -170,9 +170,9 @@ if __name__ == "__main__":
     # tree = create_tree_with_networkx()
     # print(algoritmo(tree))
     #calculate_average_time()
-    #test1()
+    test1()
     #test3()
     #test_1mil()
-    test3_plot()
+    #test3_plot()
     #test2([(1, 15), (3, 9), (5, 40), (2, 18)])
     #test4()
