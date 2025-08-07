@@ -41,6 +41,23 @@ def create_tree_with_networkx():
 
     return tree
 
+def tree_test():
+    tree = nx.DiGraph()
+    tree.add_node(1, weight=None)
+    tree.add_node(2, weight=[1, 3, 5])
+    tree.add_node(3, weight=[3, 5])
+    tree.add_node(4, weight=[2, 4, 6, 8])
+    tree.add_node(5, weight=[2, 3])
+    tree.add_node(6, weight=[1, 3])
+    tree.add_node(7, weight=[1,2, 6])
+    tree.add_node(8, weight=[2,6])
+    tree.add_node(9, weight=[1, 4, 7])
+
+    tree.add_edges_from(
+        [(1, 2), (1, 5), (1, 7), (2, 3), (2, 4), (5, 6), (7, 8), (7, 9)]
+    )
+    return tree
+
 def preprocess(tree, node, EA_max, LD_max):
     """
     Procedura di preprocessing per calcolare EA_max e LD_max per ogni nodo.
@@ -139,10 +156,10 @@ def algoritmo(T):
     #start = timer()
     EA_max = {}
     LD_max = {}
-    preprocess(T, "A", EA_max, LD_max)
+    preprocess(T, 1, EA_max, LD_max)
     print("Valori di EA_max:", EA_max,"\n")
     print("Valori di LD_max:", LD_max,"\n")
-    check = check_temporal_connectivity(T, "A", EA_max, LD_max) 
+    check = check_temporal_connectivity(T, 1, EA_max, LD_max) 
     #end = timer()
     #print("Tempo di esecuzione:", timedelta(seconds=end-start))
     if check:
@@ -151,7 +168,7 @@ def algoritmo(T):
         return "L'albero non è temporalmente connesso"
 
 if __name__ == "__main__":
-    tree = create_tree_with_networkx()
+    tree = tree_test()
     print(algoritmo(tree))
     #calculate_average_time()
 
